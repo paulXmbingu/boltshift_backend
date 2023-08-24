@@ -16,6 +16,7 @@ class Customer(models.Model):
 
     customer_name = models.CharField(max_length=50)
     terms_conditions = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
     gender = models.CharField(max_length=3, choices=GENDER, default='PNS')
     date_of_birth = models.DateField(default=models.DateField(auto_now_add=True))
     email = models.EmailField(max_length=100, unique=True)
@@ -29,7 +30,7 @@ class Customer(models.Model):
     shipping = models.ForeignKey('ShippingDetails', on_delete=models.SET_NULL, null=True, blank=True)
 
     # product orders
-    orders = models.ManyToManyField(Product, through='UserProductOrders')
+    orders = models.ForeignKey('UserProductOrders', on_delete=models.SET_NULL, null=True, blank=True)
 
     # wishlist
     wishlist = models.ManyToManyField(Product, through='WishListItem')
@@ -75,9 +76,8 @@ class ProductCartBin(models.Model):
 # user orders
 # either paid, pending, drafted
 class UserProductOrders(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE, default='John Doe')
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(default=models.DateTimeField(auto_now_add=True))
 
     def __str__(self):

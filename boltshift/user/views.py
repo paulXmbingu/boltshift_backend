@@ -3,6 +3,13 @@ from django.http import HttpResponse
 from django.contrib import messages
 from .models import Customer, UserCardInformation
 from django.contrib.auth import login, authenticate
+from rest_framework import generics
+from .customer_serializer import CustomerSerializer
+
+# API handling
+class CustomerList(generics.ListCreateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
 
 # home page
 def HomePage(request):

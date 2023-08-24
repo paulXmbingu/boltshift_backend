@@ -11,8 +11,7 @@ class UserAdmin(admin.ModelAdmin):
         'phone_number',
         'address',
         'bank_card',
-        'shipping',
-        'orders'
+        'shipping'
     )
 
 
@@ -50,5 +49,5 @@ class CustomerWishlist(admin.ModelAdmin):
 
 @admin.register(UserProductOrders)
 class CustomerOrder(admin.ModelAdmin):
-    list_display = ('customer', 'product', 'total_amount', 'created_at')
-    search_fields = ('customer',)
+    list_display = ('user', 'total_amount', 'created_at')
+    search_fields = ('user',)

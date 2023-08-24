@@ -3,5 +3,6 @@ from .models import Customer
 
 class CustomerSerializer(serializers.Serializer):
     class Meta:
-        pass
-    pass
+        model = Customer
+        # fields = "__all__"
+        exclude = ('password', 'profile_img')

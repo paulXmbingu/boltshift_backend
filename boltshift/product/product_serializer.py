@@ -3,5 +3,5 @@ from .models import Product
 
 class ProductSerializer(serializers.Serializer):
     class Meta:
-        pass
-    pass
+        model = Product
+        exclude = ('image')
