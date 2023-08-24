@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Customer, UserAddress, UserCardInformation, Review, ShippingDetails, Transaction, ProductCartBin, WishListItem
+from .models import Customer, UserAddress, UserCardInformation, Review, ShippingDetails, Transaction, ProductCartBin, WishListItem, UserProductOrders
 
 @admin.register(Customer)
 class UserAdmin(admin.ModelAdmin):
@@ -11,7 +11,8 @@ class UserAdmin(admin.ModelAdmin):
         'phone_number',
         'address',
         'bank_card',
-        'shipping'
+        'shipping',
+        'orders'
     )
 
 
@@ -46,3 +47,8 @@ class CustomerProductCart(admin.ModelAdmin):
 @admin.register(WishListItem)
 class CustomerWishlist(admin.ModelAdmin):
     list_display = ('customer', 'product')
+
+@admin.register(UserProductOrders)
+class CustomerOrder(admin.ModelAdmin):
+    list_display = ('customer', 'product', 'total_amount', 'created_at')
+    search_fields = ('customer',)

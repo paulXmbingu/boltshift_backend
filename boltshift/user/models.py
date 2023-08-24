@@ -28,6 +28,9 @@ class Customer(models.Model):
     product_review = models.ForeignKey('Review', on_delete=models.SET_NULL, null=True, blank=True)
     shipping = models.ForeignKey('ShippingDetails', on_delete=models.SET_NULL, null=True, blank=True)
 
+    # product orders
+    orders = models.ManyToManyField(Product, through='UserProductOrders')
+
     # wishlist
     wishlist = models.ManyToManyField(Product, through='WishListItem')
 
@@ -72,7 +75,13 @@ class ProductCartBin(models.Model):
 # user orders
 # either paid, pending, drafted
 class UserProductOrders(models.Model):
-    pass
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(default=models.DateTimeField(auto_now_add=True))
+
+    def __str__(self):
+        return f"Orders: {self.pk}"
 
 
 # user wishlist bin
