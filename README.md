@@ -54,7 +54,7 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 
 ## Project Structure
 
-- `boltshift_marketplace/`: Main project directory.
+- `boltshift_backend/`: Main project directory.
   - `settings.py`: Project settings including database configuration, authentication, and more.
   - `urls.py`: URL routing for the project.
 - `apps/`: Contains individual applications within the project.
