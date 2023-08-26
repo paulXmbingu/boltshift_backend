@@ -13,8 +13,8 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/boltshift-marketplace-backend.git
-   cd boltshift-marketplace-backend
+   git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
+   cd Boltshift-Backend
    ```
 
 2. Create and activate a virtual environment (optional but recommended):
