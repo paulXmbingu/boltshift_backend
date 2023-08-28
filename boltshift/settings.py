@@ -1,15 +1,15 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e3!qappf238+@^8k-o#wxttv(iiubgf5q%(a_$7i08uqca12#*'
+SECRET_KEY = 'django-insecure-cr^=pqr7@bie(u*=hx-n4c#$z3!fb*7p=r!=l^_p1ol9m401(y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -27,13 +27,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # my applications
-    'user',
+    # my apps
+    'customer',
     'product',
+    'vendors',
 
-    # React-Django API handling
-    'corsheaders',
+    # API handling
     'rest_framework',
+
+    # React Data Handling
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -44,16 +47,31 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     # corsheaders middleware
     'corsheaders.middleware.CorsMiddleware'
 ]
+
+# Whitelisting the React-Django sync port
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
+
+# Rest Framework allowed permissions
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
 
 ROOT_URLCONF = 'boltshift.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # os.path.join(BASE_DIR, 'frontend')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,11 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Whitelisting the React-Django sync port
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
-]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -121,7 +134,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Media folder
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Registering the custom user
+AUTH_USER_MODEL = 'customer.CustomUser'
