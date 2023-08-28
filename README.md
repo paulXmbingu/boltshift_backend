@@ -1,103 +1,82 @@
-![Boltshift Project Cover](https://paulmbingu.imgix.net/Github%20Back-end%20Codebase%20File%20Cover.png?fit=max&w=1344&h=668&dpr=2&q=50&auto=format%2Ccompress)
+![Boltshift Marketplace Project Cover](https://paulmbingu.imgix.net/Github%20Back-end%20Codebase%20File%20Cover.png?fit=max&w=1344&h=668&dpr=2&q=50&auto=format%2Ccompress)
 
-# Boltshift Backend - E-commerce Platform
+# Boltshift Marketplace Backend
 
-Welcome to the Boltshift Backend repository for the E-commerce Platform! This repository contains the backend codebase for the Boltshift E-commerce Platform, a comprehensive solution for building and managing online stores. The Boltshift Backend handles crucial functionalities such as product management, user authentication, order processing, and more.
+Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
-## Table of Contents
+## Prerequisites
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Database Schema](#database-schema)
-- [Authentication and Authorization](#authentication-and-authorization)
-- [Contributing](#contributing)
-- [License](#license)
+- Python 3.x
+- Virtual environment (recommended)
 
-## Introduction
-
-Boltshift E-commerce Platform offers a robust set of tools for businesses to establish their online presence, manage products, engage with customers, and handle transactions seamlessly. This repository holds the backend components responsible for data management, business logic, and API endpoints.
-
-## Features
-
-- Product catalog management
-- User registration and authentication
-- Shopping cart and order processing
-- Inventory and stock tracking
-- Admin dashboard for store management
-- Payment gateway integration
-
-## Getting Started
-
-Follow these instructions to set up the Boltshift Backend for the E-commerce Platform on your local machine.
-
-### Prerequisites
-
-- Node.js (version xx.x or higher)
-- npm (Node Package Manager)
-- MongoDB (running instance or connection URI)
-
-### Installation
+## Setup
 
 1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/boltshift-ecommerce-backend.git
+   ```
+   git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
+   cd Boltshift-Backend
    ```
 
-2. Navigate to the project directory:
-
-   ```bash
-   cd boltshift-ecommerce-backend
+2. Create and activate a virtual environment (optional but recommended):
+   ```
+   python3 -m venv venv
+   source venv/bin/activate
    ```
 
-3. Install the required dependencies:
-
-   ```bash
-   npm install
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
    ```
 
-### Configuration
+4. Configure environment variables:
+   Rename the `.env.example` file to `.env` and update the values accordingly.
 
-1. Create a `.env` file in the project root directory based on the `.env.example` template.
+5. Apply database migrations:
+   ```
+   python manage.py migrate
+   ```
 
-2. Configure the `.env` file with your MongoDB connection URI, payment gateway credentials, and other necessary settings.
+6. Create a superuser:
+   ```
+   python manage.py createsuperuser
+   ```
+
+7. Start the development server:
+   ```
+   python manage.py runserver
+   ```
 
 ## Usage
 
-To start the Boltshift Backend server, execute the following command:
+- Access the Django admin panel by navigating to `http://localhost:8000/admin/` and logging in with the superuser credentials.
 
-```bash
-npm start
-```
+- Interact with the API endpoints using tools like `curl` or API client applications like Postman.
 
-The server will begin running on the specified port (default is 3000) and will be ready to accept API requests from the Boltshift E-commerce frontend.
+## Project Structure
 
-## API Documentation
-
-For detailed information about the available API endpoints and their usage, refer to the [API Documentation](./API_DOCUMENTATION.md) file.
-
-## Database Schema
-
-The database schema for the Boltshift E-commerce Platform is described in the [Database Schema](./DATABASE_SCHEMA.md) file. This provides insights into the structure of stored data and relationships between entities.
-
-## Authentication and Authorization
-
-Boltshift E-commerce Platform employs user authentication and authorization mechanisms. Learn more about these aspects in the [Authentication and Authorization](./AUTHENTICATION.md) documentation.
+- `boltshift_backend/`: Main project directory.
+  - `settings.py`: Project settings including database configuration, authentication, and more.
+  - `urls.py`: URL routing for the project.
+- `apps/`: Contains individual applications within the project.
+  - `products/`: Application handling products and their details.
+  - `orders/`: Application managing order placement and processing.
+  - ... (other apps can be added here)
+- `static/`: Static files like CSS, JavaScript, and images.
+- `templates/`: HTML templates for rendering views.
+- `requirements.txt`: List of required Python packages.
 
 ## Contributing
 
-Contributions to the Boltshift E-commerce Backend are highly appreciated. If you wish to contribute, please adhere to the guidelines outlined in the [Contributing Guidelines](./CONTRIBUTING.md).
+We welcome contributions to enhance the Boltshift Marketplace backend. To contribute, follow these steps:
 
-## License
+1. Fork the repository on GitHub.
+2. Create a new branch for your feature/fix: `git checkout -b feature-name`
+3. Make your changes and commit them.
+4. Push your changes to your fork: `git push origin feature-name`
+5. Open a pull request on the original repository.
 
-This project is licensed under the [MIT License](./LICENSE). Feel free to modify and distribute the codebase in accordance with the terms of this license.
+## Support
 
----
+For any questions or issues, feel free to contact our team at support@boltshiftmarketplace.com.
 
-Thank you for choosing Boltshift E-commerce Platform! If you have any questions, please don't hesitate to reach out to us at support@boltshiftcommerce.com or create an issue in this repository. We hope our backend solution empowers you to build successful and scalable online stores.
+Happy coding!
