@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from .forms import RegistrationForm
 from django.contrib import messages
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import CustomUser
 from .serializer import SerializeCustomer
+from django.views.decorators.csrf import csrf_protect
 
 
 # API serializer wrapper
@@ -18,6 +19,7 @@ class CustomerAPI(generics.ListCreateAPIView):
         output = [
             {
                 'id': output.id,
+                "uuid": output.cid,
                 'username': output.username,
                 'first name': output.first_name,
                 'last name': output.last_name,
@@ -36,11 +38,11 @@ class CustomerAPI(generics.ListCreateAPIView):
             return Response(serializer.data)
 
 
-
 def index(request):
     return HttpResponse("Welcome")
 
 
+@csrf_protect
 def sign_up(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST or None)
@@ -75,6 +77,7 @@ def sign_up(request):
         return HttpResponse("Ready to sign up")
         
 
+@csrf_protect
 def login(request):
     # if user is already logged in
     if request.user.is_authenticated:
@@ -86,7 +89,7 @@ def login(request):
 
         try:
             # quering users from database
-            user = CustomUser.objects.query(email=email)
+            user = CustomUser.objects.all(email=email)
         except Exception as error:
             print(f"Error Encountered: {error}")
 
@@ -99,3 +102,8 @@ def login(request):
             redirect("home")
     
     return HttpResponse("Ready to login in")
+
+def sign_out(request):
+    logout(request)
+    messages.success(request, "Logged Out Successfully")
+    return redirect("home")
