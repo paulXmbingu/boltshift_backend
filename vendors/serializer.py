@@ -4,4 +4,4 @@ from .models import Vendor
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
-        exclude = ['image', 'warranty_period', 'response_time', 'shipping_time', 'user', 'address']
+        exclude = ['vend_id', 'image', 'warranty_period', 'response_time', 'shipping_time', 'user', 'address', 'rating']

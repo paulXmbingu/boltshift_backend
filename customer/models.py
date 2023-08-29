@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['username']
 
     def __repr__(self):
-        return f"{self.username}, {self.email}"
+        return self.username
     
     class Meta:
         # rename the class incase of multiple users

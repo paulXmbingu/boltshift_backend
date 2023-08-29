@@ -20,6 +20,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # admin page customizer
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -146,3 +149,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Registering the custom user
 AUTH_USER_MODEL = 'customer.CustomUser'
+
+
+# Customizing the admin panel
+JAZZMIN_SETTINGS = {
+    'site_brand': 'Boltshift Ecommerce',
+    'copyright': 'boltshit-ecommerce.com'
+}

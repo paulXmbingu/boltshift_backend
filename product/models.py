@@ -3,6 +3,16 @@ from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
 from vendors.models import Vendor
+from customer.models import CustomUser
+
+RATING = (
+    (0, ''),
+    (1, ''),
+    (2, ''),
+    (3, ''),
+    (4, ''),
+    (5, '')
+)
 
 
 class Product(models.Model):
@@ -11,6 +21,8 @@ class Product(models.Model):
     description = models.TextField()
     stock_quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    specifications = models.TextField(null=True, blank=True)
+
 
     # foreign keys
     category = models.ForeignKey('Category', on_delete=models.CASCADE)

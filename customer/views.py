@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from .forms import RegistrationForm
 from django.contrib import messages
-from rest_framework import generics
+from rest_framework import viewsets
 from rest_framework.response import Response
 from .models import CustomUser
 from .serializer import SerializeCustomer
@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_protect
 
 
 # API serializer wrapper
-class CustomerAPI(generics.ListCreateAPIView):
+class CustomerAPI(viewsets.ModelViewSet):
     serializer_class = SerializeCustomer
     queryset = CustomUser.objects.all()
 
@@ -107,3 +107,15 @@ def sign_out(request):
     logout(request)
     messages.success(request, "Logged Out Successfully")
     return redirect("home")
+
+
+def delete_account(request, id):
+    if request.method == 'POST':
+        # deleting the user
+        request.user.delete()
+
+        # logout user after deletion
+        #logout(request)
+
+        # redirect to home page
+        return redirect('home')

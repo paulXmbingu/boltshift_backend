@@ -2,6 +2,7 @@ from django.db import models
 from customer.models import CustomUser
 from string import hexdigits
 from shortuuid.django_fields import ShortUUIDField
+from django.utils.html import mark_safe
 
 """
 # Creates a directory for each user
@@ -28,6 +29,9 @@ class Vendor(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     address = models.ForeignKey('Address', on_delete=models.SET_NULL, null=True)
+
+    def image_category(self):
+        return mark_safe('<img src="%s" width=50 heigh=50 />', (self.image.url))
 
     class Meta:
         verbose_name_plural = "Vendors"

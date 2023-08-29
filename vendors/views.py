@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from .serializer import Vendor
-from rest_framework import generics
+from rest_framework import viewsets
 from .serializer import VendorSerializer
 from rest_framework.response import Response
 
 
-class VendorAPI(generics.ListCreateAPIView):
+class VendorAPI(viewsets.ModelViewSet):
     serializer_class = VendorSerializer
     queryset = Vendor.objects.all()
 

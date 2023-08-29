@@ -1,6 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'vendor', views.VendorAPI, 'vendor')
 
 urlpatterns = [
-    path('api-vendor/', views.VendorAPI.as_view(), name='vendor_api')
+    path('api-vendor/', include(router.urls))
 ]
