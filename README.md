@@ -37,20 +37,18 @@ Control or Command-Click the buttons below to instantly access the interactive p
    pip install -r requirements.txt
    ```
 
-4. Configure environment variables:
-   Rename the `.env.example` file to `.env` and update the values accordingly.
-
-5. Apply database migrations:
+4. Apply database migrations:
    ```
+   python manage.py makemigrations
    python manage.py migrate
    ```
 
-6. Create a superuser:
+5. Create a superuser:
    ```
    python manage.py createsuperuser
    ```
 
-7. Start the development server:
+6. Start the development server:
    ```
    python manage.py runserver
    ```
@@ -64,12 +62,20 @@ Control or Command-Click the buttons below to instantly access the interactive p
 ## Project Structure
 
 - `boltshift_backend/`: Main project directory.
-  - `settings.py`: Project settings including database configuration, authentication, and more.
-  - `urls.py`: URL routing for the project.
+
+   - `boltshift`: Base project folder. Contains:-
+      - `settings.py`: Project settings including database configuration, authentication, and more.
+      - `urls.py`: URL routing for the project:-
+         - `admin/`: Admin panel
+         - `customer/`: Home page, Orders, and more
+         - `product/`: Product overview, product purchase, and more
+         - `vendors/`: Vendor's panel, product tracking, income tracking
+
 - `apps/`: Contains individual applications within the project.
-  - `products/`: Application handling products and their details.
-  - `orders/`: Application managing order placement and processing.
-  - ... (other apps can be added here)
+  - `product/`: Application handling products and their details.
+  - `vendors/`: Application for managing vendors/product owners.
+  - `customer`: Application for managing customers/users
+
 - `static/`: Static files like CSS, JavaScript, and images.
 - `templates/`: HTML templates for rendering views.
 - `requirements.txt`: List of required Python packages.
