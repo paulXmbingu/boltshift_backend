@@ -80,6 +80,15 @@ Control or Command-Click the buttons below to instantly access the interactive p
 - `templates/`: HTML templates for rendering views.
 - `requirements.txt`: List of required Python packages.
 
+## Core Product Engineering Team
+
+- Special Contributions: **Marion Ngayi & The Senjes Cuisine Team**
+- Product Research & Design: **Paul Mbingu**
+- Frontend Engineers: **Evelyne Atieno & Guantai John Paul**
+- Backend Engineers: **Romeo Mureithi & Samuel Maingi**
+- Android Engineers: **TBA**
+- iOS Engineers: **TBA**
+  
 ## Contributing
 
 We welcome contributions to enhance the Boltshift Marketplace backend. To contribute, follow these steps:
