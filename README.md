@@ -11,7 +11,7 @@ Control or Command-Click the buttons below to instantly access the interactive p
 
 [![Design](https://img.shields.io/badge/Design-Ctrl%20or%20Cmd%20Click%20to%20Open-c644a3?style=flat)](https://www.figma.com/file/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?type=design&node-id=1411%3A11643&mode=dev) [![Prototype](https://img.shields.io/badge/Prototype-Ctrl%20or%20Cmd%20Click%20to%20Open-ff692e?style=flat)](https://www.figma.com/proto/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?node-id=1663-14632&scaling=scale-down-width&page-id=1411%3A11643&starting-point-node-id=1663%3A14632&t=gYFeccmlX2jdKlsn-8&hide-ui=1)
 
-![Portfolio mockup (2)](https://github.com/Excite-Innovation-Company/Boltshift-Frontend/assets/74184085/caa1ded4-403a-42f8-9f33-dbc174b2f9ca)
+![Boltshift Marketplace Product Cover Artwork](https://paulmbingu.imgix.net/Portfolio%20mockup.png?fit=max&w=1344&h=724&dpr=2&q=50&auto=format%2Ccompress)
 
 ## Prerequisites
 
@@ -80,6 +80,15 @@ Control or Command-Click the buttons below to instantly access the interactive p
 - `templates/`: HTML templates for rendering views.
 - `requirements.txt`: List of required Python packages.
 
+## Core Product Engineering Team
+
+- Special Contributions: **Marion Ngayi & The Senjes Cuisine Team**
+- Product Research & Design: **Paul Mbingu**
+- Frontend Engineers: **Evelyne Atieno & Guantai John Paul**
+- Backend Engineers: **Romeo Mureithi & Samuel Maingi**
+- Android Engineers: **TBA**
+- iOS Engineers: **TBA**
+  
 ## Contributing
 
 We welcome contributions to enhance the Boltshift Marketplace backend. To contribute, follow these steps:
