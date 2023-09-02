@@ -135,7 +135,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Media folder
 MEDIA_URL = "/media/"
@@ -153,6 +157,13 @@ AUTH_USER_MODEL = 'customer.CustomUser'
 
 # Customizing the admin panel
 JAZZMIN_SETTINGS = {
-    'site_brand': 'Boltshift Ecommerce',
-    'copyright': 'boltshit-ecommerce.com'
+    "site_title": "Boltshift Admin",
+    "site_header": "Boltshift",
+    "site_logo": "logo/logo2.png",
+    'site_brand': 'Boltshift E-commerce',
+    'copyright': 'boltshit-ecommerce.com',
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
 }
