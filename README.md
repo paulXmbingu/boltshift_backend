@@ -1,4 +1,4 @@
-![Boltshift Marketplace Project Cover](https://paulmbingu.imgix.net/Github%20Back-end%20Codebase%20File%20Cover.png?fit=max&w=1344&h=668&dpr=2&q=50&auto=format%2Ccompress)
+![Boltshift Marketplace Project Cover](https://res.cloudinary.com/excit3/image/upload/v1693856524/Boltshift%20Branding/Github_Back-end_Codebase_File_Cover_yhmn6l.png)
 
 # Boltshift Marketplace Backend
 
