@@ -23,7 +23,6 @@ Control or Command-Click the buttons below to access the interactive prototype i
 1. Clone the repository:
    ```
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
-   cd Boltshift-Backend
    ```
 
 2. Create and activate a virtual environment (optional but recommended):
