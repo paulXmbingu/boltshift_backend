@@ -160,7 +160,8 @@ JAZZMIN_SETTINGS = {
     "site_title": "Boltshift Admin",
     "site_header": "Boltshift",
     "site_logo": "logo/logo2.png",
-    'site_brand': 'Boltshift E-commerce',
+    'site_brand': 'Boltshift Admin',
+    "welcome_sign": "Boltshift E-commerce | Welcome Admin",
     'copyright': 'boltshit-ecommerce.com',
 }
 
