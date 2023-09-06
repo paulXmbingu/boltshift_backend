@@ -1,4 +1,4 @@
-![Boltshift Marketplace Project Cover](https://paulmbingu.imgix.net/Github%20Back-end%20Codebase%20File%20Cover.png?fit=max&w=1344&h=668&dpr=2&q=50&auto=format%2Ccompress)
+![Boltshift Marketplace Project Cover](https://res.cloudinary.com/excit3/image/upload/v1693936831/Boltshift%20Branding/Github_Back-end_Codebase_File_Cover_vz5rzm.png)
 
 # Boltshift Marketplace Backend
 
@@ -11,7 +11,7 @@ Control or Command-Click the buttons below to access the interactive prototype i
 
 [![Design](https://img.shields.io/badge/Design-Ctrl%20or%20Cmd%20Click-c644a3?style=flat)](https://www.figma.com/file/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?type=design&node-id=1411%3A11643&mode=dev) [![Prototype](https://img.shields.io/badge/Prototype-Ctrl%20or%20Cmd%20Click-ff692e?style=flat)](https://www.figma.com/proto/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?node-id=1663-14632&scaling=scale-down-width&page-id=1411%3A11643&starting-point-node-id=1663%3A14632&t=gYFeccmlX2jdKlsn-8&hide-ui=1)
 
-![Boltshift Marketplace Product Cover Artwork](https://res.cloudinary.com/excit3/image/upload/v1693707598/Boltshift%20Branding/Boltshift_Marketplace_Product_Cover_Artwork_byddlj.png)
+![Boltshift Marketplace Product Cover Artwork](https://res.cloudinary.com/excit3/image/upload/v1693943590/Boltshift%20Branding/Boltshift_Marketplace_Product_Cover_Artwork_viisbm.png)
 
 ## Prerequisites
 
@@ -23,7 +23,6 @@ Control or Command-Click the buttons below to access the interactive prototype i
 1. Clone the repository:
    ```
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
-   cd Boltshift-Backend
    ```
 
 2. Create and activate a virtual environment (optional but recommended):
