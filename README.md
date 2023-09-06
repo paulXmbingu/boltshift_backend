@@ -20,34 +20,34 @@ Control or Command-Click the buttons below to access the interactive prototype i
 
 ## Setup
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
    ```
 
-2. Create and activate a virtual environment (optional but recommended):
+2. **Create and activate a virtual environment (optional but recommended):**
    ```
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. Install dependencies:
+3. **Install dependencies:**
    ```
    pip install -r requirements.txt
    ```
 
-4. Apply database migrations:
+4. **Apply database migrations:**
    ```
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-5. Create a superuser:
+5. **Create a superuser:**
    ```
    python manage.py createsuperuser
    ```
 
-6. Start the development server:
+6. **Start the development server:**
    ```
    python manage.py runserver
    ```
