@@ -4,9 +4,8 @@
 
 Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
-# Figma Design & Prototype
+# Design, Prototype & User flow
 
-**Viewing Prototype in Figma:**
 Control or Command-Click the buttons below to access the interactive prototype in Figma instantly. Explore the design by interacting with its elements. If you have any questions or encounter any issues, please don't hesitate to reach out to the designers in the Core Engineering Team for assistance (See credits list below). Your engagement with the prototype is appreciated!
 
 [![Design](https://img.shields.io/badge/Design-Ctrl%20or%20Cmd%20Click-c644a3?style=flat)](https://www.figma.com/file/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?type=design&node-id=1411%3A11643&mode=dev) [![Prototype](https://img.shields.io/badge/Prototype-Ctrl%20or%20Cmd%20Click-ff692e?style=flat)](https://www.figma.com/proto/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?node-id=1663-14632&scaling=scale-down-width&page-id=1411%3A11643&starting-point-node-id=1663%3A14632&t=gYFeccmlX2jdKlsn-8&hide-ui=1)
