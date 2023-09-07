@@ -37,6 +37,16 @@ class CustomerAPI(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
 
+class CustomerRegistrationAPI(viewsets.ModelViewSet):
+    def validate(self, data):
+        if data['password1'] != data['password2']:
+            pass
+
+class CustomerLoginAPI(viewsets.ModelViewSet):
+    user = CustomUser.objects.all()
+    
+    def validate(self, data):
+        pass
 
 def index(request):
     return HttpResponse("Welcome")

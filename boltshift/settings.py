@@ -159,12 +159,15 @@ AUTH_USER_MODEL = 'customer.CustomUser'
 JAZZMIN_SETTINGS = {
     "site_title": "Boltshift Admin",
     "site_header": "Boltshift",
-    "site_logo": "logo/logo2.png",
+    "site_logo": "logo/neutral.png",
     'site_brand': 'Boltshift Admin',
-    "welcome_sign": "Boltshift E-commerce | Welcome Admin",
+    "welcome_sign": "Welcome to Boltshift Admin Panel",
     'copyright': 'boltshit-ecommerce.com',
+    "show_ui_builder": True,
+    "custom_css": "css/admin.css"
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "theme": "darkly",
+    "theme": "default",
+    "dark_mode_theme": "darkly"
 }
