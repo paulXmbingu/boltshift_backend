@@ -4,9 +4,8 @@
 
 Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
-# Figma Design & Prototype
+# Design, Prototype & User flow
 
-**Viewing Prototype in Figma:**
 Control or Command-Click the buttons below to access the interactive prototype in Figma instantly. Explore the design by interacting with its elements. If you have any questions or encounter any issues, please don't hesitate to reach out to the designers in the Core Engineering Team for assistance (See credits list below). Your engagement with the prototype is appreciated!
 
 [![Design](https://img.shields.io/badge/Design-Ctrl%20or%20Cmd%20Click-c644a3?style=flat)](https://www.figma.com/file/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?type=design&node-id=1411%3A11643&mode=dev) [![Prototype](https://img.shields.io/badge/Prototype-Ctrl%20or%20Cmd%20Click-ff692e?style=flat)](https://www.figma.com/proto/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?node-id=1663-14632&scaling=scale-down-width&page-id=1411%3A11643&starting-point-node-id=1663%3A14632&t=gYFeccmlX2jdKlsn-8&hide-ui=1)
@@ -20,34 +19,34 @@ Control or Command-Click the buttons below to access the interactive prototype i
 
 ## Setup
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
    ```
 
-2. Create and activate a virtual environment (optional but recommended):
+2. **Create and activate a virtual environment (optional but recommended):**
    ```
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. Install dependencies:
+3. **Install dependencies:**
    ```
    pip install -r requirements.txt
    ```
 
-4. Apply database migrations:
+4. **Apply database migrations:**
    ```
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-5. Create a superuser:
+5. **Create a superuser:**
    ```
    python manage.py createsuperuser
    ```
 
-6. Start the development server:
+6. **Start the development server:**
    ```
    python manage.py runserver
    ```
