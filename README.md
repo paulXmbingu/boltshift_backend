@@ -24,7 +24,7 @@ Control or Command-Click the buttons below to access the interactive prototype i
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
    ```
 
-2. **Create and activate a virtual environment (optional but recommended):**
+2. **Create and activate a virtual environment:**
    ```
    python3 -m venv venv
    source venv/bin/activate
