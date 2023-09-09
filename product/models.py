@@ -6,12 +6,12 @@ from vendors.models import Vendor
 from customer.models import CustomUser
 
 RATING = (
-    (0, ''),
-    (1, ''),
-    (2, ''),
-    (3, ''),
-    (4, ''),
-    (5, '')
+    (0, '00000'),
+    (1, '10000'),
+    (2, '11000'),
+    (3, '11100'),
+    (4, '11110'),
+    (5, '11111')
 )
 
 

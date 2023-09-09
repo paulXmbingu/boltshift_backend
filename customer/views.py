@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from .forms import RegistrationForm
@@ -9,6 +9,9 @@ from .models import CustomUser
 from .serializer import SerializeCustomer
 from django.views.decorators.csrf import csrf_protect
 
+
+def index(request):
+    return HttpResponse("<h2>Welcome to <b><i>Boltshift E-commerce</i></b></h2>")
 
 # API serializer wrapper
 class CustomerAPI(viewsets.ModelViewSet):
@@ -47,9 +50,6 @@ class CustomerLoginAPI(viewsets.ModelViewSet):
     
     def validate(self, data):
         pass
-
-def index(request):
-    return HttpResponse("Welcome")
 
 
 @csrf_protect

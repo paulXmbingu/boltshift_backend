@@ -1,8 +1,14 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 from . import views
 
+catalogue = routers.DefaultRouter()
+catalogue.register("", views.ProductCatalogue, "catalogue")
+
+overview = routers.DefaultRouter()
+overview.register("", views.ProductOverview, "overview")
+
 urlpatterns = [
-    path('product_api/', views.ProductList.as_view(), name='product_api'),
-    path('productCatalogue/', views.ProductCatalogue, name='product_catalogue'),
-    path('productOverview/', views.ProductOverview, name='product_overview')
+    path('productsCatalogue/', include(catalogue.urls), name="catalogue"),
+    path('productOverview/', include(overview.urls))
 ]
