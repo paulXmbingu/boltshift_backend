@@ -1,5 +1,7 @@
 from rest_framework import serializers
+from .models import Product
 
-class SerializeCustomer(serializers.ModelSerializer):
+class ProductSerializer(serializers.Serializer):
     class Meta:
-        pass
+        model = Product
+        exclude = ('image')
