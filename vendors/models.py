@@ -18,6 +18,7 @@ class Vendor(AbstractUser):
     vend_id = ShortUUIDField(unique=True, length=10, max_length=20, prefix="vend-", alphabet=hexdigits)
     vendor_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
+    username = models.CharField(max_length=20)
 
     image = models.ImageField(upload_to=user_directory_path)
     description = models.CharField(max_length=100, blank=True, default="Cool")

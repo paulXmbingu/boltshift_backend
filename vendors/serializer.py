@@ -37,8 +37,11 @@ class VendorRegistrationAPI(serializers.ModelSerializer):
             vendor_name = validated_data["vendor_name"],
             email = validated_data["email"],
             description = validated_data["description"],
+            username = validated_data["username"],
             warranty_period = 1
         )
         vendor.set_password(password_hashed)
+
+        vendor.save()
 
         return vendor
