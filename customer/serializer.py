@@ -4,12 +4,6 @@ from hashed import hash_password
 
 MIN_LENGHT = 8
 
-class SerializeCustomer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        exclude = ['groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined']
-
-
 class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only = True,
@@ -52,3 +46,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+    
+class CustomerLoginAPI(serializers.ModelSerializer):
+    pass

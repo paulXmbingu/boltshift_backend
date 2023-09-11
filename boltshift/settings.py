@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     # API handling
     'rest_framework',
 
+    # API Token Authentication
+    'knox',
+
     # React Data Handling
     'corsheaders'
 ]
@@ -64,6 +67,9 @@ CORS_ORIGIN_WHITELIST = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'knox.auth.TokenAuthentication'
     ]
 }
 

@@ -23,7 +23,7 @@ class VendorRegistrationAPI(serializers.ModelSerializer):
 
     class Meta:
         model = Vendor
-        exclude = ['image', 'warranty_period', 'response_time', 'shipping_time', 'user', 'address', 'rating']
+        exclude = ['first_name', 'last_name', 'image', 'warranty_period', 'response_time', 'shipping_time', 'user', 'address', 'rating', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined']
 
     def validate(self, data):
         if data["password"] != data["password2"]:
@@ -37,9 +37,8 @@ class VendorRegistrationAPI(serializers.ModelSerializer):
             vendor_name = validated_data["vendor_name"],
             email = validated_data["email"],
             description = validated_data["description"],
-            password = password_hashed,
             warranty_period = 1
         )
-        vendor.save()
+        vendor.set_password(password_hashed)
 
         return vendor
