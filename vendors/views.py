@@ -1,31 +1,24 @@
-from django.shortcuts import render
 from .serializer import Vendor
 from rest_framework import viewsets
-from .serializer import VendorSerializer
-from rest_framework.response import Response
+from .serializer import VendorRegistrationAPI
+from product.models import Product
 
 
-class VendorAPI(viewsets.ModelViewSet):
-    serializer_class = VendorSerializer
+class VendorRegistration(viewsets.ModelViewSet):
+    serializer_class = VendorRegistrationAPI
     queryset = Vendor.objects.all()
+        
+class VendorLogin(viewsets.ModelViewSet):
+    def validate(self, data):
+        pass
 
-    def get(self, request):
-        output = [
-            {
-                'id': output.id,
-                "uuid": output.vend_id,
-                'username': output.vendor_name,
-                'password': output.password,
-                'email': output.email,
-                'description': output.description,
-                'rating': output.rating
-            } for output in Vendor.objects.all()
-        ]
-        # status code
-        return Response(output)
-    
+class VendorAddProduct(viewsets.ModelViewSet):
     def post(self, request):
-        serializer = VendorSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
+        pass
+
+class VendorProductView(viewsets.ModelViewSet):
+    def get(self, request):
+        pass
+
+    def income(self, request):
+        pass
