@@ -3,6 +3,7 @@ from .models import CustomUser
 from hashed import hash_password
 
 MIN_LENGHT = 8
+USERNAME_LENGTH = 6
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -17,6 +18,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
         min_length = MIN_LENGHT,
         error_messages = {
             "min_length": f"Password must be {MIN_LENGHT} characters long"
+        }
+    )
+    username = serializers.CharField(
+        min_length = USERNAME_LENGTH,
+        error_messages = {
+            "min_length": f"Username must be {USERNAME_LENGTH} characters long"
         }
     )
 

@@ -4,6 +4,8 @@ from hashed import hash_password
 
 # password min length
 MIN_LENGTH = 8
+# username min_length
+LENGTH = 6
 
 class VendorRegistrationAPI(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -18,6 +20,12 @@ class VendorRegistrationAPI(serializers.ModelSerializer):
         min_length = MIN_LENGTH,
         error_messages = {
             "min_length": f"Passwords must be {MIN_LENGTH} characters long"
+        }
+    )
+    username = serializers.CharField(
+        min_length = LENGTH,
+        error_messages = {
+            "min_length": f"Username must be {LENGTH} characters long"
         }
     )
 
