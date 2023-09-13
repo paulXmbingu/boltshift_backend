@@ -6,6 +6,7 @@ from .serializer import VendorRegistrationAPI, LoginSerializer
 from product.models import Product
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 
 class VendorRegistration(viewsets.ModelViewSet):
@@ -14,14 +15,15 @@ class VendorRegistration(viewsets.ModelViewSet):
         
 
 class VendorLoginAPI(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
     def post(self, request, format=None):
-        serializer = LoginSerializer(data=request.data)
+        serializer = LoginSerializer(data=self.request.data)
 
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
 
-            user = authenticate(request, username=email, password=password)
+            user = authenticate(self.request, username=email, password=password)
 
             if user is not None:
                 login(request, user)

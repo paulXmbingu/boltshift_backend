@@ -7,7 +7,11 @@ from .serializer import RegistrationSerializer, LoginSerializer
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django.urls import reverse
+from django.shortcuts import redirect
+import logging
 
+log = logging.getLogger(__name__)
 
 def index(request):
     return HttpResponse("<h2>Welcome to <b><i>Boltshift E-commerce</i></b></h2>")
@@ -19,7 +23,8 @@ class CustomerRegistrationAPI(viewsets.ModelViewSet):
 
     
 class CustomerLoginAPI(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    allowed_methods = ['POST']
+
     # deseralizing the data
     def post(self, request, format=None):
         serializer = LoginSerializer(data=request.data)
@@ -29,9 +34,11 @@ class CustomerLoginAPI(APIView):
 
             # user authentication
             user = authenticate(request, username=email, password=password)
+            print(f"User: {user}")
 
             if user is not None:
                 login(request, user)
+                log.info(f"Email: {email}, Password: {password}")
                 return Response(
                     {
                         'message': 'Login Sucessful',
@@ -40,6 +47,7 @@ class CustomerLoginAPI(APIView):
                     status=status.HTTP_200_OK
                 )
             else:
+                log.warning(f"Login failed for email: {email}")
                 return Response(
                     {'message': 'Invalid credentials'},
                     status=status.HTTP_401_UNAUTHORIZED
@@ -50,13 +58,18 @@ class CustomerLoginAPI(APIView):
 class CustomerLogoutAPI(APIView):
     # ensure that only logged in users are able to access this
     permission_classes = [IsAuthenticated]
+    allowed_methods = ['POST']
 
     def post(self, request, format=None):
         # logout user
         logout(request)
+        # redirect to home page after login out
+        redirect_url = reverse("home")
+        result = {
+            'message': "User logout successfully",
+            'redirect_url': redirect_url
+        }
         return Response(
-            {
-                'message': "User logout successfully"
-            },
+            result,
             status=status.HTTP_200_OK
         )
