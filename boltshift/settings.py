@@ -75,6 +75,12 @@ REST_FRAMEWORK = {
     ]
 }
 
+# Backend POST server authentication
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
 ROOT_URLCONF = 'boltshift.urls'
 
 TEMPLATES = [
@@ -167,10 +173,10 @@ AUTH_USER_MODEL = 'customer.CustomUser'
 JAZZMIN_SETTINGS = {
     "site_title": "Boltshift Admin",
     "site_header": "Boltshift",
-    "site_logo": "logo/neutral.png",
+    "site_logo": "logo/neutral1.png",
     'site_brand': 'Boltshift Admin',
     "welcome_sign": "Welcome to Boltshift Admin Panel",
-    'copyright': 'boltshit-ecommerce.com',
+    'copyright': 'Boltshift Marketplace',
     "show_ui_builder": True,
     "custom_css": "css/admin.css"
 }
