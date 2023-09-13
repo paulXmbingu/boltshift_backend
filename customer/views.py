@@ -4,8 +4,9 @@ from .models import CustomUser
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.views import APIView
 from .serializer import RegistrationSerializer, LoginSerializer
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 
 def index(request):
@@ -34,7 +35,7 @@ class CustomerLoginAPI(APIView):
                 return Response(
                     {
                         'message': 'Login Sucessful',
-                        'use_cid': user.cid
+                        'user_cid': user.cid
                     },
                     status=status.HTTP_200_OK
                 )
@@ -47,4 +48,15 @@ class CustomerLoginAPI(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class CustomerLogoutAPI(APIView):
-    pass
+    # ensure that only logged in users are able to access this
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        # logout user
+        logout(request)
+        return Response(
+            {
+                'message': "User logout successfully"
+            },
+            status=status.HTTP_200_OK
+        )
