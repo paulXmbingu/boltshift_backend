@@ -2,6 +2,8 @@ from django.db import models
 from customer.models import CustomUser
 from string import hexdigits
 from shortuuid.django_fields import ShortUUIDField
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.utils.translation import gettext_lazy as _
 from django.utils.html import mark_safe
 
 """
@@ -12,12 +14,11 @@ def user_directory_path(instance, filename):
     return f"vendor_{instance.user.id}/{filename}"
 
 
-class Vendor(models.Model):
+class Vendor(AbstractUser):
     vend_id = ShortUUIDField(unique=True, length=10, max_length=20, prefix="vend-", alphabet=hexdigits)
     vendor_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
-    registration_date = models.DateTimeField(auto_now_add=True)
+    username = models.CharField(max_length=20)
 
     image = models.ImageField(upload_to=user_directory_path)
     description = models.CharField(max_length=100, blank=True, default="Cool")
@@ -35,6 +36,21 @@ class Vendor(models.Model):
 
     class Meta:
         verbose_name_plural = "Vendors"
+
+    # avoiding field clashes
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name=_('groups'),
+        blank=True,
+        related_name='seller_set'
+    )
+
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=_('user permissions'),
+        blank=True,
+        related_name='seller_set'
+    )
 
     def __repr__(self) -> str:
         return self.vendor_name
