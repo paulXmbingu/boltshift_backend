@@ -12,6 +12,7 @@ class VendorRegistration(viewsets.ModelViewSet):
     serializer_class = VendorRegistrationAPI
     queryset = Vendor.objects.all()
         
+
 class VendorLoginAPI(APIView):
     def post(self, request, format=None):
         serializer = LoginSerializer(data=request.data)
@@ -38,6 +39,17 @@ class VendorLoginAPI(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+class VendorLogoutAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        logout(request)
+        return Response(
+            {
+                'message': "User logout successfully"
+            },
+            status=status.HTTP_200_OK
+        )
 
 class VendorAddProduct(viewsets.ModelViewSet):
     def post(self, request):

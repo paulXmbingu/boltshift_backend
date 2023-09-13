@@ -25,7 +25,7 @@ class Vendor(AbstractUser):
     description = models.TextField(blank=True, null=True)
     rating = models.CharField(max_length=100, blank=True, default="Cool")
     
-    warranty_period = models.PositiveIntegerField(null=True)
+    warranty_period = models.PositiveIntegerField(default=0)
     response_time = models.CharField(max_length=100, blank=True, default="Cool")
     shipping_time = models.CharField(max_length=100, blank=True, default="Cool")
 
