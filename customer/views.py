@@ -1,10 +1,11 @@
-from django.shortcuts import redirect
 from django.http import HttpResponse
-from django.contrib.auth import login, logout
-from django.contrib import messages
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from .models import CustomUser
-from .serializer import RegistrationSerializer
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.views import APIView
+from .serializer import RegistrationSerializer, LoginSerializer
+from django.contrib.auth import authenticate, login
+from rest_framework.response import Response
 
 
 def index(request):
@@ -15,7 +16,35 @@ class CustomerRegistrationAPI(viewsets.ModelViewSet):
     serializer_class = RegistrationSerializer
     queryset = CustomUser.objects.all()
 
-
-class CustomerLoginAPI(viewsets.ModelViewSet):
-    user = CustomUser.objects.all()
     
+class CustomerLoginAPI(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # deseralizing the data
+    def post(self, request, format=None):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
+
+            # user authentication
+            user = authenticate(request, username=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                return Response(
+                    {
+                        'message': 'Login Sucessful',
+                        'use_cid': user.cid
+                    },
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {'message': 'Invalid credentials'},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class CustomerLogoutAPI(APIView):
+    pass

@@ -2,10 +2,11 @@ from django.urls import path, include
 from . import views
 from rest_framework import routers
 
-signup = routers.DefaultRouter()
-signup.register("", views.CustomerRegistrationAPI, 'sign-up')
+router = routers.DefaultRouter()
+router.register("sign-up", views.CustomerRegistrationAPI, 'sign-up')
 
 urlpatterns = [
-    path('api/sign-up', include(signup.urls)),
+    path('api/', include(router.urls)),
+    path('api/login', views.CustomerLoginAPI.as_view(), name='login'),
     path('', views.index, name='home'),
 ]

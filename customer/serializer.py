@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import CustomUser
 from hashed import hash_password
 
+
 MIN_LENGHT = 8
 USERNAME_LENGTH = 6
 
@@ -53,6 +54,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
-    
-class CustomerLoginAPI(serializers.ModelSerializer):
-    pass
+
+# input validation serializer    
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(
+        write_only = True,
+        min_length = MIN_LENGHT,
+        error_messages = {
+            "min_length": f"Password must be {MIN_LENGHT} characters long"
+        }
+    )
