@@ -1,16 +1,43 @@
 from .serializer import Vendor
-from rest_framework import viewsets
-from .serializer import VendorRegistrationAPI
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializer import VendorRegistrationAPI, LoginSerializer
 from product.models import Product
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.permissions import IsAuthenticated
 
 
 class VendorRegistration(viewsets.ModelViewSet):
     serializer_class = VendorRegistrationAPI
     queryset = Vendor.objects.all()
         
-class VendorLogin(viewsets.ModelViewSet):
-    def validate(self, data):
-        pass
+class VendorLoginAPI(APIView):
+    def post(self, request, format=None):
+        serializer = LoginSerializer(data=request.data)
+
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
+
+            user = authenticate(request, username=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                return Response(
+                    {
+                        'message': 'Login successful'
+                    },
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {'message': 'Invalid credentials'},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class VendorAddProduct(viewsets.ModelViewSet):
     def post(self, request):

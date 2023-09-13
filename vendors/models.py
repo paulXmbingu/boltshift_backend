@@ -7,13 +7,14 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import mark_safe
 
 """
-# Creates a directory for each user
-#
+# Creates a directory directory for each user
+# the folder name will be in the format: vendor_1/cat.jpg
 """
 def user_directory_path(instance, filename):
     return f"vendor_{instance.user.id}/{filename}"
 
 
+# the sellers
 class Vendor(AbstractUser):
     vend_id = ShortUUIDField(unique=True, length=10, max_length=20, prefix="vend-", alphabet=hexdigits)
     vendor_name = models.CharField(max_length=100)
@@ -21,15 +22,18 @@ class Vendor(AbstractUser):
     username = models.CharField(max_length=20)
 
     image = models.ImageField(upload_to=user_directory_path)
-    description = models.CharField(max_length=100, blank=True, default="Cool")
+    description = models.TextField(blank=True, null=True)
     rating = models.CharField(max_length=100, blank=True, default="Cool")
     
-    warranty_period = models.PositiveIntegerField()
+    warranty_period = models.PositiveIntegerField(null=True)
     response_time = models.CharField(max_length=100, blank=True, default="Cool")
     shipping_time = models.CharField(max_length=100, blank=True, default="Cool")
 
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     address = models.ForeignKey('Address', on_delete=models.SET_NULL, null=True)
+
+    # a vendor will have several products at the store
+    #product = models.ManyToOneRel(Product, on_delete=models.CASCADE)
 
     def image_category(self):
         return mark_safe('<img src="%s" width=50 heigh=50 />', (self.image.url))
@@ -53,7 +57,7 @@ class Vendor(AbstractUser):
     )
 
     def __repr__(self) -> str:
-        return self.vendor_name
+        return f"{self.vendor_name}, {self.email}"
     
 
 class Address(models.Model):
