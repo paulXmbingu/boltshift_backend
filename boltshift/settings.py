@@ -77,7 +77,8 @@ REST_FRAMEWORK = {
 
 # Backend POST server authentication
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    'customer.auth.CustomAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 
