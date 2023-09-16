@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 
-# customiing our user
+# customing our user
 class CustomUser(AbstractUser):
     cid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="user-", alphabet=hexdigits)
     email = models.EmailField(unique=True)

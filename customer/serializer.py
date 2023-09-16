@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser
 from hashed import hash_password
+from django.contrib.auth import authenticate, login, logout
 
 
 MIN_LENGHT = 8
@@ -39,7 +40,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return data
     
     # saving validated data
-    def create(self, validated_data):
+    def create(self, request, validated_data):
         hashed = hash_password(validated_data["password"], validated_data["password2"])
 
         user = CustomUser.objects.create(
@@ -52,6 +53,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         # saving new user
         user.save()
+        
 
         return user
 
