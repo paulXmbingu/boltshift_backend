@@ -77,7 +77,8 @@ REST_FRAMEWORK = {
 
 # Backend POST server authentication
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    'customer.auth.CustomAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 
@@ -87,7 +88,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            # os.path.join(BASE_DIR, 'frontend')
+            # os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
