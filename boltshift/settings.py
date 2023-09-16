@@ -179,7 +179,16 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Welcome to Boltshift Admin Panel",
     'copyright': 'Boltshift Marketplace',
     "show_ui_builder": True,
-    "custom_css": "css/admin.css"
+    "custom_css": "css/admin.css",
+    # adding icons to the dashboard
+    "icons": {
+        "auth": "fas fa-users-cog", # default auth token icon
+        "knox.authtoken": "fa fa-lock", # knox auth icon
+        "auth.user": "fas fa-user", # user icon
+        "auth.Group": "fas fa-users", # group icon
+        "customer.CustomUser": "fa fa-user-plus", # customers icon
+        "vendors.Vendor": "fa fa-industry" # vendors icon
+    },
 }
 
 JAZZMIN_UI_TWEAKS = {
