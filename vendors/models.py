@@ -11,7 +11,7 @@ from django.utils.html import mark_safe
 # the folder name will be in the format: vendor_1/cat.jpg
 """
 def user_directory_path(instance, filename):
-    return f"vendor_{instance.user.id}/{filename}"
+    return f"{instance.cid}/{filename}"
 
 
 # the sellers
