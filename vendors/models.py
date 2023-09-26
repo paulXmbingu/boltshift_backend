@@ -1,5 +1,6 @@
 from django.db import models
 from customer.models import CustomUser
+from product.models import Product
 from string import hexdigits
 from shortuuid.django_fields import ShortUUIDField
 from django.contrib.auth.models import AbstractUser, Group, Permission
@@ -11,7 +12,7 @@ from django.utils.html import mark_safe
 # the folder name will be in the format: vendor_1/cat.jpg
 """
 def user_directory_path(instance, filename):
-    return f"vendor_{instance.user.id}/{filename}"
+    return f"{instance.cid}/{filename}"
 
 
 # the sellers
@@ -33,7 +34,7 @@ class Vendor(AbstractUser):
     address = models.ForeignKey('Address', on_delete=models.SET_NULL, null=True)
 
     # a vendor will have several products at the store
-    #product = models.ManyToOneRel(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
     def image_category(self):
         return mark_safe('<img src="%s" width=50 heigh=50 />', (self.image.url))

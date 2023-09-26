@@ -7,7 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.hashers import make_password
 import logging
 
 log = logging.getLogger(__name__)
@@ -16,11 +18,11 @@ def index(request):
     return HttpResponse("<h2>Welcome to <b><i>Boltshift E-commerce</i></b></h2>")
 
 
-class CustomerRegistrationAPI(viewsets.ModelViewSet):
+class CustomerRegistration(viewsets.ModelViewSet):
     serializer_class = RegistrationSerializer
     queryset = CustomUser.objects.all()
 
-class CustomerLoginAPI(APIView):
+class CustomerLogin(APIView):
     allowed_methods = ['POST']
 
     # deseralizing the data
@@ -33,14 +35,13 @@ class CustomerLoginAPI(APIView):
 
             # user authentication
             user = authenticate(request, username=email, password=password)
-            print(f"User: {user}")
+            print(f"User: {user.cid}")
 
             if user is not None:
                 login(request, user)
-                log.info(f"Email: {email}, Password: {password}")
                 return Response(
                     {
-                        'message': 'Login Sucessful',
+                        'message': 'Login Successful',
                         'user_cid': user.cid
                     },
                     status=status.HTTP_200_OK
@@ -54,7 +55,7 @@ class CustomerLoginAPI(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                
-class CustomerLogoutAPI(APIView):
+class CustomerLogout(APIView):
     # ensure that only logged in users are able to access this
     permission_classes = [IsAuthenticated]
     allowed_methods = ['POST']
@@ -74,24 +75,23 @@ class CustomerLogoutAPI(APIView):
         )
 
 # delete user account
-class CustomerDeleteAccountAPI(APIView):
+class CustomerDeleteAccount(APIView):
     permission_classes = [IsAuthenticated]
-    allowed_methods = ['POST']
-    queryset = CustomUser.objects.all()
-
-    def post(self, request):
-        # getting customer unique id
-        cid = request.data.get('cid', [])
-        if cid is not None:
-            # getting corresponding user
-            user = self.queryset.filter(cid__in=cid)
-            # deleting user
-            user.delete()
-            redirect_url = reverse('home')
-            return Response(
-                {
-                    'message': "User Account Deleted Successfully",
-                    'redirect_url': redirect_url
-                },
-                status=status.HTTP_200_OK
-            )
+    allowed_methods = ['DELETE']
+    
+    def delete(self, request, cid):
+        customer = get_object_or_404(CustomUser, cid=cid)
+        customer.soft_delete()
+        logout(customer)
+        redirect_url = reverse("home")
+        return Response(
+            {
+                "message": "Account Deleted Successfully",
+                "redirect_url": redirect_url
+            },
+            status=status.HTTP_204_NO_CONTENT
+        )
+    
+# user account settings update
+class CustomerSettingsUpdate():
+    pass

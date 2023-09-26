@@ -180,14 +180,28 @@ JAZZMIN_SETTINGS = {
     'copyright': 'Boltshift Marketplace',
     "show_ui_builder": True,
     "custom_css": "css/admin.css",
+    
     # adding icons to the dashboard
     "icons": {
         "auth": "fas fa-users-cog", # default auth token icon
         "knox.authtoken": "fa fa-lock", # knox auth icon
         "auth.user": "fas fa-user", # user icon
         "auth.Group": "fas fa-users", # group icon
-        "customer.CustomUser": "fa fa-user-plus", # customers icon
-        "vendors.Vendor": "fa fa-industry" # vendors icon
+
+        # customer icons
+        "customer.CustomUser": "fa fa-user-plus",
+
+        # vendor icons
+        "vendors.Vendor": "fa fa-industry",
+
+        # product icons
+        "product.CartItem": "fa fa-cart-plus",
+        "product.ShoppingSession": "fa fa-shopping-basket",
+        "product.Inventory": "fa fa-plus-circle",
+        "product.Product": "fa fa-th-list",
+        "product.Image": "fa fa-camera",
+        "product.Category": "fa fa-list-alt",
+        "product.Discount": "fa fa-percent"
     },
 }
 
