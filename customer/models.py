@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
+from vendors.utils import UserAccountMixin
 
 # creates a folder for each admin/customer with the user.cid as the folder name
 # to hold each individual user uploaded file
@@ -11,7 +12,7 @@ def admin_image_directory(instance, filename):
     return f"{instance.cid}/{filename}"
 
 # customing our user
-class CustomUser(AbstractUser):
+class CustomUser(UserAccountMixin, AbstractUser):
     cid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="user-", alphabet=hexdigits)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=20)
