@@ -3,7 +3,6 @@ from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
-from vendors.models import Vendor
 from customer.models import CustomUser
 
 
@@ -15,9 +14,9 @@ class Product(models.Model):
     pid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="product-", alphabet=hexdigits)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    stock_quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    specifications = models.TextField(null=True, blank=True)
+    updated_at = timezone.now()
+    created_at = models.DateTimeField(default=timezone.now)
 
 
     """
@@ -51,7 +50,7 @@ class Category(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     updated_at = timezone.now()
-    created_at = models.DateTimeField(timezone.now())
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -64,7 +63,7 @@ class Inventory(models.Model):
     inv_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="inv-")
     quantity = models.PositiveIntegerField(default=0)
     updated_at = timezone.now()
-    created_at = models.DateTimeField(timezone.now())
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name_plural = "Inventories"
@@ -80,7 +79,7 @@ class Discount(models.Model):
     discount_percent = models.DecimalField(decimal_places=2, max_digits=2)
     active = models.BooleanField(default=False)
     updated_at = timezone.now()
-    created_at = models.DateTimeField(timezone.now())
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name_plural = "Discounts"
@@ -94,7 +93,8 @@ class CartItem(models.Model):
     cart_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="cart-")
     quantity = models.PositiveIntegerField(default=0)
     updated_at = timezone.now()
-    created_at = models.DateTimeField(timezone.now())
+    created_at = models.DateTimeField(default=timezone.now)
+
     session_id = models.ForeignKey('ShoppingSession', on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -115,7 +115,7 @@ class ShoppingSession(models.Model):
     total = models.DecimalField(decimal_places=2, max_digits=2)
     user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     updated_at = timezone.now()
-    created_at = models.DateTimeField(timezone.now())
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name = "Shopping Session"
