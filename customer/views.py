@@ -95,3 +95,12 @@ class CustomerDeleteAccount(APIView):
 # user account settings update
 class CustomerSettingsUpdate():
     pass
+
+class CustomerShopping():
+    pass
+
+class CustomerWishlist():
+    pass
+
+class CustomerCheckout():
+    pass

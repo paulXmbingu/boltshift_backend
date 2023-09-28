@@ -5,3 +5,4 @@ from .models import CustomUser
 class UserAdmin(admin.ModelAdmin):
     list_display = ['username', 'email', 'first_name']
     search_fields = ('email', 'username', 'cid')
+    readonly_fields = ['image_tag']

@@ -180,6 +180,9 @@ JAZZMIN_SETTINGS = {
     'copyright': 'Boltshift Marketplace',
     "show_ui_builder": True,
     "custom_css": "css/admin.css",
+
+    # user avatar/profile image
+    "user_avatar": "",
     
     # adding icons to the dashboard
     "icons": {

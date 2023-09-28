@@ -18,9 +18,15 @@ class CustomUser(UserAccountMixin, AbstractUser):
     username = models.CharField(max_length=20)
     image = models.ImageField(upload_to=admin_image_directory, null=True, blank=True, default=None)
 
-    def image_category(self):
-        return mark_safe('<img src="%s" width=50 heigh=50 />', (self.image.url))
+    payment = models.ForeignKey('UserPayment', on_delete=models.SET_NULL, null=True)
+    address = models.ForeignKey('UserAddress', on_delete=models.SET_NULL, null=True)
 
+    def image_tag(self):
+        return mark_safe('<img src="%s" width="50" height="50" />', (self.image.url))
+    
+    image_tag.short_description = "Image"
+    
+    
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username']
 
@@ -44,3 +50,27 @@ class CustomUser(UserAccountMixin, AbstractUser):
         blank=True,
         related_name='buyer_set'
     )
+
+# customer payment
+class UserPayment(models.Model):
+    class Meta:
+        verbose_name = "Customer Payment"
+        verbose_name_plural = "Customer Payments"
+    
+    def __repr__(self):
+        pass
+
+# customer address
+class UserAddress(models.Model):
+    class Meta:
+        verbose_name = "Customer Address"
+        verbose_name_plural = "Customer Address"
+    
+    def __repr__(self):
+        pass
+
+# user type
+class UserType(models.Model):
+    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    is_customer = models.BooleanField(default=False)
+    is_vendor = models.BooleanField(default=False)

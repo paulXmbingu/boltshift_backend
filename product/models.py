@@ -46,7 +46,25 @@ class Image(models.Model):
 
 
 class Category(models.Model):
+    # Base Category choices
+    CATEGORY_CHOICES = {
+        ('Automotive', 'Auto'),
+        ('Baby Products', 'Baby'),
+        ('Beauty & Personal Care', 'Beauty'),
+        ('Health & Household', 'Health'),
+        ('Home & Kitchen', 'Home'),
+        ('Luggage', 'Luggage'),
+        ("Men's Fashion", 'Men'),
+        ("Women's Fashion", 'Women'),
+        ('Pet Supplies', 'Pet')
+    }
+    # category details
+    CATEGORY_DETAILS = {
+        'Auto': ['Car Care', 'Electronics & Accessories', 'Exterior Accessories', 'Lights & Lightning Accessoires', 'Interior Accessoiries', 'Motocycle & Powersports', 'Oil & Fluids', 'Paint & Paint Supplies'],
+    }
     cat_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix="cat-")
+    category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
+    #category_details = models.CharField(choices=CATEGORY_DETAILS[CATEGORY_CHOICES], max_length=50)
     name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     updated_at = timezone.now()
