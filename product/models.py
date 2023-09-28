@@ -3,7 +3,7 @@ from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
-from customer.models import CustomUser
+from customer.models import CustomUser, ProductReview
 
 
 def product_directory_path(instance, filename):
@@ -28,6 +28,8 @@ class Product(models.Model):
     inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, null=True)
     # discount
     discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True)
+    # product review
+    review = models.ForeignKey(ProductReview, on_delete=models.SET_NULL, null=True)
 
     def __repr__(self):
         return self.title
