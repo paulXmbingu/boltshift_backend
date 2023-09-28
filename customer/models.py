@@ -6,6 +6,7 @@ from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
 from vendors.utils import UserAccountMixin
+from product.models import Product
 
 # creates a folder for each admin/customer with the user.cid as the folder name
 # to hold each individual user uploaded file
@@ -21,7 +22,6 @@ class CustomUser(UserAccountMixin, AbstractUser):
 
     payment = models.ForeignKey('UserPayment', on_delete=models.SET_NULL, null=True)
     address = models.ForeignKey('UserAddress', on_delete=models.SET_NULL, null=True)
-    product_rating = models.ForeignKey('ProductReview', on_delete=models.SET_NULL, null=True)
 
     def image_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />', (self.image.url))
@@ -57,7 +57,7 @@ class CustomUser(UserAccountMixin, AbstractUser):
 class UserPayment(models.Model):
     pay_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix='payment-')
     account_number = models.PositiveIntegerField(default=0)
-    provider = models.CharField(max_length=100, default="--None--")
+    provider = models.CharField(max_length=100, default="-----")
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -98,7 +98,7 @@ class UserType(models.Model):
     is_vendor = models.BooleanField(default=False)
 
 # user product review 
-# N/B: a review MUST be tied to the corresponding product
+# N/B: a review MUST be tied to the corresponding product, also the user
 class ProductReview(models.Model):
     RATINGS = {
         ('⭐⭐⭐⭐⭐', 5),
@@ -111,8 +111,11 @@ class ProductReview(models.Model):
     review_title = models.CharField(max_length=50, default='Great Product')
     review_screenshots = models.ImageField(upload_to=admin_image_directory, null=True, blank=True, default=None)
     review_text = models.CharField(max_length=1000, default='I love the product')
-    review_rating = models.CharField(max_length=50, choices=RATINGS, default='--NONE---')
+    review_rating = models.CharField(max_length=50, choices=RATINGS, default='------')
     created_at = models.DateTimeField(default=timezone.now)
+
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
     def review_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />', (self.review_screenshots.url))
@@ -125,3 +128,39 @@ class ProductReview(models.Model):
 
     def __repr__(self):
         return self.review_title
+    
+# user shopping session
+class ShoppingSession(models.Model):
+    sess_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="session-")
+    total = models.DecimalField(decimal_places=2, max_digits=2)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    updated_at = timezone.now()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "Shopping Session"
+        verbose_name_plural = "Shopping Sessions"
+
+    def __repr__(self):
+        return self.user_id
+    
+# Cart Item
+class CartItem(models.Model):
+    cart_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="cart-")
+    quantity = models.PositiveIntegerField(default=0)
+    updated_at = timezone.now()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    session_id = models.ForeignKey(ShoppingSession, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name_plural = "Cart Items"
+
+    def totalBill(self):
+        """
+            Return the total amount of all items available in the cart
+        """
+        pass
+
+    def __repr__(self):
+        return self.quantity
