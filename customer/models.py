@@ -67,7 +67,7 @@ class UserPayment(models.Model):
         verbose_name_plural = "Customer Payments"
     
     def __repr__(self):
-        pass
+        return self.provider
 
 # customer address
 class UserAddress(models.Model):
@@ -88,7 +88,7 @@ class UserAddress(models.Model):
         verbose_name_plural = "Customer Address"
     
     def __repr__(self):
-        pass
+        return self.addr1
 
 # user type
 class UserType(models.Model):
