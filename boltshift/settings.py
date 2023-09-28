@@ -193,12 +193,16 @@ JAZZMIN_SETTINGS = {
 
         # customer icons
         "customer.CustomUser": "fa fa-user-plus",
+        "customer.CartItem": "fa fa-cart-plus",
+        "customer.UserAddress": "fa fa-address-book",
+        "customer.UserPayment": "fa fa-wallet",
+        "customer.ProductReview": "fa fa-comments",
+        "customer.ShoppingSession": "fa fa-shopping-bag",
 
         # vendor icons
         "vendors.Vendor": "fa fa-industry",
 
         # product icons
-        "product.CartItem": "fa fa-cart-plus",
         "product.ShoppingSession": "fa fa-shopping-basket",
         "product.Inventory": "fa fa-plus-circle",
         "product.Product": "fa fa-th-list",
