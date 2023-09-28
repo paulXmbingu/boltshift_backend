@@ -202,7 +202,7 @@ JAZZMIN_SETTINGS = {
         "product.ShoppingSession": "fa fa-shopping-basket",
         "product.Inventory": "fa fa-plus-circle",
         "product.Product": "fa fa-th-list",
-        "product.Image": "fa fa-camera",
+        "product.ProductImage": "fa fa-camera",
         "product.Category": "fa fa-list-alt",
         "product.Discount": "fa fa-percent"
     },
