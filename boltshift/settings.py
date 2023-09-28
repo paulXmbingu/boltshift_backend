@@ -60,7 +60,7 @@ MIDDLEWARE = [
 
 # Whitelisting the React-Django sync port
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
+    'http://localhost:5173'
 ]
 
 # Rest Framework allowed permissions
