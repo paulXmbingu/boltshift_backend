@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.translation import gettext_lazy as _
 from shortuuid.django_fields import ShortUUIDField
@@ -53,6 +54,14 @@ class CustomUser(UserAccountMixin, AbstractUser):
 
 # customer payment
 class UserPayment(models.Model):
+    pay_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix='payment-')
+    account_number = models.PositiveIntegerField(default=0)
+    provider = models.CharField(max_length=100, default="--None--")
+    updated_at = timezone.now()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    REQUIRED_FIELDS = ['account_number', 'provider']
+
     class Meta:
         verbose_name = "Customer Payment"
         verbose_name_plural = "Customer Payments"
@@ -62,6 +71,18 @@ class UserPayment(models.Model):
 
 # customer address
 class UserAddress(models.Model):
+    addr_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix='address-')
+    addr1 = models.TextField(max_length=100, default='None')
+    addr2 = models.TextField(max_length=100, default='None')
+    city = models.CharField(max_length=50, default="None")
+    country = models.CharField(max_length=50, default="None")
+    phonenumber_primary = models.PositiveIntegerField(default=0)
+    phonenumber_secondary = models.PositiveIntegerField(default=0)
+    updated_at = timezone.now()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    REQUIRED_FIELDS = ['addr1', 'city', 'country', 'phonenumber_primary']
+
     class Meta:
         verbose_name = "Customer Address"
         verbose_name_plural = "Customer Address"
