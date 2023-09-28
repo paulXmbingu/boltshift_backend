@@ -7,9 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.hashers import make_password
 import logging
 
 log = logging.getLogger(__name__)
@@ -26,17 +24,15 @@ class CustomerLogin(APIView):
     allowed_methods = ['POST']
 
     # deseralizing the data
-    @csrf_exempt
-    def post(self, request, format=None):
+    def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
 
             # user authentication
-            user = authenticate(request, username=email, password=password)
-            print(f"User: {user.cid}")
-
+            user = authenticate(username=email, password=password)
+            
             if user is not None:
                 login(request, user)
                 return Response(
@@ -93,14 +89,16 @@ class CustomerDeleteAccount(APIView):
         )
     
 # user account settings update
-class CustomerSettingsUpdate():
-    pass
+class CustomerAccountSettings(APIView):
+    permission_classes = [IsAuthenticated]
+    allowed_methods = ['UPDATE']
 
-class CustomerShopping():
-    pass
+class CustomerShopping(APIView):
+    permission_classes = [IsAuthenticated]
 
-class CustomerWishlist():
-    pass
+class CustomerWishlist(APIView):
+    permission_classes = [IsAuthenticated]
+    allowed_methods = ['DELETE', 'POST', 'GET']
 
-class CustomerCheckout():
-    pass
+class CustomerCheckout(APIView):
+    allowed_methods = ['GET', 'POST']
