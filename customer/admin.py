@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, UserPayment, UserAddress
+from .models import CustomUser, UserPayment, UserAddress, ProductReview
 
 @admin.register(CustomUser)
 class UserAdmin(admin.ModelAdmin):
@@ -18,3 +18,8 @@ class PaymentAdmin(admin.ModelAdmin):
     list_display = ['account_number', 'provider']
     search_fields = ['provider']
     readonly_fields = ['account_number', 'provider']
+
+@admin.register(ProductReview)
+class AdminReview(admin.ModelAdmin):
+    list_display = ['review_title', 'review_rating']
+    readonly_fields = ['review_screenshots']

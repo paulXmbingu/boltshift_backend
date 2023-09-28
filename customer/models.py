@@ -21,6 +21,7 @@ class CustomUser(UserAccountMixin, AbstractUser):
 
     payment = models.ForeignKey('UserPayment', on_delete=models.SET_NULL, null=True)
     address = models.ForeignKey('UserAddress', on_delete=models.SET_NULL, null=True)
+    product_rating = models.ForeignKey('ProductReview', on_delete=models.SET_NULL, null=True)
 
     def image_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />', (self.image.url))
@@ -95,3 +96,32 @@ class UserType(models.Model):
     user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     is_customer = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)
+
+# user product review 
+# N/B: a review MUST be tied to the corresponding product
+class ProductReview(models.Model):
+    RATINGS = {
+        ('⭐⭐⭐⭐⭐', 5),
+        ('⭐⭐⭐⭐', 4),
+        ('⭐⭐⭐', 3),
+        ('⭐⭐', 2),
+        ('⭐', 1),
+    }
+    rev_id = ShortUUIDField(unique=True, length=10, max_length=20, prefix='review-', alphabet=hexdigits)
+    review_title = models.CharField(max_length=50, default='Great Product')
+    review_screenshots = models.ImageField(upload_to=admin_image_directory, null=True, blank=True, default=None)
+    review_text = models.CharField(max_length=1000, default='I love the product')
+    review_rating = models.CharField(max_length=50, choices=RATINGS, default='--NONE---')
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def review_tag(self):
+        return mark_safe('<img src="%s" width="50" height="50" />', (self.review_screenshots.url))
+    
+    review_tag.short_description = "Image"
+
+    class Meta:
+        verbose_name = 'Product Review'
+        verbose_name_plural = 'Product Reviews'
+
+    def __repr__(self):
+        return self.review_title

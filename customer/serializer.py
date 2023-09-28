@@ -30,7 +30,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        exclude = ['image', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined', 'payment', 'address']
+        exclude = ['image', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined', 'payment', 'address', 'product_rating']
 
     # data validation
     def validate(self, data):
