@@ -1,12 +1,10 @@
 from django.contrib import admin
 from .models import(
     Product,
-    CartItem,
     Category,
-    Image,
+    ProductImage,
     Inventory,
     Discount,
-    ShoppingSession,
 )
 
 @admin.register(Product)
@@ -14,7 +12,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['title', 'pid',]
     list_filter = ['title',]
 
-@admin.register(Image)
+@admin.register(ProductImage)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ['img_id', 'product_id']
 
@@ -29,11 +27,3 @@ class InventoryAdmin(admin.ModelAdmin):
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ['name', 'discount_percent']
-
-@admin.register(CartItem)
-class CartAdmin(admin.ModelAdmin):
-    list_display = ['cart_id']
-
-@admin.register(ShoppingSession)
-class SessionAdmin(admin.ModelAdmin):
-    list_display = ['user_id', 'total']
