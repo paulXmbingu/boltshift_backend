@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 from .serializer import ProductSerializer
 from .models import Product
 
@@ -18,7 +19,26 @@ class ProductCatalogue(APIView):
                         product price, 
                         product rating
         """
-        pass
+        try:
+            output = [
+                {
+                    'pid': output.pid,
+                    'title': output.title,
+                    'description': output.description,
+                    'price': output.price,
+                } for output in Product.objects.all()
+            ]
+            return Response(
+                output,
+                status=status.HTTP_200_OK
+            )
+        except Exception as error:
+           return Response(
+               {
+                   'message': error
+               },
+               status=status.HTTP_400_BAD_REQUEST
+           )
 
 # Renders details of a specific product
 # in the product overview page
