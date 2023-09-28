@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import CustomUser, UserPayment, UserAddress, ProductReview
+from .models import (
+    CustomUser,
+    UserPayment,
+    UserAddress,
+    ProductReview,
+    CartItem,
+    ShoppingSession
+)
 
 @admin.register(CustomUser)
 class UserAdmin(admin.ModelAdmin):
@@ -23,3 +30,11 @@ class PaymentAdmin(admin.ModelAdmin):
 class AdminReview(admin.ModelAdmin):
     list_display = ['review_title', 'review_rating']
     readonly_fields = ['review_screenshots']
+
+@admin.register(CartItem)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ['cart_id']
+
+@admin.register(ShoppingSession)
+class SessionAdmin(admin.ModelAdmin):
+    list_display = ['user_id', 'total']
