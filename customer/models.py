@@ -164,3 +164,25 @@ class CartItem(models.Model):
 
     def __repr__(self):
         return self.quantity
+    
+# customer orders
+class ProductOrders(models.Model):
+    ORDER_STATUS = {
+        ('Pending', 'pending'),
+        ('Completed', 'paid'),
+        ('Ongoing', 'ongoing'),
+        ('Cancelled', 'cancelled')
+    }
+    ord_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits)
+    item_number = models.PositiveIntegerField(default=0)
+    status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name = "Orders"
+        verbose_name_plural = "Orders"
+
+    def __repr__(self):
+        return self.ord_id
