@@ -35,18 +35,12 @@ Control or Command-Click the buttons below to access the interactive prototype i
    pip install -r requirements.txt
    ```
 
-4. **Apply database migrations:**
-   ```
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-
-5. **Create a superuser:**
+4. **Create a superuser (for first timers):**
    ```
    python manage.py createsuperuser
    ```
 
-6. **Start the development server:**
+5. **Start the development server:**
    ```
    python manage.py runserver
    ```
