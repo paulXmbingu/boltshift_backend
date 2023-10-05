@@ -57,13 +57,19 @@ class Category(models.Model):
         ("Women's Fashion", 'Women'),
         ('Pet Supplies', 'Pet')
     }
+
     # category details
     CATEGORY_DETAILS = {
         'Auto': ['Car Care', 'Electronics & Accessories', 'Exterior Accessories', 'Lights & Lightning Accessoires', 'Interior Accessoiries', 'Motocycle & Powersports', 'Oil & Fluids', 'Paint & Paint Supplies'],
     }
+
+    # gets the sub product category based on the choosen category choices
+    def get_category_details_choices(self):
+        return [(subcat, subcat) for subcat in self.CATEGORY_DETAILS.get(self.category_choice, [])]
+    
     cat_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix="cat-")
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
-    #category_details = models.CharField(choices=CATEGORY_DETAILS[CATEGORY_CHOICES], max_length=50)
+    #category_details = models.CharField(choices=get_category_details_choices, max_length=50)
     name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     updated_at = timezone.now()
@@ -93,7 +99,8 @@ class Discount(models.Model):
     dis_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="dis-")
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
-    discount_percent = models.DecimalField(decimal_places=2, max_digits=2)
+    discount_percent = models.DecimalField(decimal_places=2, max_digits=5)
+    #discount_img = models.ImageField()
     active = models.BooleanField(default=False)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
