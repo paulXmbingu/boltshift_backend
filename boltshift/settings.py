@@ -118,7 +118,7 @@ DATABASES = {
     # postgresql url: "postgres://default:ytEvp8HfBRl2@ep-jolly-snow-40641812.us-east-1.postgres.vercel-storage.com:5432/verceldb"
     # postgresql format postgres://username:password@hostname/databasename
     'default': {
-        'ENGINE': "django.db.backends.postgresql",
+        'ENGINE': "django.db.backends.postgresql_psycopg2",
         'NAME': env("DB_DATABASE"),
         'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
