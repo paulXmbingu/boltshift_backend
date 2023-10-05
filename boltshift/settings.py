@@ -119,8 +119,8 @@ DATABASES = {
     # postgresql format postgres://username:password@hostname/databasename
     'default': {
         'ENGINE': "django.db.backends.postgresql_psycopg2",
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USERNAME"),
+        'NAME': env("DB_DATABASE"),
+        'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
         'HOST': env("DB_HOST"),
         'PORT': env("DB_PORT")
