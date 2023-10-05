@@ -107,7 +107,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'boltshift.wsgi.application'
+WSGI_APPLICATION = 'boltshift.wsgi.app'
 
 
 # Database
