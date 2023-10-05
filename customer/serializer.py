@@ -52,7 +52,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         # saving new user
         user.save()
-        
 
         return user
 
@@ -66,3 +65,61 @@ class LoginSerializer(serializers.Serializer):
             "min_length": f"Password must be {MIN_LENGHT} characters long"
         }
     )
+
+# acount setting
+class UpdateUserAccount(serializers.Serializer):
+    # the basic details
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    dob = serializers.DateField()
+    updated_phonenumber = serializers.CharField()
+    email = serializers.EmailField()
+    gender = serializers.CharField()
+
+    # address details
+    apartment_details = serializers.CharField()
+    street_address = serializers.CharField()
+    country = serializers.CharField()
+    city_town = serializers.CharField()
+    postal_code = serializers.CharField()
+
+    # to update password
+    old_password = serializers.CharField(
+        write_only = True,
+        min_length = MIN_LENGHT,
+        error_messages = {
+            'min_length': f"Password must be {MIN_LENGHT} characters long"
+        }
+    )
+    new_password1 = serializers.CharField(
+        write_only = True,
+        min_length = MIN_LENGHT,
+        error_messages = {
+            'min_length': f"Password must be {MIN_LENGHT} characters long"
+        }
+    )
+    new_password2 = serializers.CharField(
+        write_only = True,
+        min_length = MIN_LENGHT,
+        error_messages = {
+            'min_length': f"Password must be {MIN_LENGHT} characters long"
+        }
+    )
+
+    class Meta:
+        model = CustomUser
+
+    # data.passwords validation
+    def validate(self, data):
+        if data['new_password1'] != data['new_password2']:
+            raise serializers.ValidationError("Passwords do not match")
+        return data
+    
+    def update(self, validated_data):
+        updated_password = hash_password(validated_data['new_password1'], validated_data['new_password2'])
+
+        user = CustomUser.objects.bulk_update(
+            first_name = validated_data['first_name'],
+            last_name = validated_data['last_name'],
+            dob = validated_data['dob'],
+        ) 

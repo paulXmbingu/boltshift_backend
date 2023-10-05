@@ -7,6 +7,7 @@ from string import hexdigits
 from django.utils.html import mark_safe
 from vendors.utils import UserAccountMixin
 from product.models import Product
+from datetime import datetime
 
 # creates a folder for each admin/customer with the user.cid as the folder name
 # to hold each individual user uploaded file
@@ -15,10 +16,16 @@ def admin_image_directory(instance, filename):
 
 # customing our user
 class CustomUser(UserAccountMixin, AbstractUser):
+    GENDER = {
+        ('Male', 'm'),
+        ('Female', 'f')
+    }
     cid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="user-", alphabet=hexdigits)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=20)
     image = models.ImageField(upload_to=admin_image_directory, null=True, blank=True, default=None)
+    gender = models.CharField(max_length=10, choices=GENDER, default='-------')
+    #dob = models.DateField(blank=True, default=datetime.now)
 
     payment = models.ForeignKey('UserPayment', on_delete=models.SET_NULL, null=True)
     address = models.ForeignKey('UserAddress', on_delete=models.SET_NULL, null=True)
@@ -79,6 +86,7 @@ class UserAddress(models.Model):
     country = models.CharField(max_length=50, default="None")
     phonenumber_primary = models.PositiveIntegerField(default=0)
     phonenumber_secondary = models.PositiveIntegerField(default=0)
+    apartment_complex = models.CharField(max_length=500, default="----------")
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
