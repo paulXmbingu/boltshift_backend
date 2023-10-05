@@ -1,5 +1,10 @@
 from pathlib import Path
 import os
+import environ
+
+# getting environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -109,9 +114,16 @@ WSGI_APPLICATION = 'boltshift.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # hosting the database on vercel postgresql
+    # postgresql url: "postgres://default:ytEvp8HfBRl2@ep-jolly-snow-40641812.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+    # postgresql format postgres://username:password@hostname/databasename
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': "django.db.backends.postgresql_psycopg2",
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USERNAME"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT")
     }
 }
 
@@ -198,6 +210,7 @@ JAZZMIN_SETTINGS = {
         "customer.UserPayment": "fa fa-wallet",
         "customer.ProductReview": "fa fa-comments",
         "customer.ShoppingSession": "fa fa-shopping-bag",
+        "customer.ProductOrders": "fa fa-retweet",
 
         # vendor icons
         "vendors.Vendor": "fa fa-industry",
