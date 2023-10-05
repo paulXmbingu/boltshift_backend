@@ -1,0 +1,16 @@
+{
+    "_comment1": "configuring the python django runtimes for vercel",
+    "builds": [{
+        "_comment2": "getting app destination",
+        "src": "boltshift/wsgi.py",
+        "use": "@vercel/python",
+        "config": {
+            "maxLambdaSize": "15mb",
+            "runtime": "python3.10"
+        }
+    }],
+    "routes": [{
+        "src": "/(.*)",
+        "dest": "boltshift/wsgi.py"
+    }]
+}
