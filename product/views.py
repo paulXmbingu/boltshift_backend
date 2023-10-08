@@ -31,7 +31,7 @@ class RequestValidation(APIView):
 # Responsible for getting all products in the database - Renders products in the catalogue page
 class ProductCatalogue(RequestValidation):
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    queryset = Product.objects
 
     def get(self, request):
         """
@@ -41,7 +41,7 @@ class ProductCatalogue(RequestValidation):
                         product price, 
                         product rating
         """
-        products = self.queryset
+        products = self.queryset.all()
         serializer = self.serializer_class(products, many=True)
         return self.build_response('Success', serializer.data, status.HTTP_200_OK)
     
@@ -54,13 +54,15 @@ class ProductCreateView(RequestValidation):
        return self.build_response('Error', serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 # Renders details of a specific product in the product overview page
-class ProductOverview(APIView):
+class ProductOverview(RequestValidation):
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
 
     def get_object(self, pk):
         try:
-            return Product.ojects.get(pid=pk)
+            product = Product.ojects.get(pid=pk)
+            if product is None:
+                return self.build_response('Info', f'No Product with id {pk}', status.HTTP_200_OK)
+            return product
         except AttributeError:
            return self.build_response('Error', 'Product not Found', status.HTTP_400_BAD_REQUEST)
         
