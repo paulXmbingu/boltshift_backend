@@ -1,5 +1,10 @@
 from pathlib import Path
 import os
+import environ
+
+# getting environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +19,7 @@ SECRET_KEY = 'django-insecure-cr^=pqr7@bie(u*=hx-n4c#$z3!fb*7p=r!=l^_p1ol9m401(y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app']
 
 
 # Application definition
@@ -102,16 +107,23 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'boltshift.wsgi.application'
+WSGI_APPLICATION = 'boltshift.wsgi.app'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # hosting the database on vercel postgresql
+    # postgresql url: "postgres://default:ytEvp8HfBRl2@ep-jolly-snow-40641812.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+    # postgresql format postgres://username:password@hostname/databasename
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': "django.db.backends.postgresql_psycopg2",
+        'NAME': env("DB_DATABASE"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT")
     }
 }
 
@@ -198,6 +210,7 @@ JAZZMIN_SETTINGS = {
         "customer.UserPayment": "fa fa-wallet",
         "customer.ProductReview": "fa fa-comments",
         "customer.ShoppingSession": "fa fa-shopping-bag",
+        "customer.ProductOrders": "fa fa-retweet",
 
         # vendor icons
         "vendors.Vendor": "fa fa-industry",

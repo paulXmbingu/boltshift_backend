@@ -5,7 +5,8 @@ from .models import (
     UserAddress,
     ProductReview,
     CartItem,
-    ShoppingSession
+    ShoppingSession,
+    ProductOrders
 )
 
 @admin.register(CustomUser)
@@ -38,3 +39,7 @@ class CartAdmin(admin.ModelAdmin):
 @admin.register(ShoppingSession)
 class SessionAdmin(admin.ModelAdmin):
     list_display = ['user_id', 'total']
+
+@admin.register(ProductOrders)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['ord_id', 'item_number', 'status']

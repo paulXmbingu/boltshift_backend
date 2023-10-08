@@ -18,7 +18,7 @@ class ImageAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name', 'cat_id']
 
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
