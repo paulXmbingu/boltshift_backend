@@ -228,6 +228,8 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
     "dark_mode_theme": "solar",
+    "brand_colour": "navbar-dark",
+    "no_navbar_border": False,
     "body_small_text": True,
     "navbar_fixed": True,
     "footer_fixed": True,
