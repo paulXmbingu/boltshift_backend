@@ -232,6 +232,7 @@ JAZZMIN_UI_TWEAKS = {
     "no_navbar_border": False,
     "body_small_text": True,
     "navbar_fixed": True,
+    "sidebar_fixed": True,
     "footer_fixed": True,
     "accent": "accent-navy",
     "sidebar": "sidebar-dark-fuchsia",
