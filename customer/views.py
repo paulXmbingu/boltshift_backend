@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from rest_framework import viewsets, status
-from .models import CustomUser
+from .models import CustomUser, UserAddress, UserPayment
 from rest_framework.views import APIView
-from .serializer import RegistrationSerializer, LoginSerializer
+from .serializer import RegistrationSerializer, LoginSerializer, UserAddressSerializer, UserPaymentSerializer
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -102,3 +102,31 @@ class CustomerWishlist(APIView):
 
 class CustomerCheckout(APIView):
     allowed_methods = ['GET', 'POST']
+
+class UserPaymentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        payments = UserPayment.objects.all()
+        serializer = UserPaymentSerializer(payments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, *args, **kwargs):
+        serializer = UserPaymentSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserAddressAPIView(APIView):
+    def get(self, request, format=None):
+        addresses = UserAddress.objects.all()
+        serializer = UserAddressSerializer(addresses, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = UserAddressSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

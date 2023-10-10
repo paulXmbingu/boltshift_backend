@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser, UserAddress, UserPayment
 from hashed import hash_password
 
 
@@ -123,3 +123,24 @@ class UpdateUserAccount(serializers.Serializer):
             last_name = validated_data['last_name'],
             dob = validated_data['dob'],
         ) 
+
+class UserPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPayment
+        fields = '__all__'
+
+    def validate_account_number(self, value):
+        if value < 0:
+            raise serializers.ValidationError('Account number must be provided')
+        return value 
+    
+class UserAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddress
+        fields = '__all__'
+    
+    def validate_phonenumber_primary(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Primary phone number must be a non-negative integer.")
+        return value
+

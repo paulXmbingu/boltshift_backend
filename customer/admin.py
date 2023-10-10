@@ -3,10 +3,7 @@ from .models import (
     CustomUser,
     UserPayment,
     UserAddress,
-    ProductReview,
-    CartItem,
-    ShoppingSession,
-    ProductOrders
+    ShoppingSession
 )
 
 @admin.register(CustomUser)
@@ -27,19 +24,6 @@ class PaymentAdmin(admin.ModelAdmin):
     search_fields = ['provider']
     readonly_fields = ['account_number', 'provider']
 
-@admin.register(ProductReview)
-class AdminReview(admin.ModelAdmin):
-    list_display = ['review_title', 'review_rating']
-    readonly_fields = ['review_screenshots']
-
-@admin.register(CartItem)
-class CartAdmin(admin.ModelAdmin):
-    list_display = ['cart_id']
-
 @admin.register(ShoppingSession)
 class SessionAdmin(admin.ModelAdmin):
     list_display = ['user_id', 'total']
-
-@admin.register(ProductOrders)
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ['ord_id', 'item_number', 'status']

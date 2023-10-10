@@ -3,14 +3,14 @@ from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
-from customer import CustomUser
+
+from customer.models import CustomUser
 
 def product_directory_path(instance, filename):
     return f"vendor_{instance.vend_id}/{filename}"
 
 def admin_image_directory(instance, filename):
     return f"{instance.cid}/{filename}"
-
 
 # product
 class Product(models.Model):
@@ -137,22 +137,7 @@ class ProductOrders(models.Model):
 
     def __repr__(self):
         return self.ord_id
-    
-    
-# user shopping session
-class ShoppingSession(models.Model):
-    sess_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="session-")
-    total = models.DecimalField(decimal_places=2, max_digits=2)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
 
-    class Meta:
-        verbose_name = "Shopping Session"
-        verbose_name_plural = "Shopping Sessions"
-
-    def __repr__(self):
-        return self.user_id
     
 # user product review 
 # N/B: a review MUST be tied to the corresponding product, also the user
