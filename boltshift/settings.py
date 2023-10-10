@@ -235,5 +235,5 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_fixed": True,
     "footer_fixed": True,
     "accent": "accent-navy",
-    "sidebar": "sidebar-dark-fuchsia",
+    "sidebar": "sidebar-dark-primary",
 }
