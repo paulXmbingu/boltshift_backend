@@ -3,7 +3,8 @@ from .models import (
     CustomUser,
     UserPayment,
     UserAddress,
-    ShoppingSession
+    ShoppingSession,
+    CartItem
 )
 
 @admin.register(CustomUser)
@@ -14,9 +15,9 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(UserAddress)
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ['addr1',]
+    list_display = ['streetname',]
     search_fields = ['city', 'country',]
-    readonly_fields = ['addr1', 'addr2', 'city', 'country']
+    readonly_fields = ['streetname', 'county', 'city', 'country']
 
 @admin.register(UserPayment)
 class PaymentAdmin(admin.ModelAdmin):
@@ -27,3 +28,7 @@ class PaymentAdmin(admin.ModelAdmin):
 @admin.register(ShoppingSession)
 class SessionAdmin(admin.ModelAdmin):
     list_display = ['user_id', 'total']
+
+@admin.register(CartItem)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ['cart_id']

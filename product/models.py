@@ -170,24 +170,3 @@ class ProductReview(models.Model):
 
     def __repr__(self):
         return self.review_title
-    
-# Cart Item
-class CartItem(models.Model):
-    cart_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="cart-")
-    quantity = models.PositiveIntegerField(default=0)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
-
-    session_id = models.ForeignKey(ShoppingSession, on_delete=models.SET_NULL, null=True)
-
-    class Meta:
-        verbose_name_plural = "Cart Items"
-
-    def totalBill(self):
-        """
-            Return the total amount of all items available in the cart
-        """
-        pass
-
-    def __repr__(self):
-        return self.quantity

@@ -6,7 +6,6 @@ from .models import(
     Inventory,
     Discount,
     ProductReview,
-    CartItem,
     ProductOrders
 )
 
@@ -35,10 +34,6 @@ class DiscountAdmin(admin.ModelAdmin):
 class AdminReview(admin.ModelAdmin):
     list_display = ['review_title', 'review_rating']
     readonly_fields = ['review_screenshots']
-
-@admin.register(CartItem)
-class CartAdmin(admin.ModelAdmin):
-    list_display = ['cart_id']
 
 @admin.register(ProductOrders)
 class OrderAdmin(admin.ModelAdmin):
