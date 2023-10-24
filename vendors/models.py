@@ -1,5 +1,4 @@
 from django.db import models
-from customer.models import CustomUser
 from product.models import Product
 from string import hexdigits
 from shortuuid.django_fields import ShortUUIDField
@@ -30,7 +29,6 @@ class Vendor(AbstractUser):
     response_time = models.CharField(max_length=100, blank=True, default="Cool")
     shipping_time = models.CharField(max_length=100, blank=True, default="Cool")
 
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     address = models.ForeignKey('Address', on_delete=models.SET_NULL, null=True)
 
     # a vendor will have several products at the store
