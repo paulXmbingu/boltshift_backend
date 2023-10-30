@@ -67,7 +67,7 @@ class CustomUser(UserAccountMixin, AbstractUser):
 # customer payment
 class UserPayment(models.Model):
     pay_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix='payment-')
-    account_number = models.PositiveIntegerField(default=0)
+    account_number = models.BigIntegerField(default=0)
     provider = models.CharField(max_length=100, default="-----")
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)

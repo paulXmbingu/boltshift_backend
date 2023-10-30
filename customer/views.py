@@ -105,9 +105,9 @@ class CustomerDeleteAccount(APIView):
         return Response({"message": "Account Deleted Successfully"}, status=status.HTTP_204_NO_CONTENT)
     
 
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
 class CustomerAccountSettings(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -157,6 +157,7 @@ class CustomerCheckout(APIView):
     allowed_methods = ['GET', 'POST']
 
 class UserPaymentView(APIView):
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -165,21 +166,32 @@ class UserPaymentView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, *args, **kwargs):
-        serializer = UserPaymentSerializer(data = request.data)
+        data = request.data
+        data['user_id'] = request.user.id
+        serializer = UserPaymentSerializer(data=data)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class UserAddressAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, format=None):
-        addresses = UserAddress.objects.all()
+        addresses = UserAddress.objects.filter(user=request.user)
         serializer = UserAddressSerializer(addresses, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = UserAddressSerializer(data=request.data)
+        data = request.data
+        data['user_id'] = request.user.id
+        serializer = UserAddressSerializer(data=data)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -13,5 +13,7 @@ urlpatterns = [
     path('account-settings-address/', views.CustomerAccountSettings.as_view(), {'put': 'update_address'}, name='account-address'),
     path('account-settings-payment/', views.CustomerAccountSettings.as_view(), {'put': 'update_payment'}, name='account-user-payment'),
     path('wishlist', views.CustomerWishlist.as_view(), name='wishlist'),
-    path('shopping', views.CustomerShopping.as_view(), name='shopping')
+    path('shopping', views.CustomerShopping.as_view(), name='shopping'),
+    path('createaddress/', views.UserAddressAPIView.as_view(), name='create_user_address'),
+    path('createpayment/', views.UserPaymentView.as_view(), name='create_user_payment'),
 ]

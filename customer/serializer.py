@@ -70,7 +70,7 @@ class LoginSerializer(serializers.Serializer):
 class UserPaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPayment
-        fields = '__all__'
+        fields = ['account_number', 'provider']
 
     def validate_account_number(self, value):
         if value < 0:
@@ -80,18 +80,22 @@ class UserPaymentSerializer(serializers.ModelSerializer):
 class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
-        fields = '__all__'
+        fields = ['streetname', 'county', 'city', 'country', 'apartment_complex',]
 
 class UserTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserType
-        fields = '__all__'
+        fields = ['is_cutomer', 'is_vendor', 'user_id',]
 
 # account setting
 class UserAccountSerializer(serializers.ModelSerializer):
+    payment = UserPaymentSerializer(source='userpayment_set', many=True, read_only=True)
+    address = UserAddressSerializer(source='useraddress_set', many=True, read_only=True)
+    usertype = UserTypeSerializer(source='usertype_set', many=True, read_only=True)
+
     class Meta:
         model = CustomUser
-        exclude = ('password', 'last_login', 'is_superuser', 'is_staff', 'is_active', 'date_joined', 'id', 'deleted', 'groups', 'user_permissions')
+        fields = ('cid', 'first_name', 'last_name', 'email', 'username', 'image', 'gender', 'phonenumber_primary', 'phonenumber_secondary', 'address', 'payment', 'usertype',)
 
 class UpdateUserAccountSerializer(serializers.ModelSerializer):
     class Meta:
@@ -99,7 +103,6 @@ class UpdateUserAccountSerializer(serializers.ModelSerializer):
         fields = ['first_name', 'last_name', 'email', 'username', 'image', 'gender', 'phonenumber_primary', 'phonenumber_secondary']
 
     def update(self, instance, validated_data):
-        print(validated_data, 'self data')
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.email = validated_data.get('email', instance.email)
