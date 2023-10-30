@@ -114,16 +114,9 @@ WSGI_APPLICATION = 'boltshift.wsgi.app'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # hosting the database on vercel postgresql
-    # postgresql url: "postgres://default:ytEvp8HfBRl2@ep-jolly-snow-40641812.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-    # postgresql format postgres://username:password@hostname/databasename
-    'default': {
-        'ENGINE': "django.db.backends.postgresql_psycopg2",
-        'NAME': env("DB_DATABASE"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"),
-        'PORT': env("DB_PORT")
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "db.sqlite3",
     }
 }
 
