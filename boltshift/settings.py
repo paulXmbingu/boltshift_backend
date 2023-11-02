@@ -198,7 +198,7 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users", # group icon
 
         # customer icons
-        "customer.CustomUser": "fa fa-user-plus",
+        "customer.Customer": "fa fa-user-plus",
         "customer.CartItem": "fa fa-cart-plus",
         "customer.UserAddress": "fa fa-address-book",
         "customer.UserPayment": "fa fa-wallet",
