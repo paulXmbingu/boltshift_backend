@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import Customer
 from hashed import hash_password
 
 
@@ -29,7 +29,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = CustomUser
+        model = Customer
         exclude = ['image', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined', 'payment', 'address']
 
     # data validation
@@ -42,7 +42,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         hashed = hash_password(validated_data["password"], validated_data["password2"])
 
-        user = CustomUser.objects.create(
+        user = Customer.objects.create(
             username = validated_data["username"],
             first_name = validated_data["first_name"],
             last_name = validated_data["last_name"],
@@ -107,7 +107,7 @@ class UpdateUserAccount(serializers.Serializer):
     )
 
     class Meta:
-        model = CustomUser
+        model = Customer
 
     # data.passwords validation
     def validate(self, data):
@@ -118,7 +118,7 @@ class UpdateUserAccount(serializers.Serializer):
     def update(self, validated_data):
         updated_password = hash_password(validated_data['new_password1'], validated_data['new_password2'])
 
-        user = CustomUser.objects.bulk_update(
+        user = Customer.objects.bulk_update(
             first_name = validated_data['first_name'],
             last_name = validated_data['last_name'],
             dob = validated_data['dob'],

@@ -7,7 +7,6 @@ from string import hexdigits
 from django.utils.html import mark_safe
 from vendors.utils import UserAccountMixin
 from product.models import Product
-from datetime import datetime
 
 # creates a folder for each admin/customer with the user.cid as the folder name
 # to hold each individual user uploaded file
@@ -15,7 +14,7 @@ def admin_image_directory(instance, filename):
     return f"{instance.cid}/{filename}"
 
 # customing our user
-class CustomUser(UserAccountMixin, AbstractUser):
+class Customer(UserAccountMixin, AbstractUser):
     GENDER = {
         ('Male', 'm'),
         ('Female', 'f')
@@ -40,6 +39,9 @@ class CustomUser(UserAccountMixin, AbstractUser):
     REQUIRED_FIELDS = ['username']
 
     def __repr__(self):
+        return self.username
+    
+    def __str__(self):
         return self.username
     
     class Meta:
@@ -101,7 +103,7 @@ class UserAddress(models.Model):
 
 # user type
 class UserType(models.Model):
-    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    user_id = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     is_customer = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)
 
@@ -122,8 +124,8 @@ class ProductReview(models.Model):
     review_rating = models.CharField(max_length=50, choices=RATINGS, default='------')
     created_at = models.DateTimeField(default=timezone.now)
 
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    # product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
     def review_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />', (self.review_screenshots.url))
@@ -141,7 +143,7 @@ class ProductReview(models.Model):
 class ShoppingSession(models.Model):
     sess_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="session-")
     total = models.DecimalField(decimal_places=2, max_digits=2)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    user_id = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -186,7 +188,7 @@ class ProductOrders(models.Model):
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
     created_at = models.DateTimeField(default=timezone.now)
     
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "Orders"

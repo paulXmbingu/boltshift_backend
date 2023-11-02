@@ -172,7 +172,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Registering the custom user
-AUTH_USER_MODEL = 'customer.CustomUser'
+AUTH_USER_MODEL = 'customer.Customer'
 
 
 # Customizing the admin panel

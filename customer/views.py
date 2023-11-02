@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from rest_framework import viewsets, status
-from .models import CustomUser
+from .models import Customer
 from rest_framework.views import APIView
 from .serializer import RegistrationSerializer, LoginSerializer
 from django.contrib.auth import authenticate, login, logout
@@ -18,7 +18,7 @@ def index(request):
 
 class CustomerRegistration(viewsets.ModelViewSet):
     serializer_class = RegistrationSerializer
-    queryset = CustomUser.objects.all()
+    queryset = Customer.objects.all()
 
 class CustomerLogin(APIView):
     allowed_methods = ['POST']
@@ -76,7 +76,7 @@ class CustomerDeleteAccount(APIView):
     allowed_methods = ['DELETE']
     
     def delete(self, request, cid):
-        customer = get_object_or_404(CustomUser, cid=cid)
+        customer = get_object_or_404(Customer, cid=cid)
         customer.soft_delete()
         logout(customer)
         redirect_url = reverse("home")
