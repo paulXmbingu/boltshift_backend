@@ -5,12 +5,8 @@ from rest_framework.views import APIView
 from .serializer import RegistrationSerializer, LoginSerializer
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
-import logging
-
-log = logging.getLogger(__name__)
 
 def index(request):
     return HttpResponse("<h2>Welcome to <b><i>Boltshift E-commerce</i></b></h2>")
@@ -37,13 +33,12 @@ class CustomerLogin(APIView):
                 login(request, user)
                 return Response(
                     {
-                        'message': 'Login Successful',
+                        'message': 'Login Successful for %s' % user.email,
                         'user_cid': user.cid
                     },
                     status=status.HTTP_200_OK
                 )
             else:
-                log.warning(f"Login failed for email: {email}")
                 return Response(
                     {'message': 'Invalid credentials'},
                     status=status.HTTP_401_UNAUTHORIZED
@@ -53,7 +48,6 @@ class CustomerLogin(APIView):
                
 class CustomerLogout(APIView):
     # ensure that only logged in users are able to access this
-    permission_classes = [IsAuthenticated]
     allowed_methods = ['POST']
 
     def post(self, request, format=None):
@@ -62,7 +56,7 @@ class CustomerLogout(APIView):
         # redirect to home page after login out
         redirect_url = reverse("home")
         result = {
-            'message': "User logout successfully",
+            'message': "Logout Successfull",
             'redirect_url': redirect_url
         }
         return Response(
@@ -72,13 +66,11 @@ class CustomerLogout(APIView):
 
 # delete user account
 class CustomerDeleteAccount(APIView):
-    permission_classes = [IsAuthenticated]
     allowed_methods = ['DELETE']
     
     def delete(self, request, cid):
         customer = get_object_or_404(Customer, cid=cid)
         customer.soft_delete()
-        logout(customer)
         redirect_url = reverse("home")
         return Response(
             {
@@ -90,14 +82,12 @@ class CustomerDeleteAccount(APIView):
     
 # user account settings update
 class CustomerAccountSettings(APIView):
-    permission_classes = [IsAuthenticated]
     allowed_methods = ['UPDATE']
 
 class CustomerShopping(APIView):
-    permission_classes = [IsAuthenticated]
+    pass
 
 class CustomerWishlist(APIView):
-    permission_classes = [IsAuthenticated]
     allowed_methods = ['DELETE', 'POST', 'GET']
 
 class CustomerCheckout(APIView):

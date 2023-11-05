@@ -14,7 +14,7 @@ def admin_image_directory(instance, filename):
     return f"{instance.cid}/{filename}"
 
 # customing our user
-class Customer(UserAccountMixin, AbstractUser):
+class Customer(AbstractUser, UserAccountMixin):
     GENDER = {
         ('Male', 'm'),
         ('Female', 'f')

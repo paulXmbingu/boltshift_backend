@@ -1,26 +1,22 @@
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import Token
+from django.contrib.auth.password_validation import validate_password
 from .models import Customer
-from hashed import hash_password
 
-
-MIN_LENGHT = 8
 USERNAME_LENGTH = 6
 
+# Session Token
+# Handled during registration, login, logout
+class CustomerTokenObtainSerializer(TokenObtainSerializer):
+    @classmethod
+    def get_token(cls, user: Customer) -> Token:
+        return super().get_token(user)
+
 class RegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGHT,
-        error_messages = {
-            "min_length": f"Password must be {MIN_LENGHT} characters long"
-        }
-    )
-    password2 = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGHT,
-        error_messages = {
-            "min_length": f"Password must be {MIN_LENGHT} characters long"
-        }
-    )
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    confirm_password = serializers.CharField(write_only=True, required=True)
+
     username = serializers.CharField(
         min_length = USERNAME_LENGTH,
         error_messages = {
@@ -34,14 +30,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     # data validation
     def validate(self, data):
-        if data["password"] != data["password2"]:
+        if data["password"] != data["confirm_password"]:
             raise serializers.ValidationError("Passwords do not match")
         return data
     
     # saving validated data
     def create(self, validated_data):
-        hashed = hash_password(validated_data["password"], validated_data["password2"])
-
         user = Customer.objects.create(
             username = validated_data["username"],
             first_name = validated_data["first_name"],
@@ -50,7 +44,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             gender = validated_data["gender"],
             is_active = True
         )
-        user.set_password(hashed)
+        user.set_password(validated_data["password"])
 
         # saving new user
         user.save()
@@ -60,13 +54,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 # input validation serializer    
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGHT,
-        error_messages = {
-            "min_length": f"Password must be {MIN_LENGHT} characters long"
-        }
-    )
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
 
 # acount setting
 class UpdateUserAccount(serializers.Serializer):
@@ -86,42 +74,25 @@ class UpdateUserAccount(serializers.Serializer):
     postal_code = serializers.CharField()
 
     # to update password
-    old_password = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGHT,
-        error_messages = {
-            'min_length': f"Password must be {MIN_LENGHT} characters long"
-        }
-    )
-    new_password1 = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGHT,
-        error_messages = {
-            'min_length': f"Password must be {MIN_LENGHT} characters long"
-        }
-    )
-    new_password2 = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGHT,
-        error_messages = {
-            'min_length': f"Password must be {MIN_LENGHT} characters long"
-        }
-    )
+    old_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    new_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    confirm_new_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
 
     class Meta:
         model = Customer
 
     # data.passwords validation
     def validate(self, data):
-        if data['new_password1'] != data['new_password2']:
+        if data['new_password'] != data['confirm_new_password']:
             raise serializers.ValidationError("Passwords do not match")
         return data
     
     def update(self, validated_data):
-        updated_password = hash_password(validated_data['new_password1'], validated_data['new_password2'])
-
+        # updating user credentials
         user = Customer.objects.bulk_update(
             first_name = validated_data['first_name'],
             last_name = validated_data['last_name'],
             dob = validated_data['dob'],
-        ) 
+        )
+
+        return user
