@@ -115,7 +115,6 @@ SIMPLE_JWT = {
 
 # Backend POST server authentication
 AUTHENTICATION_BACKENDS = [
-    'customer.auth.CustomAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend'
 ]
 
