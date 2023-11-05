@@ -94,6 +94,9 @@ class Inventory(models.Model):
     def __repr__(self):
         return self.quantity
     
+    def __str(self):
+        return self.quantity
+    
 # product discount
 class Discount(models.Model):
     dis_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="dis-")
@@ -109,4 +112,7 @@ class Discount(models.Model):
         verbose_name_plural = "Discounts"
 
     def __repr__(self):
+        return self.name
+    
+    def __str__(self):
         return self.name
