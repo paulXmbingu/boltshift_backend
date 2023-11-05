@@ -30,7 +30,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        exclude = ['image', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined', 'payment', 'address']
+        exclude = ['image', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined', 'payment', 'address', 'is_active', 'cid']
 
     # data validation
     def validate(self, data):
@@ -47,6 +47,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
             first_name = validated_data["first_name"],
             last_name = validated_data["last_name"],
             email = validated_data["email"],
+            gender = validated_data["gender"],
+            is_active = True
         )
         user.set_password(hashed)
 
