@@ -5,8 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
-from vendors.utils import UserAccountMixin
-from product.models import Product
+from utils.utils import UserAccountMixin
 
 # creates a folder for each admin/customer with the user.cid as the folder name
 # to hold each individual user uploaded file
