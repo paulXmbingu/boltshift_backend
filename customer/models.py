@@ -6,7 +6,6 @@ from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
 from vendors.utils import UserAccountMixin
-from product.models import Product
 from datetime import datetime
 
 # creates a folder for each admin/customer with the user.cid as the folder name
@@ -21,14 +20,15 @@ class CustomUser(UserAccountMixin, AbstractUser):
         ('Female', 'f')
     }
     cid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="user-", alphabet=hexdigits)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=20)
+    username = models.CharField(max_length=20, unique=True)
     image = models.ImageField(upload_to=admin_image_directory, null=True, blank=True, default=None)
     gender = models.CharField(max_length=10, choices=GENDER, default='-------')
-    #dob = models.DateField(blank=True, default=datetime.now)
-
-    payment = models.ForeignKey('UserPayment', on_delete=models.SET_NULL, null=True)
-    address = models.ForeignKey('UserAddress', on_delete=models.SET_NULL, null=True)
+    phonenumber_primary = models.PositiveIntegerField(default=0)
+    phonenumber_secondary = models.PositiveIntegerField(default=0)
+    deleted = models.BooleanField(default=False)
 
     def image_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />', (self.image.url))
@@ -60,13 +60,19 @@ class CustomUser(UserAccountMixin, AbstractUser):
         related_name='buyer_set'
     )
 
+    def soft_delete(self):
+        self.deleted = True
+        self.save()
+
 # customer payment
 class UserPayment(models.Model):
     pay_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix='payment-')
-    account_number = models.PositiveIntegerField(default=0)
+    account_number = models.BigIntegerField(default=0)
     provider = models.CharField(max_length=100, default="-----")
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
+
+    user_id = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
 
     REQUIRED_FIELDS = ['account_number', 'provider']
 
@@ -80,17 +86,17 @@ class UserPayment(models.Model):
 # customer address
 class UserAddress(models.Model):
     addr_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix='address-')
-    addr1 = models.TextField(max_length=100, default='None')
-    addr2 = models.TextField(max_length=100, default='None')
+    streetname = models.TextField(max_length=100, default='None')
+    county = models.TextField(max_length=100, default='None')
     city = models.CharField(max_length=50, default="None")
     country = models.CharField(max_length=50, default="None")
-    phonenumber_primary = models.PositiveIntegerField(default=0)
-    phonenumber_secondary = models.PositiveIntegerField(default=0)
     apartment_complex = models.CharField(max_length=500, default="----------")
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
-    REQUIRED_FIELDS = ['addr1', 'city', 'country', 'phonenumber_primary']
+    user_id = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+
+    REQUIRED_FIELDS = ['streetname', 'county', 'city', 'country', 'phonenumber_primary']
 
     class Meta:
         verbose_name = "Customer Address"
@@ -101,42 +107,10 @@ class UserAddress(models.Model):
 
 # user type
 class UserType(models.Model):
-    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
     is_customer = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)
 
-# user product review 
-# N/B: a review MUST be tied to the corresponding product, also the user
-class ProductReview(models.Model):
-    RATINGS = {
-        ('⭐⭐⭐⭐⭐', 5),
-        ('⭐⭐⭐⭐', 4),
-        ('⭐⭐⭐', 3),
-        ('⭐⭐', 2),
-        ('⭐', 1),
-    }
-    rev_id = ShortUUIDField(unique=True, length=10, max_length=20, prefix='review-', alphabet=hexdigits)
-    review_title = models.CharField(max_length=50, default='Great Product')
-    review_screenshots = models.ImageField(upload_to=admin_image_directory, null=True, blank=True, default=None)
-    review_text = models.CharField(max_length=1000, default='I love the product')
-    review_rating = models.CharField(max_length=50, choices=RATINGS, default='------')
-    created_at = models.DateTimeField(default=timezone.now)
-
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-
-    def review_tag(self):
-        return mark_safe('<img src="%s" width="50" height="50" />', (self.review_screenshots.url))
-    
-    review_tag.short_description = "Image"
-
-    class Meta:
-        verbose_name = 'Product Review'
-        verbose_name_plural = 'Product Reviews'
-
-    def __repr__(self):
-        return self.review_title
-    
 # user shopping session
 class ShoppingSession(models.Model):
     sess_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="session-")
@@ -151,6 +125,7 @@ class ShoppingSession(models.Model):
 
     def __repr__(self):
         return self.user_id
+
     
 # Cart Item
 class CartItem(models.Model):
@@ -172,25 +147,3 @@ class CartItem(models.Model):
 
     def __repr__(self):
         return self.quantity
-    
-# customer orders
-class ProductOrders(models.Model):
-    ORDER_STATUS = {
-        ('Pending', 'pending'),
-        ('Completed', 'paid'),
-        ('Ongoing', 'ongoing'),
-        ('Cancelled', 'cancelled')
-    }
-    ord_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits)
-    item_number = models.PositiveIntegerField(default=0)
-    status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
-    created_at = models.DateTimeField(default=timezone.now)
-    
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-
-    class Meta:
-        verbose_name = "Orders"
-        verbose_name_plural = "Orders"
-
-    def __repr__(self):
-        return self.ord_id
