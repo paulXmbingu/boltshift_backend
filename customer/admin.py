@@ -3,7 +3,6 @@ from .models import (
     CustomUser,
     UserPayment,
     UserAddress,
-    ProductReview,
 )
 
 @admin.register(CustomUser)
@@ -14,17 +13,12 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(UserAddress)
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ['addr1',]
+    list_display = ['streetname',]
     search_fields = ['city', 'country',]
-    readonly_fields = ['addr1', 'addr2', 'city', 'country']
+    readonly_fields = ['streetname', 'county', 'city', 'country']
 
 @admin.register(UserPayment)
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ['account_number', 'provider']
     search_fields = ['provider']
     readonly_fields = ['account_number', 'provider']
-
-@admin.register(ProductReview)
-class AdminReview(admin.ModelAdmin):
-    list_display = ['review_title', 'review_rating']
-    readonly_fields = ['review_screenshots']
