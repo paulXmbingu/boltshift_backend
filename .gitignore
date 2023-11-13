@@ -180,3 +180,9 @@ cython_debug/
 **/migrations/
 .env
 makefile
+fake_data.py
+
+_customer.csv
+_product.csv
+_from_vercel_to_supabase.py
+_to_supabase.py
