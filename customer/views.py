@@ -140,7 +140,6 @@ class CustomerAccountSettings(APIView):
 
     def update_payment(self, request, *args, **kwargs):
         user = request.user
-        # Assuming you have a UserPayment model and an associated serializer
         payment_serializer = UserPaymentSerializer(user.payment, data=request.data, partial=True)
         payment_serializer.is_valid(raise_exception=True)
         payment_serializer.save()
