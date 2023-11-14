@@ -3,6 +3,7 @@ from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
+from ckeditor_uploader.fields import RichTextUploadingField
 
 def product_directory_path(instance, filename):
     return f"vendor_{instance.vend_id}/{filename}"
@@ -11,7 +12,7 @@ def product_directory_path(instance, filename):
 class Product(models.Model):
     pid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="product-", alphabet=hexdigits)
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = RichTextUploadingField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
@@ -47,15 +48,15 @@ class ProductImage(models.Model):
 class Category(models.Model):
     # Base Category choices
     CATEGORY_CHOICES = {
-        ('Automotive', 'Auto'),
-        ('Baby Products', 'Baby'),
-        ('Beauty & Personal Care', 'Beauty'),
-        ('Health & Household', 'Health'),
-        ('Home & Kitchen', 'Home'),
+        ('Automotive', 'Automotive'),
+        ('Baby Products', 'Baby Products'),
+        ('Beauty & Personal Care', 'Beauty & Personal Care'),
+        ('Health & Household', 'Health & Household'),
+        ('Home & Kitchen', 'Home & Kitchen'),
         ('Luggage', 'Luggage'),
-        ("Men's Fashion", 'Men'),
-        ("Women's Fashion", 'Women'),
-        ('Pet Supplies', 'Pet')
+        ("Men's Fashion", "Men's Fashion"),
+        ("Women's Fashion", "Women's Fashion"),
+        ('Pet Supplies', 'Pet Supplies')
     }
 
     # category details
@@ -71,7 +72,7 @@ class Category(models.Model):
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
     #category_details = models.CharField(choices=get_category_details_choices, max_length=50)
     name = models.CharField(max_length=150)
-    description = models.TextField(null=True, blank=True)
+    description = RichTextUploadingField(null=True, blank=True)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 

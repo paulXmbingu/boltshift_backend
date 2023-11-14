@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # django rich text editor
+    'ckeditor',
+
     # my apps
     'customer',
     'product',
@@ -128,6 +131,23 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
 ]
 
+# ckeditor upload url
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+# ckeditor configs set-up
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        'codeSnippet_theme': 'monokai',
+        'toolbar': 'all',
+        'extraPlugins': ','.join(
+            [
+                'widget',
+                'dialog'
+            ]
+        ),
+    }
+}
 
 ROOT_URLCONF = 'boltshift.urls'
 
