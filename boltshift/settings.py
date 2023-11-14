@@ -50,7 +50,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
 
     # React API Data Handling
-    'corsheaders'
+    'corsheaders',
+
+    # knox Token Handler
+    'knox'
 ]
 
 MIDDLEWARE = [
