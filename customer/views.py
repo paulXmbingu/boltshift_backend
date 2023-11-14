@@ -2,7 +2,9 @@ from django.http import HttpResponse
 from rest_framework import viewsets, status
 from .models import Customer
 from rest_framework.views import APIView
-from .serializer import RegistrationSerializer, LoginSerializer
+from .serializer import RegistrationSerializer, LoginSerializer, CustomerTokenObtainSerializer
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from django.urls import reverse
@@ -11,10 +13,14 @@ from django.shortcuts import get_object_or_404
 def index(request):
     return HttpResponse("<h2>Welcome to <b><i>Boltshift E-commerce</i></b></h2>")
 
+class CustomerTokenObtainView(TokenObtainSerializer):
+    serializer_class = CustomerTokenObtainSerializer
+
 
 class CustomerRegistration(viewsets.ModelViewSet):
     serializer_class = RegistrationSerializer
     queryset = Customer.objects.all()
+    permission_classes = [AllowAny]
 
 class CustomerLogin(APIView):
     allowed_methods = ['POST']

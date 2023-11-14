@@ -123,6 +123,7 @@ SIMPLE_JWT = {
 }
 
 # Backend POST server authentication
+# Default authentication for API routes (registration, login, ...)
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
 ]

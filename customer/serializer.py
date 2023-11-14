@@ -8,6 +8,7 @@ USERNAME_LENGTH = 6
 
 # Session Token
 # Handled during registration, login, logout
+# Returns a user object enclosed within a unique token
 class CustomerTokenObtainSerializer(TokenObtainSerializer):
     @classmethod
     def get_token(cls, user: Customer) -> Token:
