@@ -19,14 +19,15 @@ class Customer(AbstractUser, UserAccountMixin):
         ('Female', 'f')
     }
     cid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="user-", alphabet=hexdigits)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=20)
+    username = models.CharField(max_length=20, unique=True)
     image = models.ImageField(upload_to=admin_image_directory, null=True, blank=True, default=None)
     gender = models.CharField(max_length=10, choices=GENDER, default='-------')
-    #dob = models.DateField(blank=True, default=datetime.now)
-
-    payment = models.ForeignKey('UserPayment', on_delete=models.SET_NULL, null=True)
-    address = models.ForeignKey('UserAddress', on_delete=models.SET_NULL, null=True)
+    phonenumber_primary = models.PositiveIntegerField(default=0)
+    phonenumber_secondary = models.PositiveIntegerField(default=0)
+    deleted = models.BooleanField(default=False)
 
     def image_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />', (self.image.url))
@@ -61,13 +62,19 @@ class Customer(AbstractUser, UserAccountMixin):
         related_name='buyer_set'
     )
 
+    def soft_delete(self):
+        self.deleted = True
+        self.save()
+
 # customer payment
 class UserPayment(models.Model):
     pay_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix='payment-')
-    account_number = models.PositiveIntegerField(default=0)
+    account_number = models.BigIntegerField(default=0)
     provider = models.CharField(max_length=100, default="-----")
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
+
+    user_id = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
     REQUIRED_FIELDS = ['account_number', 'provider']
 
@@ -81,17 +88,17 @@ class UserPayment(models.Model):
 # customer address
 class UserAddress(models.Model):
     addr_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix='address-')
-    addr1 = models.TextField(max_length=100, default='None')
-    addr2 = models.TextField(max_length=100, default='None')
+    streetname = models.TextField(max_length=100, default='None')
+    county = models.TextField(max_length=100, default='None')
     city = models.CharField(max_length=50, default="None")
     country = models.CharField(max_length=50, default="None")
-    phonenumber_primary = models.PositiveIntegerField(default=0)
-    phonenumber_secondary = models.PositiveIntegerField(default=0)
     apartment_complex = models.CharField(max_length=500, default="----------")
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
-    REQUIRED_FIELDS = ['addr1', 'city', 'country', 'phonenumber_primary']
+    user_id = models.ForeignKey('Customer', on_delete=models.CASCADE)
+
+    REQUIRED_FIELDS = ['streetname', 'county', 'city', 'country', 'phonenumber_primary']
 
     class Meta:
         verbose_name = "Customer Address"
@@ -137,7 +144,7 @@ class ProductReview(models.Model):
 
     def __repr__(self):
         return self.review_title
-    
+
 # user shopping session
 class ShoppingSession(models.Model):
     sess_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="session-")
@@ -152,6 +159,10 @@ class ShoppingSession(models.Model):
 
     def __repr__(self):
         return self.user_id
+    
+    def __str__(self):
+        return self.user_id
+
     
 # Cart Item
 class CartItem(models.Model):

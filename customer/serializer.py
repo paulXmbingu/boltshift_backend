@@ -2,7 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import Token
 from django.contrib.auth.password_validation import validate_password
-from .models import Customer
+from .models import Customer, UserAddress, UserPayment, UserType
 
 USERNAME_LENGTH = 6
 
@@ -57,43 +57,51 @@ class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
 
-# acount setting
-class UpdateUserAccount(serializers.Serializer):
-    # the basic details
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    dob = serializers.DateField()
-    updated_phonenumber = serializers.CharField()
-    email = serializers.EmailField()
-    gender = serializers.CharField()
 
-    # address details
-    apartment_details = serializers.CharField()
-    street_address = serializers.CharField()
-    country = serializers.CharField()
-    city_town = serializers.CharField()
-    postal_code = serializers.CharField()
+class UserPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPayment
+        fields = ['account_number', 'provider']
 
-    # to update password
-    old_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    new_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    confirm_new_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    def validate_account_number(self, value):
+        if value < 0:
+            raise serializers.ValidationError('Account number must be provided')
+        return value 
+    
+class UserAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddress
+        fields = ['streetname', 'county', 'city', 'country', 'apartment_complex',]
+
+class UserTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserType
+        fields = ['is_cutomer', 'is_vendor', 'user_id',]
+
+# account setting
+class UserAccountSerializer(serializers.ModelSerializer):
+    payment = UserPaymentSerializer(source='userpayment_set', many=True, read_only=True)
+    address = UserAddressSerializer(source='useraddress_set', many=True, read_only=True)
+    usertype = UserTypeSerializer(source='usertype_set', many=True, read_only=True)
 
     class Meta:
         model = Customer
+        fields = ('cid', 'first_name', 'last_name', 'email', 'username', 'image', 'gender', 'phonenumber_primary', 'phonenumber_secondary', 'address', 'payment', 'usertype',)
 
-    # data.passwords validation
-    def validate(self, data):
-        if data['new_password'] != data['confirm_new_password']:
-            raise serializers.ValidationError("Passwords do not match")
-        return data
-    
-    def update(self, validated_data):
-        # updating user credentials
-        user = Customer.objects.bulk_update(
-            first_name = validated_data['first_name'],
-            last_name = validated_data['last_name'],
-            dob = validated_data['dob'],
-        )
+class UpdateUserAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ['first_name', 'last_name', 'email', 'username', 'image', 'gender', 'phonenumber_primary', 'phonenumber_secondary']
 
-        return user
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.username = validated_data.get('username', instance.username)
+        instance.image = validated_data.get('image', instance.image)
+        instance.gender = validated_data.get('gender', instance.gender)
+        instance.phonenumber_primary = validated_data.get('phonenumber_primary', instance.phonenumber_primary)
+        instance.phonenumber_secondary = validated_data.get('phonenumber_secondary', instance.phonenumber_secondary)
+        instance.save()
+        
+        return instance
