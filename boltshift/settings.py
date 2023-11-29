@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'customer',
     'product',
     'vendors',
+    'provision',
 
     # API handling
     'rest_framework',

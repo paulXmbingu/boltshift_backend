@@ -9,11 +9,11 @@ from customer.models import CustomUser
 
 # Create your models here.
 class ShoppingSession(models.Model):
-    sess_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="session-")
-    total = models.DecimalField(decimal_places=2, max_digits=2)
+    sess_id = ShortUUIDField(unique=True, length=10, max_length=22, alphabet=hexdigits, prefix="session-")
+    total = models.DecimalField(decimal_places=2, max_digits=9)
     user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Shopping Session"
@@ -26,8 +26,8 @@ class ShoppingSession(models.Model):
 class CartItem(models.Model):
     cart_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="cart-")
     quantity = models.PositiveIntegerField(default=0)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now=True)
 
     session_id = models.ForeignKey(ShoppingSession, on_delete=models.SET_NULL, null=True)
 
@@ -42,26 +42,4 @@ class CartItem(models.Model):
 
     def __repr__(self):
         return self.quantity
-    
-# customer orders
-class ProductOrders(models.Model):
-    ORDER_STATUS = {
-        ('Pending', 'pending'),
-        ('Completed', 'paid'),
-        ('Ongoing', 'ongoing'),
-        ('Cancelled', 'cancelled')
-    }
-    ord_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits)
-    item_number = models.PositiveIntegerField(default=0)
-    status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
-    created_at = models.DateTimeField(default=timezone.now)
-    
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-
-    class Meta:
-        verbose_name = "Orders"
-        verbose_name_plural = "Orders"
-
-    def __repr__(self):
-        return self.ord_id
     
