@@ -1,10 +1,18 @@
 from django.http import HttpResponse
+from rest_framework import viewsets, status
+from .models import Customer
+from rest_framework.views import APIView
+from .serializer import RegistrationSerializer, LoginSerializer, CustomerTokenObtainSerializer
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.contrib.auth import logout
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.contrib.auth.hashers import check_password
 
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,16 +21,20 @@ from rest_framework.permissions import IsAuthenticated
 from knox.models import AuthToken
 from knox.auth import TokenAuthentication
 
-import logging
-
 from .serializer import RegistrationSerializer, LoginSerializer, UpdateUserAccountSerializer, UserAccountSerializer, UserAddressSerializer, UserPaymentSerializer, UserTypeSerializer
-from .models import CustomUser, UserAddress, UserPayment
+from .models import Customer, UserAddress, UserPayment
 
-log = logging.getLogger(__name__)
 
 def index(request):
     return HttpResponse("<h2>Welcome to <b><i>Boltshift E-commerce</i></b></h2>")
 
+class CustomerTokenObtainView(TokenObtainSerializer):
+    serializer_class = CustomerTokenObtainSerializer
+
+class CustomerRegistration(viewsets.ModelViewSet):
+    serializer_class = RegistrationSerializer
+    queryset = Customer.objects.all()
+    permission_classes = [AllowAny]
 
 class CustomerRegistration(APIView):
     def post(self, request, format=None):
@@ -66,8 +78,8 @@ class CustomerLogin(APIView):
         password = serializer.validated_data.get('password')
         
         try:
-            user_instance = CustomUser.objects.get(email=email)
-        except CustomUser.DoesNotExist:
+            user_instance = Customer.objects.get(email=email)
+        except Customer.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         
         if check_password(password, user_instance.password):
@@ -91,7 +103,7 @@ class CustomerLogout(APIView):
         except Exception as e:
             return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response({'success': 'Logout successful'}, status=status.HTTP_200_OK)
-
+    
 
 class CustomerDeleteAccount(APIView):
     authentication_classes = [TokenAuthentication]
@@ -99,7 +111,7 @@ class CustomerDeleteAccount(APIView):
     
     def delete(self, request):
         user = request.user
-        customer = get_object_or_404(CustomUser, email=user.email)
+        customer = get_object_or_404(Customer, email=user.email)
         customer.soft_delete()
         logout(request)
         return Response({"message": "Account Deleted Successfully"}, status=status.HTTP_204_NO_CONTENT)
@@ -146,10 +158,9 @@ class CustomerAccountSettings(APIView):
         return Response(payment_serializer.data, status=status.HTTP_200_OK)
 
 class CustomerShopping(APIView):
-    permission_classes = [IsAuthenticated]
+    pass
 
 class CustomerWishlist(APIView):
-    permission_classes = [IsAuthenticated]
     allowed_methods = ['DELETE', 'POST', 'GET']
 
 class CustomerCheckout(APIView):

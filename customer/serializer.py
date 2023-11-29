@@ -1,26 +1,23 @@
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework import serializers
-from .models import CustomUser, UserAddress, UserPayment, UserType
-from hashed import hash_password
-from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import Token
+from django.contrib.auth.password_validation import validate_password
+from .models import Customer, UserAddress, UserPayment, UserType
 
-MIN_LENGTH = 8
 USERNAME_LENGTH = 6
 
+# Session Token
+# Handled during registration, login, logout
+# Returns a user object enclosed within a unique token
+class CustomerTokenObtainSerializer(TokenObtainSerializer):
+    @classmethod
+    def get_token(cls, user: Customer) -> Token:
+        return super().get_token(user)
+
 class RegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGTH,
-        error_messages = {
-            "min_length": f"Password must be {MIN_LENGTH} characters long"
-        }
-    )
-    password2 = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGTH,
-        error_messages = {
-            "min_length": f"Password must be {MIN_LENGTH} characters long"
-        }
-    )
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    confirm_password = serializers.CharField(write_only=True, required=True)
+
     username = serializers.CharField(
         min_length = USERNAME_LENGTH,
         error_messages = {
@@ -29,26 +26,26 @@ class RegistrationSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = CustomUser
-        exclude = ['image', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined']
+        model = Customer
+        exclude = ['image', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined', 'payment', 'address', 'is_active', 'cid']
 
     # data validation
     def validate(self, data):
-        if data["password"] != data["password2"]:
+        if data["password"] != data["confirm_password"]:
             raise serializers.ValidationError("Passwords do not match")
         return data
     
     # saving validated data
     def create(self, validated_data):
-        hashed = hash_password(validated_data["password"], validated_data["password2"])
-
-        user = CustomUser.objects.create(
+        user = Customer.objects.create(
             username = validated_data["username"],
             first_name = validated_data["first_name"],
             last_name = validated_data["last_name"],
             email = validated_data["email"],
+            gender = validated_data["gender"],
+            is_active = True
         )
-        user.set_password(hashed)
+        user.set_password(validated_data["password"])
 
         # saving new user
         user.save()
@@ -58,13 +55,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 # input validation serializer    
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField(
-        write_only = True,
-        min_length = MIN_LENGTH,
-        error_messages = {
-            "min_length": f"Password must be {MIN_LENGTH} characters long"
-        }
-    )
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
 
 
 class UserPaymentSerializer(serializers.ModelSerializer):
@@ -94,12 +85,12 @@ class UserAccountSerializer(serializers.ModelSerializer):
     usertype = UserTypeSerializer(source='usertype_set', many=True, read_only=True)
 
     class Meta:
-        model = CustomUser
+        model = Customer
         fields = ('cid', 'first_name', 'last_name', 'email', 'username', 'image', 'gender', 'phonenumber_primary', 'phonenumber_secondary', 'address', 'payment', 'usertype',)
 
 class UpdateUserAccountSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = Customer
         fields = ['first_name', 'last_name', 'email', 'username', 'image', 'gender', 'phonenumber_primary', 'phonenumber_secondary']
 
     def update(self, instance, validated_data):

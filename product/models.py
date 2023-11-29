@@ -3,8 +3,7 @@ from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
-
-from customer.models import CustomUser
+from ckeditor_uploader.fields import RichTextUploadingField
 
 def product_directory_path(instance, filename):
     return f"vendor_{instance.vend_id}/{filename}"
@@ -16,7 +15,7 @@ def admin_image_directory(instance, filename):
 class Product(models.Model):
     pid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="product-", alphabet=hexdigits)
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = RichTextUploadingField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
@@ -52,15 +51,15 @@ class ProductImage(models.Model):
 class Category(models.Model):
     # Base Category choices
     CATEGORY_CHOICES = {
-        ('Automotive', 'Auto'),
-        ('Baby Products', 'Baby'),
-        ('Beauty & Personal Care', 'Beauty'),
-        ('Health & Household', 'Health'),
-        ('Home & Kitchen', 'Home'),
+        ('Automotive', 'Automotive'),
+        ('Baby Products', 'Baby Products'),
+        ('Beauty & Personal Care', 'Beauty & Personal Care'),
+        ('Health & Household', 'Health & Household'),
+        ('Home & Kitchen', 'Home & Kitchen'),
         ('Luggage', 'Luggage'),
-        ("Men's Fashion", 'Men'),
-        ("Women's Fashion", 'Women'),
-        ('Pet Supplies', 'Pet')
+        ("Men's Fashion", "Men's Fashion"),
+        ("Women's Fashion", "Women's Fashion"),
+        ('Pet Supplies', 'Pet Supplies')
     }
 
     # category details
@@ -76,7 +75,7 @@ class Category(models.Model):
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
     #category_details = models.CharField(choices=get_category_details_choices, max_length=50)
     name = models.CharField(max_length=150)
-    description = models.TextField(null=True, blank=True)
+    description = RichTextUploadingField(null=True, blank=True)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -99,6 +98,9 @@ class Inventory(models.Model):
     def __repr__(self):
         return self.quantity
     
+    def __str(self):
+        return self.quantity
+    
 # product discount
 class Discount(models.Model):
     dis_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="dis-")
@@ -116,6 +118,8 @@ class Discount(models.Model):
     def __repr__(self):
         return self.name
     
+    def __str__(self):
+        return self.name
 
 class ProductOrders(models.Model):
     ORDER_STATUS = {
@@ -129,7 +133,7 @@ class ProductOrders(models.Model):
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
     created_at = models.DateTimeField(default=timezone.now)
     
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    # user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "Orders"
@@ -156,7 +160,7 @@ class ProductReview(models.Model):
     review_rating = models.CharField(max_length=50, choices=RATINGS, default='------')
     created_at = models.DateTimeField(default=timezone.now)
 
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    # user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
     def review_tag(self):
@@ -169,4 +173,7 @@ class ProductReview(models.Model):
         verbose_name_plural = 'Product Reviews'
 
     def __repr__(self):
+        return self.review_title
+    
+    def __str__(self):
         return self.review_title

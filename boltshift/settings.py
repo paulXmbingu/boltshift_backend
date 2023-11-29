@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import environ
+from datetime import timedelta
 
 # getting environment variables
 env = environ.Env()
@@ -19,7 +20,7 @@ SECRET_KEY = 'django-insecure-cr^=pqr7@bie(u*=hx-n4c#$z3!fb*7p=r!=l^_p1ol9m401(y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -35,20 +36,25 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # django rich text editor
+    'ckeditor',
+
     # my apps
     'customer',
     'product',
     'vendors',
     'provision',
 
-    # API handling
+    # REST API handling
     'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 
-    # API Token Authentication
-    'knox',
+    # React API Data Handling
+    'corsheaders',
 
-    # React Data Handling
-    'corsheaders'
+    # knox Token Handler
+    'knox'
 ]
 
 MIDDLEWARE = [
@@ -74,19 +80,78 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny'
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        'knox.auth.TokenAuthentication'
-    ]
+    # authentication classes
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+# REST Framework JWT Authentication
+SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+        'REFRESH_TOKEN_LIFETIME': timedelta(days=20),
+        'ROTATE_REFRESH_TOKENS': True,
+        'BLACKLIST_AFTER_ROTATION': True,
+        'UPDATE_LAST_LOGIN': False,
+
+        # encryption algorithm
+        'ALGORITHM': 'HS256',
+
+        'VERYFYING_KEY': None,
+        'AUDIENCE': None,
+        'ISSUER': None,
+        'JWK_URL': None,
+        'LEEWAY': 0,
+
+        'JTI_CLAIM': 'jti',
+
+        'AUTH_HEADER_TYPES': ('Bearer', ),
+        'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+        'USER_ID_FIELD': 'id',
+        'USER_ID_CLAIM': 'user_id',
+        "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+        'AUTH_TOKEN_CLASSES': [
+            'rest_framework_simplejwt.tokens.AccessToken'
+        ],
+        'TOKEN_TYPE_CLAIM': 'token_type',
+        'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+        'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+        'SLIDING_TOKEN_LIFETIME': timedelta(minutes=10),
+        'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+
+        "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+        "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+        "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+        "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+        "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+        "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
 # Backend POST server authentication
+# Default authentication for API routes (registration, login, ...)
 AUTHENTICATION_BACKENDS = [
-    'customer.auth.CustomAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend'
 ]
 
+# ckeditor upload url
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+# ckeditor configs set-up
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        'codeSnippet_theme': 'monokai',
+        'toolbar': 'all',
+        'extraPlugins': ','.join(
+            [
+                'widget',
+                'dialog'
+            ]
+        ),
+    }
+}
 
 ROOT_URLCONF = 'boltshift.urls'
 
@@ -127,7 +192,6 @@ DATABASES = {
         'PORT': env("DB_PORT")
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -180,7 +244,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Registering the custom user
-AUTH_USER_MODEL = 'customer.CustomUser'
+AUTH_USER_MODEL = 'customer.Customer'
 
 
 # Customizing the admin panel
@@ -200,12 +264,13 @@ JAZZMIN_SETTINGS = {
     # adding icons to the dashboard
     "icons": {
         "auth": "fas fa-users-cog", # default auth token icon
-        "knox.authtoken": "fa fa-lock", # knox auth icon
+        'token_blacklist.blacklistedtoken': "fa fa-lock", # rest_framework auth token icon
+        'token_blacklist.outstandingtoken': "fa fa-lock",
         "auth.user": "fas fa-user", # user icon
         "auth.Group": "fas fa-users", # group icon
 
         # customer icons
-        "customer.CustomUser": "fa fa-user-plus",
+        "customer.Customer": "fa fa-user-plus",
         "customer.CartItem": "fa fa-cart-plus",
         "customer.UserAddress": "fa fa-address-book",
         "customer.UserPayment": "fa fa-wallet",

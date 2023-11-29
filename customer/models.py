@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 from django.utils.html import mark_safe
-from vendors.utils import UserAccountMixin
+from utils.utils import UserAccountMixin
 
 # creates a folder for each admin/customer with the user.cid as the folder name
 # to hold each individual user uploaded file
@@ -13,7 +13,7 @@ def admin_image_directory(instance, filename):
     return f"{instance.cid}/{filename}"
 
 # customing our user
-class CustomUser(UserAccountMixin, AbstractUser):
+class Customer(AbstractUser, UserAccountMixin):
     GENDER = {
         ('Male', 'm'),
         ('Female', 'f')
@@ -39,6 +39,9 @@ class CustomUser(UserAccountMixin, AbstractUser):
     REQUIRED_FIELDS = ['username']
 
     def __repr__(self):
+        return self.username
+    
+    def __str__(self):
         return self.username
     
     class Meta:
@@ -71,7 +74,7 @@ class UserPayment(models.Model):
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
-    user_id = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    user_id = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
     REQUIRED_FIELDS = ['account_number', 'provider']
 
@@ -93,7 +96,7 @@ class UserAddress(models.Model):
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
-    user_id = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    user_id = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
     REQUIRED_FIELDS = ['streetname', 'county', 'city', 'country', 'phonenumber_primary']
 
@@ -106,8 +109,7 @@ class UserAddress(models.Model):
 
 # user type
 class UserType(models.Model):
-    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
+    user_id = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     is_customer = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)
-
 
