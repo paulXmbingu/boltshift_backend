@@ -3,8 +3,6 @@ from .models import (
     Customer,
     UserPayment,
     UserAddress,
-    ShoppingSession,
-    CartItem
 )
 
 @admin.register(Customer)
@@ -24,11 +22,3 @@ class PaymentAdmin(admin.ModelAdmin):
     list_display = ['account_number', 'provider']
     search_fields = ['provider']
     readonly_fields = ['account_number', 'provider']
-
-@admin.register(ShoppingSession)
-class SessionAdmin(admin.ModelAdmin):
-    list_display = ['user_id', 'total']
-
-@admin.register(CartItem)
-class CartAdmin(admin.ModelAdmin):
-    list_display = ['cart_id']
