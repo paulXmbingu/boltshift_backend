@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     # REST API handling
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
+    #'rest_framework_simplejwt.token_blacklist',
 
     # React API Data Handling
     'corsheaders',
@@ -183,7 +183,7 @@ DATABASES = {
     # postgresql url: "postgres://default:ytEvp8HfBRl2@ep-jolly-snow-40641812.us-east-1.postgres.vercel-storage.com:5432/verceldb"
     # postgresql format postgres://username:password@hostname/databasename
     'default': {
-        'ENGINE': "django.db.backends.postgresql_psycopg2",
+        'ENGINE': env("DB_ENGINE"),
         'NAME': env("DB_DATABASE"),
         'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
