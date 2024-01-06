@@ -180,16 +180,9 @@ WSGI_APPLICATION = 'boltshift.wsgi.app'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # hosting the database on vercel postgresql
-    # postgresql url: "postgres://default:ytEvp8HfBRl2@ep-jolly-snow-40641812.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-    # postgresql format postgres://username:password@hostname/databasename
-    'default': {
-        'ENGINE': env("DB_ENGINE"),
-        'NAME': env("DB_DATABASE"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"),
-        'PORT': env("DB_PORT")
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "db.sqlite3",
     }
 }
 
@@ -227,7 +220,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "/var/www/boltshift/static_files")
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -259,7 +253,7 @@ JAZZMIN_SETTINGS = {
     "custom_css": "css/admin.css",
 
     # user avatar/profile image
-    "user_avatar": "",
+    "user_avatar": "image",
     
     # adding icons to the dashboard
     "icons": {
@@ -287,7 +281,13 @@ JAZZMIN_SETTINGS = {
         "product.Product": "fa fa-th-list",
         "product.ProductImage": "fa fa-camera",
         "product.Category": "fa fa-list-alt",
-        "product.Discount": "fa fa-percent"
+        "product.Discount": "fa fa-percent",
+        "product.ProductReview": "fa fa-star",
+        "product.ProductOrders": "fa fa-shopping-cart",
+        
+        # provision icons
+        "provision.CartItem": "fa fa-cart-plus",
+        "provision.ShoppingSession": "fa fa-shopping-bag"
     },
 }
 

@@ -30,7 +30,7 @@ class Customer(AbstractUser, UserAccountMixin):
     deleted = models.BooleanField(default=False)
 
     def image_tag(self):
-        return mark_safe('<img src="%s" width="50" height="50" />', (self.image.url))
+        return mark_safe('<img src="%s" width="100" height="100" />' % (self.image.url))
     
     image_tag.short_description = "Image"
     

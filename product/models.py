@@ -128,7 +128,7 @@ class ProductOrders(models.Model):
         ('Ongoing', 'ongoing'),
         ('Cancelled', 'cancelled')
     }
-    ord_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits)
+    ord_id = ShortUUIDField(unique=True, length=5, max_length=10, alphabet=hexdigits, prefix="OO-")
     item_number = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
     created_at = models.DateTimeField(default=timezone.now)
