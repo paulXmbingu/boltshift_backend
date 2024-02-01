@@ -9,7 +9,7 @@ from customer.models import Customer
 
 # Create your models here.
 class ShoppingSession(models.Model):
-    sess_id = ShortUUIDField(unique=True, length=10, max_length=22, alphabet=hexdigits, prefix="session-")
+    sess_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=hexdigits, prefix="SESSION-")
     total = models.DecimalField(decimal_places=2, max_digits=9)
     user_id = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -24,7 +24,7 @@ class ShoppingSession(models.Model):
     
 # Cart Item
 class CartItem(models.Model):
-    cart_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="cart-")
+    cart_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=hexdigits, prefix="CART-")
     quantity = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now=True)
@@ -42,4 +42,3 @@ class CartItem(models.Model):
 
     def __repr__(self):
         return self.quantity
-    
