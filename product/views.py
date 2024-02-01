@@ -11,7 +11,7 @@ from knox.auth import TokenAuthentication
 # Base Class for unified Responses and Custom Validation Messages
 class RequestValidation(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def validate_input_data(self, required_fields, data):
         """
