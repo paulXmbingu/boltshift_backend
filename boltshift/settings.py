@@ -38,6 +38,9 @@ INSTALLED_APPS = [
 
     # django rich text editor
     'ckeditor',
+    
+    # Django model bit filter
+    'django_filters',
 
     # my apps
     'customer',
@@ -246,7 +249,7 @@ JAZZMIN_SETTINGS = {
     "site_title": "Boltshift Admin",
     "site_header": "Boltshift",
     "site_logo": "logo/neutral1.png",
-    'site_brand': 'Boltshift Admin',
+    'site_brand': 'Boltshift Admin | Dashboard',
     "welcome_sign": "Welcome to Boltshift Admin Panel",
     'copyright': 'Boltshift Marketplace',
     "show_ui_builder": True,
@@ -261,6 +264,7 @@ JAZZMIN_SETTINGS = {
         'token_blacklist.blacklistedtoken': "fa fa-lock", # rest_framework auth token icon
         'token_blacklist.outstandingtoken': "fa fa-lock",
         "auth.user": "fas fa-user", # user icon
+        "knox.authtoken": "fa fa-lock",
         "auth.Group": "fas fa-users", # group icon
 
         # customer icons
