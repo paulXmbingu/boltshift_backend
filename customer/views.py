@@ -22,11 +22,7 @@ from knox.models import AuthToken
 from knox.auth import TokenAuthentication
 
 from .serializer import RegistrationSerializer, LoginSerializer, UpdateUserAccountSerializer, UserAccountSerializer, UserAddressSerializer, UserPaymentSerializer, UserTypeSerializer
-from .models import Customer, UserAddress, UserPayment
-
-
-def index(request):
-    return HttpResponse("<h2>Welcome to <b><i>Boltshift E-commerce</i></b></h2>")
+from .models import Customer, UserAddress, UserCardInformation
 
 class CustomerTokenObtainView(TokenObtainSerializer):
     serializer_class = CustomerTokenObtainSerializer
@@ -171,7 +167,7 @@ class UserPaymentView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        payments = UserPayment.objects.all()
+        payments = UserCardInformation.objects.all()
         serializer = UserPaymentSerializer(payments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     

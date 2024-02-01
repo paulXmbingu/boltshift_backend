@@ -2,7 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import Token
 from django.contrib.auth.password_validation import validate_password
-from .models import Customer, UserAddress, UserPayment, UserType
+from .models import Customer, UserAddress, UserCardInformation, UserType
 
 USERNAME_LENGTH = 6
 
@@ -60,7 +60,7 @@ class LoginSerializer(serializers.Serializer):
 
 class UserPaymentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserPayment
+        model = UserCardInformation
         fields = ['account_number', 'provider']
 
     def validate_account_number(self, value):
