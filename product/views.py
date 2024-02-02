@@ -4,14 +4,12 @@ from rest_framework import status
 
 from .serializer import ProductSerializer
 from .models import Product
- 
-from rest_framework.permissions import IsAuthenticated
+
 from knox.auth import TokenAuthentication
 
 # Base Class for unified Responses and Custom Validation Messages
 class RequestValidation(APIView):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def validate_input_data(self, required_fields, data):
         """

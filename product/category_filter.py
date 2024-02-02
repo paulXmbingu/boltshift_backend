@@ -24,5 +24,10 @@ CATEGORY_DETAILS = {
     'Pet Supplies': ['Dogs', 'Cats', 'Fish & Aquatic Pets', 'Birds', 'Horses', 'Reptiles & Amphibians', 'Small Animals', 'Filter Lable']
 }
 
-g = CATEGORY_DETAILS.get('Automotive')
-print(g)
+# returns a tuple representation of sub_category
+# given the category
+def return_category_details_tuple(category):
+    g = ()
+    for i in CATEGORY_DETAILS.get(category):
+        g += ((i, i.lower()),)
+    return g
