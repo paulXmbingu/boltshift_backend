@@ -16,11 +16,11 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductImage)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ['img_id', 'product_id']
+    list_display = ['img_id', 'image', 'image_url']
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'cat_id']
+    list_display = ['cat_id', 'category_choice']
 
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
@@ -33,7 +33,7 @@ class DiscountAdmin(admin.ModelAdmin):
 @admin.register(ProductReview)
 class AdminReview(admin.ModelAdmin):
     list_display = ['review_title', 'review_rating']
-    readonly_fields = ['review_screenshots']
+    readonly_fields = ['review_tag']
 
 @admin.register(ProductOrders)
 class OrderAdmin(admin.ModelAdmin):

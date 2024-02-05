@@ -4,14 +4,14 @@ from shortuuid.django_fields import ShortUUIDField
 import string
 from django.utils.html import mark_safe
 from ckeditor_uploader.fields import RichTextUploadingField
-from .category_filter import CATEGORY_CHOICES, return_category_details_tuple
+from .category_filter import CATEGORY_CHOICES
 
 
 def product_image_directory(instance, filename):
     return f"{instance.__class__.__name__}/{instance.img_id}/{filename}"
 
 def customer_review_image_directory(instance, filename):
-    return f"{instance.__class__.__name__}/{instance.cid}/{filename}"
+    return f"{instance.__class__.__name__}/{instance.rev_id}/{filename}"
 
 # product
 class Product(models.Model):
@@ -27,13 +27,13 @@ class Product(models.Model):
         # Foreign Keys / Table Relationships
     """
     # category
-    category = models.OneToOneField('Category', on_delete=models.SET_NULL, null=False)
+    category = models.OneToOneField('Category', on_delete=models.SET_NULL, null=True)
     # inventory
-    inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, null=False)
+    inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, null=True)
     # discount
     discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True)
     # images
-    images = models.ForeignKey('ProductImage', on_delete=models.SET_NULL, null=False)
+    images = models.ForeignKey('ProductImage', on_delete=models.SET_NULL, null=True)
 
     def __repr__(self):
         return "{} {}".format(self.title, self.brand_name)
@@ -56,25 +56,32 @@ class ProductImage(models.Model):
     
     class Meta:
         verbose_name_plural = "Images"
+        
+    def __str__(self):
+        return "{}".format(self.image.url)
+        
+    def __repr__(self):
+        return "{}".format(self.image.url)
 
+# One product for one category
+# Similarly one category for one product
 class Category(models.Model):    
     cat_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
-    sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
+    #sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        ordering = ('created_at')
         verbose_name_plural = "Categories"
 
     def __repr__(self):
-        return "{} {}".format(self.category_choice, self.sub_category_details)
+        return "{}".format(self.category_choice)
     
     def __str__(self):
-        return "{} {}".format(self.category_choice, self.sub_category_details)
+        return "{}".format(self.category_choice)
     
-# product inventory
+# product inventory/ product stock
 class Inventory(models.Model):
     inv_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="INV-")
     quantity = models.PositiveIntegerField(default=0)
@@ -93,10 +100,8 @@ class Inventory(models.Model):
 # product discount
 class Discount(models.Model):
     dis_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="DIS-")
-    name = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=100, help_text="e.g, Black Friday")
     discount_percent = models.DecimalField(decimal_places=2, max_digits=5)
-    #discount_img = models.ImageField()
     active = models.BooleanField(default=False)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
@@ -105,10 +110,10 @@ class Discount(models.Model):
         verbose_name_plural = "Discounts"
 
     def __repr__(self):
-        return self.name
+        return "{} {}".format(self.name, self.active)
     
     def __str__(self):
-        return self.name
+        return "{} {}".format(self.name, self.active)
     
 # handles user orders
 class ProductOrders(models.Model):
@@ -127,7 +132,7 @@ class ProductOrders(models.Model):
     
     # linking to the customer model
     # links many to one
-    # user_id = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "Orders"
@@ -149,6 +154,7 @@ class ProductReview(models.Model):
         ('⭐⭐', 2),
         ('⭐', 1),
     }
+    
     rev_id = ShortUUIDField(unique=True, length=10, max_length=15, prefix='REV-', alphabet=string.digits)
     review_title = models.CharField(max_length=50, default='Great Product')
     review_screenshots = models.FileField(upload_to=customer_review_image_directory, null=True, blank=True, default=None)
@@ -156,7 +162,7 @@ class ProductReview(models.Model):
     review_rating = models.CharField(max_length=50, choices=RATINGS, default='------')
     created_at = models.DateTimeField(default=timezone.now)
 
-    # user = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
     def review_tag(self):

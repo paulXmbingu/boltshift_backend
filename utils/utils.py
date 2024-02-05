@@ -41,7 +41,8 @@ class UserAccountMixin(models.Model):
 
     class Meta:
         abstract = True
-           
+        
+        
 # File Compressor for the uploaded images
 # Shrinks the size of the images while retaining the quality
 def compress_image_uploads(loaded_image):
@@ -51,6 +52,7 @@ def compress_image_uploads(loaded_image):
     # destructing and reconstruction of the compressed image
     r, g, b = cv2.split(img)
     
+    # calculating RGB pixels
     r, g, b = r / 255, g / 255, b / 255
     
     # shrinking the image components while retaining the original value

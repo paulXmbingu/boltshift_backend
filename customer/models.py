@@ -5,15 +5,14 @@ from django.utils.translation import gettext_lazy as _
 from shortuuid.django_fields import ShortUUIDField
 import string
 from django.utils.html import mark_safe
-from utils.utils import UserAccountMixin, compress_image_uploads
+from utils.utils import UserAccountMixin
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 # creates a folder for each admin/customer with the user.cid as the folder name
 # to hold each individual user uploaded file
 def customer_image_upload_directory(instance, filename):
-    new_img = compress_image_uploads(filename)
-    return f"{instance.__class__.__name__}/{instance.cid}/{new_img}"
+    return f"{instance.__class__.__name__}/{instance.cid}/{filename}"
     
     
 def validate_expiry_date(value):
@@ -28,6 +27,7 @@ class Customer(AbstractUser, UserAccountMixin):
         ('Male', 'm'),
         ('Female', 'f')
     }
+    
     cid = ShortUUIDField(unique=True, length=10, max_length=15, prefix="USER-", alphabet=string.digits)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
