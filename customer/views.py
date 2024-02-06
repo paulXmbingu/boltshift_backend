@@ -24,6 +24,16 @@ from knox.auth import TokenAuthentication
 from .serializer import RegistrationSerializer, LoginSerializer, UpdateUserAccountSerializer, UserAccountSerializer, UserAddressSerializer, UserPaymentSerializer, UserTypeSerializer
 from .models import Customer, UserAddress, UserCardInformation
 
+# handles the not found urls
+class CatchAllView(APIView):
+    def get(self, request, *args, **kwargs):
+        message = {
+            "page": request.build_absolute_uri(), # getting the full url path
+            "details": "Page Not Found"
+        }
+        return Response(message, status=status.HTTP_404_NOT_FOUND)
+        
+
 class CustomerTokenObtainView(TokenObtainSerializer):
     serializer_class = CustomerTokenObtainSerializer
 
