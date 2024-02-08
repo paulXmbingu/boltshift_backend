@@ -20,6 +20,7 @@ class Product(models.Model):
     description = RichTextUploadingField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     brand_name = models.CharField(max_length=100)
+    feautured = models.BooleanField(default=False)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 

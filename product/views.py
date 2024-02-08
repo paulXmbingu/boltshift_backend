@@ -43,7 +43,7 @@ class HomePage(RequestValidation):
             'specials': self.special_offers(),
             'trending': self.trending_products()
         }
-        return self.popular_categories()
+        return self.featured_products()
 
     def popular_categories(self):
         serializer_class = PopularProductSerializer
@@ -58,7 +58,17 @@ class HomePage(RequestValidation):
         return self.build_response('Success', output, status.HTTP_200_OK)
         
     def featured_products(self):
-        pass
+        serializer_class = ProductSerializer
+        queryset = Product.objects.filter(feautured=True)
+        
+        featured_product = {}
+        for item in queryset:
+            featured_product['pid'] = item.pid
+            featured_product['title'] = item.title
+            featured_product['description'] = item.description
+            featured_product['price'] = item.price
+            
+        return self.build_response("Success", featured_product, status.HTTP_200_OK)
         
     def popular_reviews(self):
         pass
