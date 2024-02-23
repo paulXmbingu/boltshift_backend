@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, ProductImage, Category, Inventory, Discount, PopularProduct
+from .models import Product, ProductImage, Category, Inventory, Discount, PopularProduct, ProductReview
 
 class ProductSerializer(serializers.Serializer):
     class Meta:
@@ -30,3 +30,8 @@ class PopularProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = PopularProduct
         fields = ['pop_id', 'category', 'popularity_count']
+        
+class ProductReviewSerialzer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductReview
+        fields ='__all__'

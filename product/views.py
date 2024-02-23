@@ -2,10 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializer import ProductSerializer, PopularProductSerializer
-from .models import Product, PopularProduct
+from .serializer import ProductSerializer, PopularProductSerializer, ProductReviewSerialzer
+from .models import Product, PopularProduct, ProductReview
 
 from knox.auth import TokenAuthentication
+
+from utils.utils import save_top_categories
 
 # Base Class for unified Responses and Custom Validation Messages
 class RequestValidation(APIView):
@@ -36,42 +38,56 @@ class RequestValidation(APIView):
 # default page with the website loads
 class HomePage(RequestValidation):
     def get(self, request):
-        _methods = {
-            'popular_categories': self.popular_categories(),
-            'featured': self.featured_products(),
-            'reviews': self.popular_reviews(),
-            'specials': self.special_offers(),
-            'trending': self.trending_products()
-        }
+        save_top_categories()
         return self.featured_products()
 
     def popular_categories(self):
         serializer_class = PopularProductSerializer
         queryset = PopularProduct.objects.all()
         
-        output = {}
+        category_list = []
         for item in queryset:
-            output['pop_id'] = item.pop_id
-            output['category'] = item.category
-            output['popularity_count'] = item.popularity_count
+            output = {
+                'pop_id': item.pop_id,
+                'category': item.category,
+                'popularity_count': item.popularity_count
+            }
+            category_list.append(output)
          
-        return self.build_response('Success', output, status.HTTP_200_OK)
+        return self.build_response('Success', category_list, status.HTTP_200_OK)
         
     def featured_products(self):
         serializer_class = ProductSerializer
         queryset = Product.objects.filter(feautured=True)
         
-        featured_product = {}
+        featured_list = []
         for item in queryset:
-            featured_product['pid'] = item.pid
-            featured_product['title'] = item.title
-            featured_product['description'] = item.description
-            featured_product['price'] = item.price
+            output = {
+                'pid': item.pid,
+                'title': item.title,
+                'description': item.description,
+                'price': item.price
+            }
+            featured_list.append(output)
             
-        return self.build_response("Success", featured_product, status.HTTP_200_OK)
+        return self.build_response("Success", featured_list, status.HTTP_200_OK)
         
     def popular_reviews(self):
-        pass
+        serializer_class = ProductReviewSerialzer
+        queryset = ProductReview.objects.all().order_by('created_at')
+
+        reviews_list = []
+        for item in queryset:
+            reviews = {
+                "rev_id": item.rev_id,
+                "title": item.review_title,
+                "review_text": item.review_text,
+                "rating": item.review_rating
+            }
+            reviews_list.append(reviews)
+            
+        return self.build_response("Success", reviews_list, status.HTTP_200_OK)
+        
         
     def special_offers(self):
         pass
@@ -85,27 +101,43 @@ class ProductCatalogue(RequestValidation):
         serializer_class = ProductSerializer
         queryset = Product.objects.all()
         
-        products = {}
+        products_list = []
         for item in queryset:
-            products['pid'] = item.pid
-            products['title'] = item.title
-            products['description'] = item.description
-            products['price'] = item.price
-            products['title'] = item.brand_name
-            products['discount'] = [item.discount.dis_id, item.discount.name, item.discount.discount_percent, item.discount.active]
-            products['inventory'] = [item.inventory.inv_id, item.inventory.quantity]
-            products['category'] = [item.category.cat_id, item.category.category_choice]
+            product_data = {
+                'id': item.id,
+                'pid': item.pid,
+                'title': item.title,
+                'description': item.description,
+                'price': item.price,
+                'brand_name': item.brand_name,
+                'discount': {
+                    'dis_id': item.discount.dis_id,
+                    'name': item.discount.name,
+                    'discount_percent': item.discount.discount_percent,
+                    'active': item.discount.active
+                },
+                'inventory': {
+                    'inv_id': item.inventory.inv_id,
+                    'quantity': item.inventory.quantity
+                },
+                'category': {
+                    'cat_id': item.category.cat_id,
+                    'category_choice': item.category.category_choice
+                }
+            }
+            products_list.append(product_data)
+        save_top_categories()
             
-        return self.build_response('Success', products, status.HTTP_200_OK)
+        return self.build_response('Success', products_list, status.HTTP_200_OK)
     
 
 # Renders details of a specific product in the product overview page
 class GetProductDetail(RequestValidation):
     serializer_class = ProductSerializer
 
-    def get_object(self, pk):
+    def get_object(self, pid):
         try:
-            product = Product.ojects.get(pid=pk)
+            product = Product.ojects.get(pid=pid)
             if product is None:
                 return self.build_response('Info', f'No Product with id {pk}', status.HTTP_200_OK)
             return product
@@ -113,12 +145,13 @@ class GetProductDetail(RequestValidation):
            return self.build_response('Error', 'Product not Found', status.HTTP_400_BAD_REQUEST)
         
     def get(self, request):
-        required_fields = ['pid'] 
+        required_fields = ['pid']
         self.validate_input_data(required_fields, request.GET)
     
         # Request Data
         requestData = {}
         requestData['pid'] = request.GET.get('pid')
+        print(requestData)
 
         product = self.get_object(requestData.get('pid'))
         serializer = self.serializer_class(product, many=False)
