@@ -37,9 +37,22 @@ class RequestValidation(APIView):
 # default homepage
 # default page with the website loads
 class HomePage(RequestValidation):
+    allowed_methods = ['GET']
+    
     def get(self, request):
         save_top_categories()
-        return self.featured_products()
+        
+        categories = self.popular_categories()
+        featured = self.featured_products()
+        reviews = self.popular_reviews()
+        
+        result = {
+            "popular_categories": categories,
+            "featured_products": featured,
+            "popular_reviews": reviews,
+        }
+        
+        return self.build_response("Success", result, status.HTTP_200_OK)
 
     def popular_categories(self):
         serializer_class = PopularProductSerializer
@@ -54,7 +67,7 @@ class HomePage(RequestValidation):
             }
             category_list.append(output)
          
-        return self.build_response('Success', category_list, status.HTTP_200_OK)
+        return category_list
         
     def featured_products(self):
         serializer_class = ProductSerializer
@@ -70,7 +83,7 @@ class HomePage(RequestValidation):
             }
             featured_list.append(output)
             
-        return self.build_response("Success", featured_list, status.HTTP_200_OK)
+        return featured_list
         
     def popular_reviews(self):
         serializer_class = ProductReviewSerialzer
@@ -86,7 +99,7 @@ class HomePage(RequestValidation):
             }
             reviews_list.append(reviews)
             
-        return self.build_response("Success", reviews_list, status.HTTP_200_OK)
+        return reviews_list
         
         
     def special_offers(self):
