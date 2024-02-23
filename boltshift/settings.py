@@ -57,7 +57,10 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # knox Token Handler
-    'knox'
+    'knox',
+    
+    # Tracking suspicious logins
+    'axes'
 ]
 
 MIDDLEWARE = [
@@ -70,7 +73,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     # corsheaders middleware
-    'corsheaders.middleware.CorsMiddleware'
+    'corsheaders.middleware.CorsMiddleware',
+    
+    # handling suspicious logins
+    'axes.middleware.AxesMiddleware',
 ]
 
 # Whitelisting the React-Django sync port
@@ -135,8 +141,18 @@ SIMPLE_JWT = {
 # Backend POST server authentication
 # Default authentication for API routes (registration, login, ...)
 AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
     'django.contrib.auth.backends.ModelBackend'
 ]
+
+# enabling axes plugin functionality
+AXES_ENABLED = True
+
+# setting up number of allowed login attempts
+AXES_FAILURE_LIMIT = 3
+
+# setting up axes cooloff timer to next login
+AXES_COOLOFF_TIME = 1 # for one hour
 
 # ckeditor upload url
 CKEDITOR_UPLOAD_PATH = 'uploads/'
@@ -264,6 +280,9 @@ JAZZMIN_SETTINGS = {
         'token_blacklist.blacklistedtoken': "fa fa-lock", # rest_framework auth token icon
         'token_blacklist.outstandingtoken': "fa fa-lock",
         "auth.user": "fas fa-user", # user icon
+        "axes.accesslog": "fa fa-book",
+        "axes.accessfailurelog": "fa fa-ban",
+        "axes.accessattempt": "fa fa-key",
         "knox.authtoken": "fa fa-lock",
         "auth.Group": "fas fa-users", # group icon
 
