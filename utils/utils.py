@@ -19,7 +19,7 @@ def save_top_categories():
 
     # Save the top 6 categories to the PopularProduct model
     for category, count in top_categories:
-        popular_product = PopularProduct.objects.get_or_create(category=category)
+        popular_product, created = PopularProduct.objects.get_or_create(category=category)
         popular_product.popularity_count = count
         popular_product.save()
     
