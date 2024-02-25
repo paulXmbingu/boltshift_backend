@@ -35,12 +35,17 @@ Control or Command-Click the buttons below to access the interactive prototype i
    pip install -r requirements.txt
    ```
 
-4. **Create a superuser (for first timers):**
+4. **Collecting all static files in one folder for easy rendering**
+   ```
+   python manage.py collectstatic
+   ```
+   
+5. **Create a superuser (for first timers):**
    ```
    python manage.py createsuperuser
    ```
-
-5. **Start the development server:**
+   
+6. **Start the development server:**
    ```
    python manage.py runserver
    ```
