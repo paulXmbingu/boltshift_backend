@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.http import Http404
 
 from .serializer import ProductSerializer, PopularProductSerializer, ProductReviewSerialzer
 from .models import Product, PopularProduct, ProductReview
@@ -101,7 +102,6 @@ class HomePage(RequestValidation):
             
         return reviews_list
         
-        
     def special_offers(self):
         pass
         
@@ -150,22 +150,18 @@ class GetProductDetail(RequestValidation):
 
     def get_object(self, pid):
         try:
-            product = Product.ojects.get(pid=pid)
+            product = Product.objects.get(pid=pid)
             if product is None:
                 return self.build_response('Info', f'No Product with id {pk}', status.HTTP_200_OK)
             return product
         except AttributeError:
            return self.build_response('Error', 'Product not Found', status.HTTP_400_BAD_REQUEST)
         
-    def get(self, request):
-        required_fields = ['pid']
-        self.validate_input_data(required_fields, request.GET)
-    
-        # Request Data
-        requestData = {}
-        requestData['pid'] = request.GET.get('pid')
-        print(requestData)
-
-        product = self.get_object(requestData.get('pid'))
-        serializer = self.serializer_class(product, many=False)
-        return self.build_response('Success', serializer.data, status.HTTP_200_OK)
+    def get(self, request, pid, *args, **kwargs):
+        
+        try:
+            product = self.get_object(pid)
+            serializer = self.serializer_class(product)
+            return self.build_response('Success', serializer.data, status.HTTP_200_OK)
+        except Http404 as e:
+            return self.build_response("Error", str(e), status.HTTP_404_NOT_FOUND)
