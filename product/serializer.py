@@ -4,7 +4,7 @@ from .models import Product, ProductImage, Category, Inventory, Discount, Popula
 class ProductSerializer(serializers.Serializer):
     class Meta:
         model = Product
-        exclude = ('image')
+        exclude = '__all__'
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

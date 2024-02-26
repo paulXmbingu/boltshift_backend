@@ -152,7 +152,7 @@ class GetProductDetail(RequestValidation):
         try:
             product = Product.objects.get(pid=pid)
             if product is None:
-                return self.build_response('Info', f'No Product with id {pk}', status.HTTP_200_OK)
+                return self.build_response('Info', f'No Product with id {pid}', status.HTTP_200_OK)
             return product
         except AttributeError:
            return self.build_response('Error', 'Product not Found', status.HTTP_400_BAD_REQUEST)
