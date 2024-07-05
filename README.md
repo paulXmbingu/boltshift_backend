@@ -27,6 +27,7 @@ Control or Command-Click the buttons below to access the interactive prototype i
 2. **Install dependencies:**
    ```
    pip install -r requirements.txt
+   pip install django
    ```
 
 3. **Create and activate a virtual environment:**
