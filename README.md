@@ -81,10 +81,8 @@ Control or Command-Click the buttons below to access the interactive prototype i
 
 - Special Contributions: **Marion Ngayi & The Senjes Cuisine Team**
 - Product Research & Design: **Paul Mbingu**
-- Frontend Engineers: **Evelyne Atieno & Guantai John Paul**
+- Frontend Engineers: **Paul Mbingu & Felix Ouma**
 - Backend Engineers: **Romeo Mureithi & Samuel Maingi**
-- Android Engineers: **TBA**
-- iOS Engineers: **TBA**
   
 ## Contributing
 
