@@ -24,15 +24,15 @@ Control or Command-Click the buttons below to access the interactive prototype i
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
    ```
 
-2. **Create and activate a virtual environment:**
+2. **Install dependencies:**
+   ```
+   pip install -r requirements.txt
+   ```
+
+3. **Create and activate a virtual environment:**
    ```
    python3 -m venv venv
    source venv/bin/activate
-   ```
-
-3. **Install dependencies:**
-   ```
-   pip install -r requirements.txt
    ```
 
 4. **Collecting all static files in one folder for easy rendering**
