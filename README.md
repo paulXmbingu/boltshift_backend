@@ -76,6 +76,3 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 - Product Research & Design: **Paul Mbingu**
 - Frontend Engineers: **Paul Mbingu & Felix Ouma**
 - Backend Engineers: **Samuel Maingi & Paul Mbingu**
-  
-
-Happy coding!
