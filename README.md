@@ -4,14 +4,6 @@
 
 Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
-# Design, Prototype & User flow
-
-Control or Command-Click the buttons below to access the interactive prototype in Figma instantly. Explore the design by interacting with its elements. If you have any questions or encounter any issues, please don't hesitate to reach out to the designers in the Core Engineering Team for assistance (See credits list below). Your engagement with the prototype is appreciated!
-
-[![Design](https://img.shields.io/badge/Design-Ctrl%20or%20Cmd%20Click-c644a3?style=flat)](https://www.figma.com/file/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?type=design&node-id=1411%3A11643&mode=dev) [![Prototype](https://img.shields.io/badge/Prototype-Ctrl%20or%20Cmd%20Click-ff692e?style=flat)](https://www.figma.com/proto/0NuM2ZQjyX4Nvatd58oMMM/Boltshift?node-id=1663-14632&scaling=scale-down-width&page-id=1411%3A11643&starting-point-node-id=1663%3A14632&t=gYFeccmlX2jdKlsn-8&hide-ui=1)
-
-![Boltshift Marketplace Product Cover Artwork](https://res.cloudinary.com/excit3/image/upload/v1693943590/Boltshift%20Branding/Boltshift_Marketplace_Product_Cover_Artwork_viisbm.png)
-
 ## Prerequisites
 
 - Python 3.x
@@ -83,20 +75,7 @@ Control or Command-Click the buttons below to access the interactive prototype i
 - Special Contributions: **Marion Ngayi & The Senjes Cuisine Team**
 - Product Research & Design: **Paul Mbingu**
 - Frontend Engineers: **Paul Mbingu & Felix Ouma**
-- Backend Engineers: **Romeo Mureithi & Samuel Maingi**
+- Backend Engineers: **Samuel Maingi & Paul Mbingu**
   
-## Contributing
-
-We welcome contributions to enhance the Boltshift Marketplace backend. To contribute, follow these steps:
-
-1. Fork the repository on GitHub.
-2. Create a new branch for your feature/fix: `git checkout -b feature-name`
-3. Make your changes and commit them.
-4. Push your changes to your fork: `git push origin feature-name`
-5. Open a pull request on the original repository.
-
-## Support
-
-For any questions or issues, feel free to contact our team at support@boltshiftmarketplace.com.
 
 Happy coding!
