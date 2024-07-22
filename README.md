@@ -4,12 +4,11 @@
 
 Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
-## Prerequisites
-
-- Python 3.x
-- Virtual environment (recommended)
-
 ## Setup
+
+**Prerequisites**
+- Install latest version of [Python](https://www.python.org/downloads/)
+- Virtual environment (recommended)
 
 1. **Clone the repository:**
    ```
@@ -70,7 +69,7 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 - `templates/`: HTML templates for rendering views.
 - `requirements.txt`: List of required Python packages.
 
-## Core Product Engineering Team
+## Product Engineering Team
 
 - Special Contributions: **Marion Ngayi & The Senjes Cuisine Team**
 - Product Research & Design: **Paul Mbingu**
