@@ -6,38 +6,38 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 
 ## Setup
 
-**Prerequisites**
-- Install latest version of [Python](https://www.python.org/downloads/)
-- Virtual environment (recommended)
+1. **Prerequisites**
+   - Install latest version of [Python](https://www.python.org/downloads/)
+   - Virtual environment (recommended)
 
-1. **Clone the repository:**
+2. **Clone the repository:**
    ```
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
    ```
 
-2. **Install dependencies:**
+3. **Install dependencies:**
    ```
    pip install -r requirements.txt
    pip install django
    ```
 
-3. **Create and activate a virtual environment:**
+4. **Create and activate a virtual environment:**
    ```
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-4. **Collecting all static files in one folder for easy rendering**
+5. **Collecting all static files in one folder for easy rendering**
    ```
    python manage.py collectstatic
    ```
    
-5. **Create a superuser (for first timers):**
+6. **Create a superuser (for first timers):**
    ```
    python manage.py createsuperuser
    ```
    
-6. **Start the development server:**
+7. **Start the development server:**
    ```
    python manage.py runserver
    ```
@@ -48,26 +48,6 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 
 - Interact with the API endpoints using tools like `curl` or API client applications like Postman.
 
-## Project Structure
-
-- `boltshift_backend/`: Main project directory.
-
-   - `boltshift`: Base project folder. Contains:-
-      - `settings.py`: Project settings including database configuration, authentication, and more.
-      - `urls.py`: URL routing for the project:-
-         - `admin/`: Admin panel
-         - `customer/`: Home page, Orders, and more
-         - `product/`: Product overview, product purchase, and more
-         - `vendors/`: Vendor's panel, product tracking, income tracking
-
-- `apps/`: Contains individual applications within the project.
-  - `product/`: Application handling products and their details.
-  - `vendors/`: Application for managing vendors/product owners.
-  - `customer`: Application for managing customers/users
-
-- `static/`: Static files like CSS, JavaScript, and images.
-- `templates/`: HTML templates for rendering views.
-- `requirements.txt`: List of required Python packages.
 
 ## Product Engineering Team
 
