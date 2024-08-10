@@ -26,6 +26,12 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 - **tawk.to**: Live Chat
 - **Django**: Backend Framework
 
+## Product Engineering Team
+- Special Contributions: **Marion Ngayi & The Senjes Cuisine Team**
+- Product Research & Design: **Paul Mbingu**
+- Frontend Engineers: **Paul Mbingu & Felix Ouma**
+- Backend Engineers: **Samuel Maingi & Paul Mbingu**
+  
 ## Getting Started
 1. **Prerequisites**
    - Install latest version of [Python](https://www.python.org/downloads/)
@@ -66,9 +72,3 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
    ```
    python manage.py runserver
    ```
-
-## Product Engineering Team
-- Special Contributions: **Marion Ngayi & The Senjes Cuisine Team**
-- Product Research & Design: **Paul Mbingu**
-- Frontend Engineers: **Paul Mbingu & Felix Ouma**
-- Backend Engineers: **Samuel Maingi & Paul Mbingu**
