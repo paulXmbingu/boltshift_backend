@@ -45,7 +45,6 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 3. **Install Django and requirements:**
    ```
    python -m pip install
-
    ```
    ```
    pip install -r requirements.txt
