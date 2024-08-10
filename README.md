@@ -1,11 +1,9 @@
 ![Boltshift Marketplace Project Cover](https://res.cloudinary.com/excit3/image/upload/v1721684091/Boltshift%20Branding/Github_Front-end_Codebase_File_Cover_doqfbz.png)
 
 # Boltshift Marketplace Backend
-
 Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
 ## Features
-
 - **User Authentication**: Secure user accounts and authentication to manage profiles and track order history.
 - **Product Catalog**: A comprehensive listing of products, organized into categories for easy navigation.
 - **Search and Filters**: Effortlessly find products using the search functionality & apply filters to narrow down choices.
@@ -17,8 +15,8 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 - **Live Chat**: Connect with customer service representatives in real-time to address queries and resolve issues.
 
 ## Technologies
-
 - **Figma**: Design & Prototyping
+- **Miro**: Flowchart & Diagramming
 - **Dovetail**: Research Analysis & Repository
 - **Maze**: Usability Study
 - **React.js**: Frontend Framework
@@ -71,7 +69,6 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
    ```
 
 ## Product Engineering Team
-
 - Special Contributions: **Marion Ngayi & The Senjes Cuisine Team**
 - Product Research & Design: **Paul Mbingu**
 - Frontend Engineers: **Paul Mbingu & Felix Ouma**
