@@ -46,10 +46,10 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
    python manage.py runserver
    ```
 
-- Access the Django admin panel by navigating to the address bellow logging in with the superuser credentials.
-  ```
-  http://localhost:8000/admin/
-  ```
+8. **Access the Django admin panel:**
+   ```
+   http://localhost:8000/admin/
+   ```
 
 - Interact with the API endpoints using tools like `curl` or API client applications like Postman.
 
