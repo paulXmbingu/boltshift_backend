@@ -6,7 +6,7 @@ Welcome to the backend codebase of Boltshift Marketplace – built using Django.
 ## Getting Started
 
 ### Setup
-1. **Install latest version of**: [Python](https://www.python.org/downloads/)
+1. **Install and update**: [Python](https://www.python.org/downloads/)
 
 2. **Clone the repository:**
    ```
