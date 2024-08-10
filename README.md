@@ -27,7 +27,6 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 - **Django**: Backend Framework
 
 ## Getting Started
-
 1. **Prerequisites**
    - Install latest version of [Python](https://www.python.org/downloads/)
    - Virtual environment (recommended)
