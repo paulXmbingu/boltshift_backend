@@ -33,8 +33,7 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 - Backend Engineers: **Samuel Maingi & Paul Mbingu**
   
 ## Getting Started
-1. **Prerequisites**
-   - Install latest version of [Python](https://www.python.org/downloads/)
+1. **Install latest version of**:[Python](https://www.python.org/downloads/)
 
 2. **Clone the repository:**
    ```
