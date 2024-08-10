@@ -18,12 +18,16 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 3. **Install dependencies:**
    ```
    pip install django
+   ```
+   ```
    pip install -r requirements.txt
    ```
 
 4. **Create and activate a virtual environment:**
    ```
    python3 -m venv venv
+   ```
+   ```
    source venv/bin/activate
    ```
 
