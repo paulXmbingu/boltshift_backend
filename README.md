@@ -33,22 +33,26 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
 - Backend Engineers: **Samuel Maingi & Paul Mbingu**
   
 ## Getting Started
+
+### Setup
 1. **Install latest version of**: [Python](https://www.python.org/downloads/)
 
 2. **Clone the repository:**
    ```
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
    ```
-
-3. **Install dependencies:**
+   
+3. **Install Django and requirements:**
    ```
-   pip install django
+   python -m pip install
+
    ```
    ```
    pip install -r requirements.txt
    ```
-
-4. **Create and activate a virtual environment:**
+   
+### Usage
+1. **Create and activate virtual environment:**
    ```
    python3 -m venv venv
    ```
@@ -56,17 +60,17 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
    source venv/bin/activate
    ```
 
-5. **Collecting all static files in one folder for easy rendering**
+2. **Collecting all static files in one folder for easy rendering**
    ```
    python manage.py collectstatic
    ```
    
-6. **Create a superuser (for first timers):**
+3. **Create a superuser (for first timers):**
    ```
    python manage.py createsuperuser
    ```
    
-7. **Start the development server:**
+4. **Start the development server:**
    ```
    python manage.py runserver
    ```
