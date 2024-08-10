@@ -1,7 +1,7 @@
 ![Boltshift Marketplace Project Cover](https://res.cloudinary.com/excit3/image/upload/v1721684091/Boltshift%20Branding/Github_Front-end_Codebase_File_Cover_doqfbz.png)
 
 # Boltshift Marketplace Backend
-Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
+Welcome to the backend codebase of Boltshift Marketplace – built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
 ## Getting Started
 
