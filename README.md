@@ -4,7 +4,7 @@
 
 Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
-## Setup
+## Setup & Usage
 
 1. **Prerequisites**
    - Install latest version of [Python](https://www.python.org/downloads/)
@@ -46,9 +46,10 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
    python manage.py runserver
    ```
 
-## Usage
-
-- Access the Django admin panel by navigating to ```http://localhost:8000/admin/``` and logging in with the superuser credentials.
+- Access the Django admin panel by navigating to the address bellow logging in with the superuser credentials.
+  ```
+  http://localhost:8000/admin/
+  ```
 
 - Interact with the API endpoints using tools like `curl` or API client applications like Postman.
 
