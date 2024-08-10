@@ -13,7 +13,7 @@ Welcome to the backend codebase of Boltshift Marketplace – built using Django.
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
    ```
    
-3. **Install Django and requirements:**
+3. **Install Django and app requirements:**
    ```
    pip install django
    ```
