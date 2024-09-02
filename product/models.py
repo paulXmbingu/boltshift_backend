@@ -13,13 +13,41 @@ def product_image_directory(instance, filename):
 def customer_review_image_directory(instance, filename):
     return f"{instance.__class__.__name__}/{instance.rev_id}/{filename}"
 
+# categories
+class Category(models.Model):
+    category_id = models.PositiveIntegerField(primary_key = True)
+    name = models.CharField(max_length=100)
+    description = RichTextUploadingField(max_length=1000)
+    parent_id = models.ForeignKey('self', on_delete=models.SET_NULL, default = 0) 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = timezone.now()
+
+
+    def __str__(self):
+        return self.name
+    
+
+# Brands
+class Brand(models.model):
+    brand_id = models.AutoField(primary_key = True, blank = False)
+    name = model.CharField(max_length = 100)
+    description = RichTextUploadingField(max-length =1000)
+    created_at = models.DateTimeField(default = timezone.now)
+    updated_at = timezone.now()
+
+
+
 # product
 class Product(models.Model):
     pid = ShortUUIDField(unique=True, length=10, max_length=15, prefix="PROD-", alphabet=string.digits)
-    title = models.CharField(max_length=100)
-    description = RichTextUploadingField()
+    name = models.CharField(max_length=100)
+    description = RichTextUploadingField(max_length=1000)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.IntegerField(default = 0)
+    category = models.ForeignKey(Category, on_delete =models.SET_NULL)
     brand_name = models.CharField(max_length=100)
+    # brand_id = models
     feautured = models.BooleanField(default=False)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
@@ -27,14 +55,16 @@ class Product(models.Model):
     """
         # Foreign Keys / Table Relationships
     """
-    # category
-    category = models.OneToOneField('Category', on_delete=models.SET_NULL, null=True)
+    # categories
+    # categories = models.ManyToOneRel(Category, on_delete=models.SET_NULL,  null = True)
+    
     # inventory
     inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, null=True)
     # discount
     discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True)
     # images
     images = models.ForeignKey('ProductImage', on_delete=models.SET_NULL, null=True)
+
 
     def __repr__(self):
         return "{} {}".format(self.title, self.brand_name)
@@ -69,6 +99,8 @@ class ProductImage(models.Model):
 class Category(models.Model):    
     cat_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
+
+
     #sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
@@ -115,7 +147,8 @@ class Discount(models.Model):
     
     def __str__(self):
         return "{} {}".format(self.name, self.active)
-    
+
+
 # handles user orders
 class ProductOrders(models.Model):
     ORDER_STATUS = {
@@ -127,7 +160,7 @@ class ProductOrders(models.Model):
     }
 
     ord_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="ORD-")
-    item_number = models.PositiveIntegerField(default=0)
+    item_number = models.PositiveIntergerField(default=0)
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
     created_at = models.DateTimeField(default=timezone.now)
     
@@ -187,7 +220,7 @@ class ProductReview(models.Model):
 class PopularProduct(models.Model):
     pop_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
     category = models.CharField(max_length=50)
-    popularity_count = models.IntegerField(default=0)
+    popularity_count = models.d(default=0)
     
     def __repr__(self):
         return "{} {}".format(self.pop_id, self.category)
