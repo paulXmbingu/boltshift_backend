@@ -18,9 +18,9 @@ class Category(models.Model):
     category_id = models.PositiveIntegerField(primary_key = True)
     name = models.CharField(max_length=100)
     description = RichTextUploadingField(max_length=1000)
-    parent_id = models.ForeignKey('self', on_delete=models.SET_NULL, default = 0) 
+    parent_id = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = False) 
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = timezone.now()
+    updated_at = models.DateTimeField(default = timezone.now())
 
 
     def __str__(self):
@@ -28,14 +28,18 @@ class Category(models.Model):
     
 
 # Brands
-class Brand(models.model):
-    brand_id = models.AutoField(primary_key = True, blank = False)
-    name = model.CharField(max_length = 100)
-    description = RichTextUploadingField(max-length =1000)
+class Brand(models.Model):
+    brand_id = models.AutoField(primary_key = True, default = 0)
+    name = models.CharField(max_length = 100)
+    description = RichTextUploadingField(max_length =1000)
     created_at = models.DateTimeField(default = timezone.now)
     updated_at = timezone.now()
 
+    def __str__(self) :
+        return self.name
 
+    def __repr__ (self):
+        return self.name
 
 # product
 class Product(models.Model):
@@ -45,9 +49,9 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField(default = 0)
-    category = models.ForeignKey(Category, on_delete =models.SET_NULL)
+    category = models.ForeignKey(Category, on_delete =models.SET_NULL, null = True)
     brand_name = models.CharField(max_length=100)
-    # brand_id = models
+    brand_id = models.ForeignKey(Brand,on_delete = models.SET_NULL, null = True)
     feautured = models.BooleanField(default=False)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
@@ -63,7 +67,7 @@ class Product(models.Model):
     # discount
     discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True)
     # images
-    images = models.ForeignKey('ProductImage', on_delete=models.SET_NULL, null=True)
+    images = models.ForeignKey('ProductPhotos', on_delete=models.SET_NULL, null=True)
 
 
     def __repr__(self):
@@ -73,10 +77,11 @@ class Product(models.Model):
         return "{} {}".format(self.title, self.brand_name)
 
 # product image
-class ProductImage(models.Model):
-    img_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="IMG-")
+class ProductPhotos(models.Model):
+    photo_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="IMG-")
     image = models.ImageField(upload_to=product_image_directory)
     more_images = models.FileField(upload_to=product_image_directory, null=True)
+    product = models.ForeignKey(Product, on_delete = models.SET_NULL, null = True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = timezone.now()
     
@@ -116,7 +121,7 @@ class Category(models.Model):
     
 # product inventory/ product stock
 class Inventory(models.Model):
-    inv_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="INV-")
+    inventory_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="INV-")
     quantity = models.PositiveIntegerField(default=0)
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
@@ -125,10 +130,10 @@ class Inventory(models.Model):
         verbose_name_plural = "Inventories"
 
     def __repr__(self):
-        return self.inv_id
+        return self.inventory_id
     
     def __str__(self):
-        return self.inv_id
+        return self.inventory_id
     
 # product discount
 class Discount(models.Model):
@@ -159,8 +164,8 @@ class ProductOrders(models.Model):
         ('Returns & Refunds', 'refunds')
     }
 
-    ord_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="ORD-")
-    item_number = models.PositiveIntergerField(default=0)
+    order_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="ORD-")
+    item_number = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
     created_at = models.DateTimeField(default=timezone.now)
     
@@ -220,7 +225,7 @@ class ProductReview(models.Model):
 class PopularProduct(models.Model):
     pop_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
     category = models.CharField(max_length=50)
-    popularity_count = models.d(default=0)
+    popularity_count = models.PositiveIntegerField(default=0)
     
     def __repr__(self):
         return "{} {}".format(self.pop_id, self.category)

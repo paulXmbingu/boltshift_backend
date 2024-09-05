@@ -8,3 +8,6 @@ urlpatterns = [
     path('catalogue/<str:pid>/', views.GetProductDetail.as_view(), name='product_detail'),
     path('product/details/<str:pid>/', views.GetProductDetail.as_view(), name='product_detail'),
 ]
+
+# if settings.DEBUG:
+    # urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
