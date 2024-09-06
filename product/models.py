@@ -23,8 +23,12 @@ class Category(models.Model):
     updated_at = models.DateTimeField(default = timezone.now())
 
 
+    
     def __str__(self):
         return self.name
+    def __repre__(self):
+        return self.name
+
     
 
 # Brands
@@ -43,7 +47,7 @@ class Brand(models.Model):
 
 # product
 class Product(models.Model):
-    pid = ShortUUIDField(unique=True, length=10, max_length=15, prefix="PROD-", alphabet=string.digits)
+    product_id = ShortUUIDField(unique=True, length=10, max_length=15, prefix="PROD-", alphabet=string.digits)
     name = models.CharField(max_length=100)
     description = RichTextUploadingField(max_length=1000)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -78,7 +82,7 @@ class Product(models.Model):
 
 # product image
 class ProductPhotos(models.Model):
-    photo_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="IMG-")
+    image_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="IMG-")
     image = models.ImageField(upload_to=product_image_directory)
     more_images = models.FileField(upload_to=product_image_directory, null=True)
     product = models.ForeignKey(Product, on_delete = models.SET_NULL, null = True)
@@ -102,7 +106,7 @@ class ProductPhotos(models.Model):
 # One product for one category
 # Similarly one category for one product
 class Category(models.Model):    
-    cat_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
+    category_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
 
 
@@ -223,12 +227,22 @@ class ProductReview(models.Model):
 # popular product model
 # saves the most popular product category
 class PopularProduct(models.Model):
-    pop_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
+    popularity_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
     category = models.CharField(max_length=50)
     popularity_count = models.PositiveIntegerField(default=0)
     
     def __repr__(self):
-        return "{} {}".format(self.pop_id, self.category)
+        return "{} {}".format(self.popularity_id, self.category)
         
     def __str__(self):
-        return "{} {}".format(self.pop_id, self.category)
+        return "{} {}".format(self.popularity_id, self.category)
+
+class ProductTagMappings(models.Model):
+    product_id = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True)
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+
+        return self.name
