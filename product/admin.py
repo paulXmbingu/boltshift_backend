@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import(
     Product,
     Category,
-    ProductPhotos,
+    ProductImages,
     Inventory,
     Discount,
     ProductReview,
@@ -11,10 +11,10 @@ from .models import(
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'product_id',]
+    list_display = ['name', 'pid',]
     list_filter = ['name',]
 
-@admin.register(ProductPhotos)
+@admin.register(ProductImages)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ['image_id', 'image', 'image_url']
 

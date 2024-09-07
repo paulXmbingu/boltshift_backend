@@ -21,7 +21,21 @@ class Category(models.Model):
     parent_id = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = False) 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(default = timezone.now())
+    category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
 
+
+    # sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
+    updated_at = timezone.now()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __repr__(self):
+        return "{}".format(self.category_choice)
+    
+    def __str__(self):
+        return "{}".format(self.category_choice)
 
     
     def __str__(self):
@@ -47,7 +61,7 @@ class Brand(models.Model):
 
 # product
 class Product(models.Model):
-    product_id = ShortUUIDField(unique=True, length=10, max_length=15, prefix="PROD-", alphabet=string.digits)
+    pid = ShortUUIDField(unique=True, length=10, max_length=15, prefix="PROD-", alphabet=string.digits)
     name = models.CharField(max_length=100)
     description = RichTextUploadingField(max_length=1000)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -71,7 +85,7 @@ class Product(models.Model):
     # discount
     discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True)
     # images
-    images = models.ForeignKey('ProductPhotos', on_delete=models.SET_NULL, null=True)
+    images = models.ForeignKey('ProductImages', on_delete=models.SET_NULL, null=True, related_name='products')
 
 
     def __repr__(self):
@@ -81,13 +95,13 @@ class Product(models.Model):
         return "{} {}".format(self.title, self.brand_name)
 
 # product image
-class ProductPhotos(models.Model):
+class ProductImages(models.Model):
     image_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="IMG-")
     image = models.ImageField(upload_to=product_image_directory)
     more_images = models.FileField(upload_to=product_image_directory, null=True)
-    product = models.ForeignKey(Product, on_delete = models.SET_NULL, null = True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='product_images')
     created_at = models.DateTimeField(default=timezone.now)
-    updated_at = timezone.now()
+    updated_at = models.DateTimeField(default = timezone)
     
     def image_url(self):
         return mark_safe('<img src="%s" width=50 heigh=50 />' % (self.image.url))
@@ -105,23 +119,9 @@ class ProductPhotos(models.Model):
 
 # One product for one category
 # Similarly one category for one product
-class Category(models.Model):    
-    category_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
-    category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
-
-
-    #sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
-
-    class Meta:
-        verbose_name_plural = "Categories"
-
-    def __repr__(self):
-        return "{}".format(self.category_choice)
+# class Category(models.Model):    
+#     category_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
     
-    def __str__(self):
-        return "{}".format(self.category_choice)
     
 # product inventory/ product stock
 class Inventory(models.Model):
@@ -238,7 +238,7 @@ class PopularProduct(models.Model):
         return "{} {}".format(self.popularity_id, self.category)
 
 class ProductTagMappings(models.Model):
-    product_id = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True)
+    pid = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True)
 
     def __str__(self):
         return self.name

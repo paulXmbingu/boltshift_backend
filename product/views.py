@@ -3,9 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
 
-from .serializer import ProductSerializer, PopularProductSerializer, ProductReviewSerialzer
-from .models import Product, PopularProduct, ProductReview
-
+from .serializer import *
+from .models import *
 from knox.auth import TokenAuthentication
 
 from utils.utils import save_top_categories
@@ -107,6 +106,14 @@ class HomePage(RequestValidation):
         
     def trending_products(self):
         pass
+
+# For rendering categories in th database
+
+class Category():
+    def get(self,request):
+        serializer_class = CategorySerializer
+        queryset = Brand.object.all
+
 
 # Responsible for getting all products in the database - Renders products in the catalogue page
 class ProductCatalogue(RequestValidation):
