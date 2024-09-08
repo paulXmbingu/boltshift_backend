@@ -107,13 +107,6 @@ class HomePage(RequestValidation):
     def trending_products(self):
         pass
 
-# For rendering categories in th database
-
-class Category():
-    def get(self,request):
-        serializer_class = CategorySerializer
-        queryset = Brand.object.all
-
 
 # Responsible for getting all products in the database - Renders products in the catalogue page
 class ProductCatalogue(RequestValidation):
@@ -172,3 +165,29 @@ class GetProductDetail(RequestValidation):
             return self.build_response('Success', serializer.data, status.HTTP_200_OK)
         except Http404 as e:
             return self.build_response("Error", str(e), status.HTTP_404_NOT_FOUND)
+        
+
+#brand views
+class BrandView(APIView):
+    def get(self,request):
+        queryset = Brand.objects.all()
+        serializer = BrandSerializer(queryset, many=True)
+        data ={
+            'message': 'Successfully Got All Brand',
+            'result': serializer.data
+        }
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+
+        # get all data
+        input_data = request.data
+        
+        new_data = Brand.objects.create(**input_data)
+        
+
+        return Response('Added Brand', status=status.HTTP_201_CREATED)
+
+
+#        
+        

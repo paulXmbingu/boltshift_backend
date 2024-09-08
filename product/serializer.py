@@ -38,4 +38,4 @@ class ProductReviewSerialzer(serializers.ModelSerializer):
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ['brand_id','name']
+        fields = ['brand_id','name','description']

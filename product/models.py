@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 import string
 from django.utils.html import mark_safe
@@ -20,14 +19,11 @@ class Category(models.Model):
     description = RichTextUploadingField(max_length=1000)
     parent_id = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = False) 
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(default = timezone.now())
+    updated_at = models.DateTimeField(auto_now=True)
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
 
 
     # sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
-
     class Meta:
         verbose_name_plural = "Categories"
 
@@ -47,11 +43,11 @@ class Category(models.Model):
 
 # Brands
 class Brand(models.Model):
-    brand_id = models.AutoField(primary_key = True, default = 0)
+    brand_id = ShortUUIDField(unique=True, length=10, max_length=15, prefix="brand-", alphabet=string.digits)
     name = models.CharField(max_length = 100)
     description = RichTextUploadingField(max_length =1000)
-    created_at = models.DateTimeField(default = timezone.now)
-    updated_at = timezone.now()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) :
         return self.name
@@ -71,8 +67,8 @@ class Product(models.Model):
     brand_name = models.CharField(max_length=100)
     brand_id = models.ForeignKey(Brand,on_delete = models.SET_NULL, null = True)
     feautured = models.BooleanField(default=False)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     """
         # Foreign Keys / Table Relationships
@@ -100,8 +96,8 @@ class ProductImages(models.Model):
     image = models.ImageField(upload_to=product_image_directory)
     more_images = models.FileField(upload_to=product_image_directory, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='product_images')
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(default = timezone)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def image_url(self):
         return mark_safe('<img src="%s" width=50 heigh=50 />' % (self.image.url))
@@ -127,8 +123,8 @@ class ProductImages(models.Model):
 class Inventory(models.Model):
     inventory_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="INV-")
     quantity = models.PositiveIntegerField(default=0)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Inventories"
@@ -145,8 +141,8 @@ class Discount(models.Model):
     name = models.CharField(max_length=100, help_text="e.g, Black Friday")
     discount_percent = models.DecimalField(decimal_places=2, max_digits=5)
     active = models.BooleanField(default=False)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Discounts"
@@ -171,8 +167,8 @@ class ProductOrders(models.Model):
     order_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="ORD-")
     item_number = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
-    created_at = models.DateTimeField(default=timezone.now)
-    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)    
     # linking to the customer model
     # links many to one
     user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
@@ -203,8 +199,8 @@ class ProductReview(models.Model):
     review_screenshots = models.FileField(upload_to=customer_review_image_directory, null=True, blank=True, default=None)
     review_text = models.CharField(max_length=1000, default='I love the product')
     review_rating = models.CharField(max_length=50, choices=RATINGS, default='------')
-    created_at = models.DateTimeField(default=timezone.now)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
@@ -230,6 +226,8 @@ class PopularProduct(models.Model):
     popularity_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
     category = models.CharField(max_length=50)
     popularity_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __repr__(self):
         return "{} {}".format(self.popularity_id, self.category)
@@ -239,6 +237,8 @@ class PopularProduct(models.Model):
 
 class ProductTagMappings(models.Model):
     pid = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
