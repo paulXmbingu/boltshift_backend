@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
+from django.core.exceptions import ValidationError
 
 from .serializer import *
 from .models import *
@@ -181,13 +182,134 @@ class BrandView(APIView):
     def post(self, request):
 
         # get all data
+        serializer = BrandSerializer(data = request.data)
         input_data = request.data
         
         new_data = Brand.objects.create(**input_data)
+
+        try:
+            # check if data is valid
+            serializer.is_valid(raise_exception=True)
+
+            serializer.save()
+            return Response({
+                'message': 'Brand added succesfully',
+                'result' : serializer.data
+            }, status=status.HTTP_201_CREATED)
+        
+        except ValidationError as e:
+            # handle validation errors
+
+            return Response({
+                'message': "An error occured while adding the brand",
+                'errors': str(e)
+
+            },status = status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
         return Response('Added Brand', status=status.HTTP_201_CREATED)
 
 
-#        
+#  categories
+
+class CategoryView(APIView):
+    def get(self,request):
         
+       
+        queryset = Category.objects.all()
+        serializer = CategorySerializer(queryset, many=True)
+        # import ipdb
+        # ipdb.set_trace()
+        data ={
+            'message': 'Successfully Got All Brand',
+            'result': serializer.data
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    
+    def post (self, request):
+        serializer = CategorySerializer(data = request.data)
+        input_data = request.data
+
+        new_categories = Category.objects.create(**input_data)
+
+        try: 
+            serializer.is_valid(raise_exception=True)
+
+            serializer.save()
+            return Response(
+                {
+                    'message' : 'Category created succesfully',
+                    'result': serializer.data
+                }, status = status.HTTP_201_CREATED)
+        except ValidationError as e:
+            # handle validation errors
+
+            return Response({
+                'message': "an error occured while adding categories",
+                'errors':str(e)
+
+            }, status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response ('Added Category', status = status.HTTP_201_CREATED)
+          
+        
+
+class InventoryView(APIView):
+
+    def get(self, request):
+        queryset = Inventory.objects.all()
+        serializer = InventorySerializer(queryset, many = True)
+
+        data = {
+            'message' : 'Inventory created succesfully',
+            'result' : serializer.data
+
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+    def post (self, request):
+        
+        #retrieve data from serializer
+
+        serializer = InventorySerializer(data = request.data)
+        input_data = request.data
+
+        new_inventory = Inventory.objects.create(**input_data)
+
+        try: 
+            serializer.is_valid(raise_exception=True)
+
+            serializer.save()
+            return Response({
+                'message' : 'Inventory created succesfully',
+                'result' : serializer.data
+            }, status = status.HTTP_201_CREATED)
+        
+        except ValidationError as e:
+
+            return Response({
+                'message' : 'Error occured while adding inventorys',
+                'errors' : str(e)
+            }, status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response ('added category', status=status.HTTP_201_CREATED)
+
+
+class ProductOrderView(APIView):
+    def get(self, request):
+        queryset = ProductOrders.objects.all()
+        serializer = ProductOrdersSerializer(queryset, many = True)
+
+        data = {
+            'message' : 'Orders created succesfully',
+            'result' :  'serializer.data'
+        }
+        
+        return Response(data, status=status.HTTP_200_OK)
+    
+    def post (self, request):
+        # get data from the serializer
+
+        serializer = ProductOrdersSerializer(data = request.data)
+        pass

@@ -14,10 +14,10 @@ def customer_review_image_directory(instance, filename):
 
 # categories
 class Category(models.Model):
-    category_id = models.PositiveIntegerField(primary_key = True)
+    category_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = RichTextUploadingField(max_length=1000)
-    parent_id = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = False) 
+    parent_id = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = False, related_name= 'subcategories') 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
@@ -36,6 +36,7 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
+    
     def __repre__(self):
         return self.name
 
@@ -77,7 +78,7 @@ class Product(models.Model):
     # categories = models.ManyToOneRel(Category, on_delete=models.SET_NULL,  null = True)
     
     # inventory
-    inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, null=True)
+    # inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, null=True, related_name= 'products')
     # discount
     discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True)
     # images
@@ -123,6 +124,8 @@ class ProductImages(models.Model):
 class Inventory(models.Model):
     inventory_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="INV-")
     quantity = models.PositiveIntegerField(default=0)
+    location =  models.CharField(max_length = 255, null = True)
+    product =models.ForeignKey(Product, on_delete= models.SET_NULL, null = True, related_name= 'inventory') 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -130,10 +133,11 @@ class Inventory(models.Model):
         verbose_name_plural = "Inventories"
 
     def __repr__(self):
-        return self.inventory_id
+        return self.inventory_id, self.pid, self.name
+
     
     def __str__(self):
-        return self.inventory_id
+        return self.inventory_id, self.pid, self.name
     
 # product discount
 class Discount(models.Model):
@@ -169,6 +173,7 @@ class ProductOrders(models.Model):
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
+
     # linking to the customer model
     # links many to one
     user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
@@ -182,6 +187,32 @@ class ProductOrders(models.Model):
         
     def __str__(self):
         return "{} {}".format(self.status, self.ord_id)
+    
+
+# handles orderd items
+class OrderedItems(models.Model):
+    order_item_id = ShortUUIDField(unique= True, length =10, max_length=15, prefix = 'ORD_ITEM-',alphabet = string.digits)
+    order = models.ForeignKey(ProductOrders, on_delete= models.SET_NULL, null = True, related_name= 'orders')
+    pid = models.ForeignKey(Product, on_delete= models.SET_NULL, null = True, related_name= 'orderedproducts')
+    quantity = models.PositiveIntegerField(default = 0)
+    price = models.FloatField(default = 0.00)
+    discount = models.FloatField(default = 0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "ordered item"
+        verbose_name_plural = "ordered items"
+
+    def __str__(self):
+
+        return self.order_item_id, self.product_id, self.price
+    
+    def __repr__(self):
+
+        return self.order_item_id, self.product_id, self.price
+
+
     
 # user product review 
 # N/B: a review MUST be tied to the corresponding product, also the user
@@ -235,14 +266,40 @@ class PopularProduct(models.Model):
     def __str__(self):
         return "{} {}".format(self.popularity_id, self.category)
 
-class ProductTagMappings(models.Model):
-    pid = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True)
+class ProductTag(models.Model):
+    tag_id = ShortUUIDField(unique = True, length = 10, max_length = 15, alphabet = string.digits, prefix = "Ptag-")
+    name = models.CharField(max_length=255)
+    # pid = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        verbose_name = "product tag"
+
+    class Meta:
+        verbose_name_plural = "product_tag_mappings"
+
+    def __str__(self):
+        return self.pid, self.tag_id
+
+    def __repr__(self):
+
+        return self.pid, self.tag_id
+    
+
+
+class ProductTagMapping(models.Model):
+    tag_id = models.ForeignKey(ProductTag, on_delete=models.SET_NULL, null = True, related_name="product_tag")
+    pid = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True, related_name= 'products')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.pid, self.tag_id
+    
 
     def __repr__(self):
 
-        return self.name
+        return self.pid, self.tag_id
+
