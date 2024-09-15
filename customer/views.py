@@ -28,11 +28,6 @@ from .models import Customer, UserAddress, UserCardInformation
 class CustomerTokenObtainView(TokenObtainSerializer):
     serializer_class = CustomerTokenObtainSerializer
 
-class CustomerRegistration(viewsets.ModelViewSet):
-    serializer_class = RegistrationSerializer
-    queryset = Customer.objects.all()
-    permission_classes = [AllowAny]
-
 class CustomerRegistration(APIView):
     def post(self, request, format=None):
         user_serializer = RegistrationSerializer(data=request.data)
