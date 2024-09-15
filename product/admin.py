@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import(
     Product,
     Category,
-    ProductImage,
+    ProductImages,
     Inventory,
     Discount,
     ProductReview,
@@ -11,20 +11,20 @@ from .models import(
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title', 'pid',]
-    list_filter = ['title',]
+    list_display = ['name', 'pid',]
+    list_filter = ['name',]
 
-@admin.register(ProductImage)
+@admin.register(ProductImages)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ['img_id', 'image', 'image_url']
+    list_display = ['image_id', 'image', 'image_url']
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['cat_id', 'category_choice']
+    list_display = ['category_id', 'category_choice']
 
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
-    list_display = ['inv_id', 'quantity']
+    list_display = ['inventory_id', 'quantity']
 
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
@@ -37,4 +37,4 @@ class AdminReview(admin.ModelAdmin):
 
 @admin.register(ProductOrders)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['ord_id', 'item_number', 'status']
+    list_display = ['order_id', 'item_number', 'status']
