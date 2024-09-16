@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: .  
+    volumes:
+      - .:/app
+      - db_data:/app/db.sqlite3
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1  
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  db_data:
