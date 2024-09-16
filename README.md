@@ -56,8 +56,10 @@ docker-compose up --build -d
 ### Restore Database
 1. To backup your database
 ``` bash
-docker exec django_app /app/backup/backup.sh
+./db/backup.sh
 ```
+Do note that after any database change you backup the database again
+
 
 ## Features
 - **User Authentication**: Secure user accounts and authentication to manage profiles and track order history.
