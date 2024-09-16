@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 import string
 from django.utils.html import mark_safe
@@ -13,28 +12,78 @@ def product_image_directory(instance, filename):
 def customer_review_image_directory(instance, filename):
     return f"{instance.__class__.__name__}/{instance.rev_id}/{filename}"
 
+# categories
+class Category(models.Model):
+    category_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    description = RichTextUploadingField(max_length=1000)
+    parent_id = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = False, related_name= 'subcategories') 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
+
+
+    # sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __repr__(self):
+        return "{}".format(self.category_choice)
+    
+    def __str__(self):
+        return "{}".format(self.category_choice)
+
+    
+    def __str__(self):
+        return self.name
+    
+    def __repre__(self):
+        return self.name
+
+    
+
+# Brands
+class Brand(models.Model):
+    brand_id = ShortUUIDField(unique=True, length=10, max_length=15, prefix="brand-", alphabet=string.digits)
+    name = models.CharField(max_length = 100)
+    description = RichTextUploadingField(max_length =1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) :
+        return self.name
+
+    def __repr__ (self):
+        return self.name
+
 # product
 class Product(models.Model):
     pid = ShortUUIDField(unique=True, length=10, max_length=15, prefix="PROD-", alphabet=string.digits)
-    title = models.CharField(max_length=100)
-    description = RichTextUploadingField()
+    name = models.CharField(max_length=100)
+    description = RichTextUploadingField(max_length=1000)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.IntegerField(default = 0)
+    category = models.ForeignKey(Category, on_delete =models.SET_NULL, null = True)
     brand_name = models.CharField(max_length=100)
+    brand_id = models.ForeignKey(Brand,on_delete = models.SET_NULL, null = True)
     feautured = models.BooleanField(default=False)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     """
         # Foreign Keys / Table Relationships
     """
-    # category
-    category = models.OneToOneField('Category', on_delete=models.SET_NULL, null=True)
+    # categories
+    # categories = models.ManyToOneRel(Category, on_delete=models.SET_NULL,  null = True)
+    
     # inventory
-    inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, null=True)
+    # inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, null=True, related_name= 'products')
     # discount
     discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True)
     # images
-    images = models.ForeignKey('ProductImage', on_delete=models.SET_NULL, null=True)
+    images = models.ForeignKey('ProductImages', on_delete=models.SET_NULL, null=True, related_name='products')
+
 
     def __repr__(self):
         return "{} {}".format(self.title, self.brand_name)
@@ -43,12 +92,13 @@ class Product(models.Model):
         return "{} {}".format(self.title, self.brand_name)
 
 # product image
-class ProductImage(models.Model):
-    img_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="IMG-")
+class ProductImages(models.Model):
+    image_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="IMG-")
     image = models.ImageField(upload_to=product_image_directory)
     more_images = models.FileField(upload_to=product_image_directory, null=True)
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = timezone.now()
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='product_images')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def image_url(self):
         return mark_safe('<img src="%s" width=50 heigh=50 />' % (self.image.url))
@@ -66,37 +116,28 @@ class ProductImage(models.Model):
 
 # One product for one category
 # Similarly one category for one product
-class Category(models.Model):    
-    cat_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
-    category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
-    #sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
-
-    class Meta:
-        verbose_name_plural = "Categories"
-
-    def __repr__(self):
-        return "{}".format(self.category_choice)
+# class Category(models.Model):    
+#     category_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
     
-    def __str__(self):
-        return "{}".format(self.category_choice)
     
 # product inventory/ product stock
 class Inventory(models.Model):
-    inv_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="INV-")
+    inventory_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="INV-")
     quantity = models.PositiveIntegerField(default=0)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
+    location =  models.CharField(max_length = 255, null = True)
+    product =models.ForeignKey(Product, on_delete= models.SET_NULL, null = True, related_name= 'inventory') 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Inventories"
 
     def __repr__(self):
-        return self.inv_id
+        return self.inventory_id, self.pid, self.name
+
     
     def __str__(self):
-        return self.inv_id
+        return self.inventory_id, self.pid, self.name
     
 # product discount
 class Discount(models.Model):
@@ -104,8 +145,8 @@ class Discount(models.Model):
     name = models.CharField(max_length=100, help_text="e.g, Black Friday")
     discount_percent = models.DecimalField(decimal_places=2, max_digits=5)
     active = models.BooleanField(default=False)
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Discounts"
@@ -115,7 +156,8 @@ class Discount(models.Model):
     
     def __str__(self):
         return "{} {}".format(self.name, self.active)
-    
+
+
 # handles user orders
 class ProductOrders(models.Model):
     ORDER_STATUS = {
@@ -126,11 +168,12 @@ class ProductOrders(models.Model):
         ('Returns & Refunds', 'refunds')
     }
 
-    ord_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="ORD-")
+    order_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="ORD-")
     item_number = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
-    created_at = models.DateTimeField(default=timezone.now)
-    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)    
+
     # linking to the customer model
     # links many to one
     user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
@@ -144,6 +187,32 @@ class ProductOrders(models.Model):
         
     def __str__(self):
         return "{} {}".format(self.status, self.ord_id)
+    
+
+# handles orderd items
+class OrderedItems(models.Model):
+    order_item_id = ShortUUIDField(unique= True, length =10, max_length=15, prefix = 'ORD_ITEM-',alphabet = string.digits)
+    order = models.ForeignKey(ProductOrders, on_delete= models.SET_NULL, null = True, related_name= 'orders')
+    pid = models.ForeignKey(Product, on_delete= models.SET_NULL, null = True, related_name= 'orderedproducts')
+    quantity = models.PositiveIntegerField(default = 0)
+    price = models.FloatField(default = 0.00)
+    discount = models.FloatField(default = 0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "ordered item"
+        verbose_name_plural = "ordered items"
+
+    def __str__(self):
+
+        return self.order_item_id, self.product_id, self.price
+    
+    def __repr__(self):
+
+        return self.order_item_id, self.product_id, self.price
+
+
     
 # user product review 
 # N/B: a review MUST be tied to the corresponding product, also the user
@@ -161,8 +230,8 @@ class ProductReview(models.Model):
     review_screenshots = models.FileField(upload_to=customer_review_image_directory, null=True, blank=True, default=None)
     review_text = models.CharField(max_length=1000, default='I love the product')
     review_rating = models.CharField(max_length=50, choices=RATINGS, default='------')
-    created_at = models.DateTimeField(default=timezone.now)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
@@ -185,12 +254,52 @@ class ProductReview(models.Model):
 # popular product model
 # saves the most popular product category
 class PopularProduct(models.Model):
-    pop_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
+    popularity_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
     category = models.CharField(max_length=50)
-    popularity_count = models.IntegerField(default=0)
+    popularity_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __repr__(self):
-        return "{} {}".format(self.pop_id, self.category)
+        return "{} {}".format(self.popularity_id, self.category)
         
     def __str__(self):
-        return "{} {}".format(self.pop_id, self.category)
+        return "{} {}".format(self.popularity_id, self.category)
+
+class ProductTag(models.Model):
+    tag_id = ShortUUIDField(unique = True, length = 10, max_length = 15, alphabet = string.digits, prefix = "Ptag-")
+    name = models.CharField(max_length=255)
+    # pid = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        verbose_name = "product tag"
+
+    class Meta:
+        verbose_name_plural = "product_tag_mappings"
+
+    def __str__(self):
+        return self.pid, self.tag_id
+
+    def __repr__(self):
+
+        return self.pid, self.tag_id
+    
+
+
+class ProductTagMapping(models.Model):
+    tag_id = models.ForeignKey(ProductTag, on_delete=models.SET_NULL, null = True, related_name="product_tag")
+    pid = models.ForeignKey(Product,on_delete =models.SET_NULL, null = True, related_name= 'products')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.pid, self.tag_id
+    
+
+    def __repr__(self):
+
+        return self.pid, self.tag_id
+
