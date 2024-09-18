@@ -43,4 +43,4 @@ class BrandSerializer(serializers.ModelSerializer):
         
 class ProductOrdersSerializer(serializers.ModelSerializer):
     model =ProductOrders
-    field = ['order_id', "item_number", 'status','user_id']
+    field = ['order_id', "item_number", 'status']

@@ -10,6 +10,7 @@ urlpatterns = [
     path('brands/', views.BrandView.as_view(), name='brands'),
     path('categorys/', views.CategoryView.as_view(), name='categorys'),
     path('inventory/', views.InventoryView.as_view(), name='inventories'),
-    path('orders/', views.ProductOrderView.as_view(), name = 'orders')
+    path('orders/', views.ProductOrderView.as_view(), name = 'orders'),
+    # path()
 ]
 

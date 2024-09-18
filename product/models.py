@@ -176,7 +176,7 @@ class ProductOrders(models.Model):
 
     # linking to the customer model
     # links many to one
-    user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
+    # user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "Orders"

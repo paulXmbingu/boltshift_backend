@@ -309,7 +309,29 @@ class ProductOrderView(APIView):
         return Response(data, status=status.HTTP_200_OK)
     
     def post (self, request):
-        # get data from the serializer
-
+        # get data from the serializer  
+        
         serializer = ProductOrdersSerializer(data = request.data)
+        input_data = request.data
+
+        input_data = ProductOrders.objects.create(**input_data)
+        try:
+            serializer.is_valid(raise_exception=True)
+
+            serializer.save()
+            return Response({
+         
+             'message' : 'orders created successfuly',
+             'result' :serializer.data
+         }, status = status.HTTP_201_CREATE)
+        
+        except ValidationError as e:
+
+            return Response({
+                'message' : 'An error occured when adding orders',
+                "error" : str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class OrderedItemsView(APIView):
+    def post(self,request):
         pass
