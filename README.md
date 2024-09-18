@@ -44,7 +44,23 @@ Welcome to the backend codebase of Boltshift Marketplace – built using Django.
    ```
    python manage.py runserver
    ```
-   
+
+
+# Docker Setup
+### Setup Application
+1. Build and Run application
+```
+docker-compose up --build -d
+```
+
+### Restore Database
+1. To backup your database
+``` bash
+./db/backup.sh
+```
+Do note that after any database change you backup the database again
+
+
 ## Features
 - **User Authentication**: Secure user accounts and authentication to manage profiles and track order history.
 - **Product Catalog**: A comprehensive listing of products, organized into categories for easy navigation.
