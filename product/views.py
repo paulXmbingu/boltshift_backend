@@ -9,6 +9,7 @@ from .models import *
 from knox.auth import TokenAuthentication
 
 from utils.utils import save_top_categories
+from django.shortcuts import get_object_or_404
 
 # Base Class for unified Responses and Custom Validation Messages
 class RequestValidation(APIView):
@@ -221,10 +222,23 @@ class CategoryView(APIView):
         # import ipdb
         # ipdb.set_trace()
         data ={
-            'message': 'Successfully Got All Brand',
+            'message': 'Successfully Got All categorys',
             'result': serializer.data
         }
         return Response(data, status=status.HTTP_200_OK)
+    def getOneCategory (self, category_id):
+
+        category = get_object_or_404(Category, category_id)
+        category_data = {
+            'id' : category.category_id,
+            'name' : category.name,
+            'description' : category.description
+        }
+        
+        return Response({
+            'message': 'Got one category',
+            'result' : category_data
+        }, status=status.HTTP_200_OK)
     
     def post (self, request):
         serializer = CategorySerializer(data = request.data)
@@ -261,7 +275,7 @@ class InventoryView(APIView):
         serializer = InventorySerializer(queryset, many = True)
 
         data = {
-            'message' : 'Inventory created succesfully',
+            'message' : 'succesfully got all invntories',
             'result' : serializer.data
 
         }
@@ -303,7 +317,7 @@ class ProductOrderView(APIView):
 
         data = {
             'message' : 'Orders created succesfully',
-            'result' :  'serializer.data'
+            'result' : serializer.data
         }
         
         return Response(data, status=status.HTTP_200_OK)
@@ -314,7 +328,7 @@ class ProductOrderView(APIView):
         serializer = ProductOrdersSerializer(data = request.data)
         input_data = request.data
 
-        input_data = ProductOrders.objects.create(**input_data)
+        new_orders  = ProductOrders.objects.create(**input_data)
         try:
             serializer.is_valid(raise_exception=True)
 
@@ -323,7 +337,7 @@ class ProductOrderView(APIView):
          
              'message' : 'orders created successfuly',
              'result' :serializer.data
-         }, status = status.HTTP_201_CREATE)
+         }, status = status.HTTP_201_CREATED)
         
         except ValidationError as e:
 
@@ -332,6 +346,114 @@ class ProductOrderView(APIView):
                 "error" : str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class OrderedItemsView(APIView):
-    def post(self,request):
-        pass
+class ProductReviewView(APIView):
+    def get(self,request):
+        queryset = ProductReview.objects.all()
+        serializer = ProductReviewSerialzer(queryset, many = True)
+
+        data = {
+            'message' : 'succesfully got all reviews',
+            'result' : serializer.data
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+        
+    def post(self, request):
+
+        serializer  = ProductReviewSerialzer(data = request.data)
+        input_data = request.data
+        
+        reviews = ProductReview.object.create(**input_data)
+        try:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+            return Response({
+                'message': 'review added succesfully',
+                'result' : serializer.data
+            }, status= status.HTTP_201_created)
+        except ValidationError as e:
+            return Response(
+                {
+                    'message' : 'Error occured while adding reviews',
+                    'errors' : str(e)
+
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+class ProductTagView(APIView):
+    def get(self, request):
+        queryset = ProductTag.objects.all()
+        serializer = ProductTagSerializer(queryset, many = True)
+
+        data = {
+            'message': 'succesfully got all tags',
+            'result' : serializer.data
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        serializer = ProductTagSerializer(data = request.data)
+        input_data = request.data
+        
+        tags = ProductTag.objects.create(**input_data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+            return Response({
+                'message' : 'tag added succesfully',
+                'result' : serializer.data
+
+            },status=status.HTTP_201_CREATED)
+        
+        except ValidationError as e:
+
+            return Response(
+                {
+                    'message' : 'Error occured while adding tags',
+                    'errors' : str(e)
+
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class ProductTagMappingView(APIView):
+    def get(self, request):
+        queryset = ProductTagMapping.objects.all()
+        serializer = ProductTagMappingSerializer(queryset, many = True)
+
+        data = {
+            'message': 'succesfully got all tags',
+            'result' : serializer.data
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        serializer = ProductTagMappingSerializer(data = request.data)
+        input_data = request.data
+        
+        tags = ProductTag.objects.create(**input_data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+            return Response({
+                'message' : 'tag added succesfully',
+                'result' : serializer.data
+
+            },status=status.HTTP_201_CREATED)
+        
+        except ValidationError as e:
+
+            return Response(
+                {
+                    'message' : 'Error occured while creating mappings',
+                    'errors' : str(e)
+
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+

@@ -8,9 +8,12 @@ urlpatterns = [
     path('catalogue/<str:pid>/', views.GetProductDetail.as_view(), name='product_detail'),
     path('product/details/<str:pid>/', views.GetProductDetail.as_view(), name='product_detail'),
     path('brands/', views.BrandView.as_view(), name='brands'),
-    path('categorys/', views.CategoryView.as_view(), name='categorys'),
+    path('categories/', views.CategoryView.as_view(), name='all_categorys'),
+    path('categories/<int:category_id>/', views.CategoryView.as_view(), name='single_category'),
     path('inventory/', views.InventoryView.as_view(), name='inventories'),
     path('orders/', views.ProductOrderView.as_view(), name = 'orders'),
-    # path()
+    path('reviews/', views.ProductReviewView.as_view(), name = 'reviews' ),
+    path('tags/', views.ProductTagView.as_view(), name = 'tags' )
+
 ]
 

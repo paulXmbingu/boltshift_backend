@@ -4,6 +4,8 @@ import string
 from django.utils.html import mark_safe
 from ckeditor_uploader.fields import RichTextUploadingField
 from .category_filter import CATEGORY_CHOICES
+from django.apps import apps
+
 
 
 def product_image_directory(instance, filename):
@@ -176,8 +178,13 @@ class ProductOrders(models.Model):
 
     # linking to the customer model
     # links many to one
-    # user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
-
+    user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
+    #  lazy import to avoid circular imports
+    def get_customer(self):
+        
+        Customer = apps.get_model('customer', 'Customer')
+        return Customer.objects.get(id=self.cid)
+    
     class Meta:
         verbose_name = "Orders"
         verbose_name_plural = "Orders"
@@ -253,6 +260,9 @@ class ProductReview(models.Model):
 
 # popular product model
 # saves the most popular product category
+
+
+
 class PopularProduct(models.Model):
     popularity_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
     category = models.CharField(max_length=50)
@@ -303,3 +313,16 @@ class ProductTagMapping(models.Model):
 
         return self.pid, self.tag_id
 
+
+'wishlist'
+class Wishlist(models.Model):
+    wishlist_id = ShortUUIDField(unique=True, length =10,max_length= 15, alphabet = string.digits, prefix = "Wishlist-")
+    def get_customer(self):
+        
+        Customer = apps.get_model('customer', 'Customer')
+        return Customer.objects.get(id=self.cid)
+    
+    product_id = models.ForeignKey(Product, on_delete= models. SET_NULL , null=True)
+    user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
