@@ -13,7 +13,10 @@ urlpatterns = [
     path('inventory/', views.InventoryView.as_view(), name='inventories'),
     path('orders/', views.ProductOrderView.as_view(), name = 'orders'),
     path('reviews/', views.ProductReviewView.as_view(), name = 'reviews' ),
-    path('tags/', views.ProductTagView.as_view(), name = 'tags' )
+    path('tags/', views.ProductTagView.as_view(), name = 'tags' ),
+    path('features/', views.ProductFeatureView.as_view(), name = 'product_features'),
+    path('features_mappings/', views.ProductFeatureMappingView.as_view(), name = 'product_features_mappimgs'),
+    path('wishlist/',views.Wishlistview.as_view(),name = 'wishlist')
 
 ]
 

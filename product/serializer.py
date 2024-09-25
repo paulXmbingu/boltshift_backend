@@ -62,3 +62,14 @@ class WishlistSeializer(serializers.ModelSerializer):
         model = Wishlist
         fields = ['product_id', 'user_id', 'wishlist_id']       
         
+'product features'  
+class ProductFeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductFeature
+        fields = '__all__'     
+
+'feature mappings'     
+class ProductFeatureMappingSerializer(serializers.ModelField):
+    class Meta:
+        model = ProductFeatureMappings
+        fields = '__all__'   

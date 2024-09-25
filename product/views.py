@@ -205,7 +205,7 @@ class BrandView(APIView):
                 'message': "An error occured while adding the brand",
                 'errors': str(e)
 
-            },status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+            },status = status.HTTP_400_BAD_REQUEST)
         
 
         return Response('Added Brand', status=status.HTTP_201_CREATED)
@@ -214,59 +214,52 @@ class BrandView(APIView):
 #  categories
 
 class CategoryView(APIView):
-    def get(self,request):
-        
-       
-        queryset = Category.objects.all()
-        serializer = CategorySerializer(queryset, many=True)
-        # import ipdb
-        # ipdb.set_trace()
-        data ={
-            'message': 'Successfully Got All categorys',
-            'result': serializer.data
-        }
-        return Response(data, status=status.HTTP_200_OK)
-    def getOneCategory (self, category_id):
+    def get(self, request, category_id=None):
+        if category_id:
+            # Get one category if category_id is provided
+            category = get_object_or_404(Category,  category_id)
+            category_data = {
+                'id': category.category_id,
+                'name': category.name,
+                'description': category.description
+            }
+            return Response({
+                'message': 'Got one category',
+                'result': category_data
+            }, status=status.HTTP_200_OK)
+        else:
+            # Get all categories if category_id is not provided
+            queryset = Category.objects.all()
+            serializer = CategorySerializer(queryset, many=True)
+            data = {
+                'message': 'Successfully got all categories',
+                'result': serializer.data
+            }
+            return Response(data, status=status.HTTP_200_OK)
 
-        category = get_object_or_404(Category, category_id)
-        category_data = {
-            'id' : category.category_id,
-            'name' : category.name,
-            'description' : category.description
-        }
-        
-        return Response({
-            'message': 'Got one category',
-            'result' : category_data
-        }, status=status.HTTP_200_OK)
-    
-    def post (self, request):
-        serializer = CategorySerializer(data = request.data)
+    def post(self, request):
+        serializer = CategorySerializer(data=request.data)
         input_data = request.data
 
-        new_categories = Category.objects.create(**input_data)
+        new_inventory = Category.objects.create(**input_data)
 
-        try: 
-            serializer.is_valid(raise_exception=True)
-
-            serializer.save()
+        try:
+            serializer.is_valid(raise_exception=True)  # Validate before creating the category
+            serializer.save()  # Save new category
             return Response(
                 {
-                    'message' : 'Category created succesfully',
+                    'message': 'Category created successfully',
                     'result': serializer.data
-                }, status = status.HTTP_201_CREATED)
+                }, status=status.HTTP_201_CREATED
+            )
         except ValidationError as e:
-            # handle validation errors
-
+            # Handle validation errors
             return Response({
-                'message': "an error occured while adding categories",
-                'errors':str(e)
+                'message': "An error occurred while adding category",
+                'errors': serializer.errors  # Provide detailed validation errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-            }, status = status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        return Response ('Added Category', status = status.HTTP_201_CREATED)
-          
-        
+
 
 class InventoryView(APIView):
 
@@ -305,7 +298,7 @@ class InventoryView(APIView):
             return Response({
                 'message' : 'Error occured while adding inventorys',
                 'errors' : str(e)
-            }, status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+            }, status = status.HTTP_400_BAD_REQUEST)
         
         return Response ('added category', status=status.HTTP_201_CREATED)
 
@@ -344,7 +337,7 @@ class ProductOrderView(APIView):
             return Response({
                 'message' : 'An error occured when adding orders',
                 "error" : str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 class ProductReviewView(APIView):
     def get(self,request):
@@ -378,7 +371,7 @@ class ProductReviewView(APIView):
                     'message' : 'Error occured while adding reviews',
                     'errors' : str(e)
 
-                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                }, status=status.HTTP_400_BAD_REQUEST
             )
         
 class ProductTagView(APIView):
@@ -416,7 +409,7 @@ class ProductTagView(APIView):
                     'message' : 'Error occured while adding tags',
                     'errors' : str(e)
 
-                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                }, status=status.HTTP_400_BAD_REQUEST
             )
 
 class ProductTagMappingView(APIView):
@@ -454,6 +447,109 @@ class ProductTagMappingView(APIView):
                     'message' : 'Error occured while creating mappings',
                     'errors' : str(e)
 
-                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                }, status=status.HTTP_400_BAD_REQUEST
             )
+
+class Wishlistview(APIView):
+    def get(self, request):
+        queryset = Wishlist.objects.all()
+        serializer = WishlistSeializer(queryset, many = True)
+
+        data = {
+        'message' : 'Wishlist retrieved succesfully',
+        'result' : serializer.data
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+    def post(self,request):
+        serializer = WishlistSeializer(data = request.data)
+        input_data = request.data
+
+        new_wishlist = Wishlist.objects.create(**input_data)
+
+        "error handling"
+        try: 
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+            return Response({
+                'message' : 'Wishlist created succesfully',
+                'result': serializer.data
+            }, status=status.HTTP_201_CREATED)
+        
+        except ValidationError as e:
+            return Response({
+                'message': 'an error occured while adding wishlist',
+                'error' : str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProductFeatureView(APIView):
+    def get (self, request):
+        queryset = ProductFeature.objects.all()
+        serializer =  ProductFeaturesSerializer(queryset, many = True)
+        data = {
+            'message': 'succesfully got all features ',
+            'result' : serializer.data
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        serializer = ProductFeaturesSerializer(data = request.data)
+        input_data = request.data
+
+        new_features = ProductFeature.objects.create(**input_data)
+
+        "error handling"
+
+        try:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+            return Response({
+                'message' : "Product features created succesfully",
+                'result' : serializer.data
+            }, status = status.HTTP_201_CREATED)
+        except ValidationError as e:
+             return Response({
+                 'message' : 'An error occured while adding Product Features',
+                 'error' : str(e)
+             }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProductFeatureMappingView(APIView):
+    def get(self, request):
+        queryset = ProductFeatureMappings.objects.all()
+        serializer = ProductFeatureMappingSerializer(queryset, many =True)
+
+        data = {
+            'message' : 'succesfully got feature_mappings',
+            'result' : serializer.data
+        }
+
+        return Response(data, status = status. HTTP_200_OK)
+    
+    def post (self, request):
+        serializer = ProductFeatureMappingSerializer(data = request.data)
+        input_data = request.data
+
+        new_mappings = ProductFeatureMappings.objects.create(**input_data)
+
+        'validation errors handling'
+        try:
+            serializer.is_valid(raise_exception = True)
+            serializer.save()
+
+            return Response({
+                'message' : 'Featuremappings created succesfully',
+                'result' : serializer.data
+            }, status= status.HTTP_201_CREATED)
+        
+        except ValidationError as e:
+             return Response({
+                 'message' : 'an error occured while adding feature_mappings',
+                 'error' :str(e)
+             }, status= status.HTTP_400_BAD_REQUEST)
+
 
