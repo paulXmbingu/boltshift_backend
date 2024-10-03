@@ -1,19 +1,19 @@
 ![Boltshift Marketplace Project Cover](https://res.cloudinary.com/excit3/image/upload/v1721684091/Boltshift%20Branding/Github_Front-end_Codebase_File_Cover_doqfbz.png)
 
 # Boltshift Marketplace Backend
-Welcome to the backend repository of Boltshift Marketplace – an online e-commerce platform built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
+Welcome to the backend codebase of Boltshift Marketplace – built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
 ## Getting Started
 
 ### Setup
-1. **Install latest version of**: [Python](https://www.python.org/downloads/)
+1. **Install and update**: [Python](https://www.python.org/downloads/)
 
 2. **Clone the repository:**
    ```
    git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
    ```
    
-3. **Install Django and requirements:**
+3. **Install Django and app requirements:**
    ```
    pip install django
    ```
@@ -44,7 +44,23 @@ Welcome to the backend repository of Boltshift Marketplace – an online e-comme
    ```
    python manage.py runserver
    ```
-   
+
+
+# Docker Setup
+### Setup Application
+1. Build and Run application
+```
+docker-compose up --build -d
+```
+
+### Restore Database
+1. To backup your database
+``` bash
+./db/backup.sh
+```
+Do note that after any database change you backup the database again
+
+
 ## Features
 - **User Authentication**: Secure user accounts and authentication to manage profiles and track order history.
 - **Product Catalog**: A comprehensive listing of products, organized into categories for easy navigation.

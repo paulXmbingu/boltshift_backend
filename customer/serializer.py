@@ -16,7 +16,7 @@ class CustomerTokenObtainSerializer(TokenObtainSerializer):
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    confirm_password = serializers.CharField(write_only=True, required=True)
+    password2 = serializers.CharField(write_only=True, required=True)
 
     username = serializers.CharField(
         min_length = USERNAME_LENGTH,
@@ -31,7 +31,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     # data validation
     def validate(self, data):
-        if data["password"] != data["confirm_password"]:
+        if data["password"] != data["password2"]:
             raise serializers.ValidationError("Passwords do not match")
         return data
     
@@ -76,7 +76,7 @@ class UserAddressSerializer(serializers.ModelSerializer):
 class UserTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserType
-        fields = ['is_cutomer', 'is_vendor', 'user_id',]
+        fields = ['is_customer', 'is_vendor', 'user_id',]
 
 # account setting
 class UserAccountSerializer(serializers.ModelSerializer):
