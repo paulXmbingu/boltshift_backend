@@ -42,5 +42,34 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = ['brand_id','name','description']
         
 class ProductOrdersSerializer(serializers.ModelSerializer):
-    model =ProductOrders
-    field = ['order_id', "item_number", 'status','user_id']
+    class Meta:
+        model =ProductOrders
+        fields = '__all__'
+
+class ProductTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductTag
+        fields = '__all__'
+        
+
+class ProductTagMappingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductTagMapping
+        fields = '__all__'       
+
+class WishlistSeializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wishlist
+        fields = ['product_id', 'user_id', 'wishlist_id']       
+        
+'product features'  
+class ProductFeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductFeature
+        fields = '__all__'     
+
+'feature mappings'     
+class ProductFeatureMappingSerializer(serializers.ModelField):
+    class Meta:
+        model = ProductFeatureMappings
+        fields = '__all__'   

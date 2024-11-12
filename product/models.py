@@ -4,6 +4,8 @@ import string
 from django.utils.html import mark_safe
 from ckeditor_uploader.fields import RichTextUploadingField
 from .category_filter import CATEGORY_CHOICES
+from django.apps import apps
+
 
 
 def product_image_directory(instance, filename):
@@ -14,6 +16,7 @@ def customer_review_image_directory(instance, filename):
 
 # categories
 class Category(models.Model):
+
     category_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = RichTextUploadingField(max_length=1000)
@@ -166,18 +169,28 @@ class ProductOrders(models.Model):
         ('Ongoing', 'ongoing'),
         ('Cancelled', 'cancelled'),
         ('Returns & Refunds', 'refunds')
+
     }
+
+
 
     order_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="ORD-")
     item_number = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
+    payment_status = models.CharField(max_length=50, default = 'NEW')
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
 
     # linking to the customer model
     # links many to one
     user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
-
+    #  lazy import to avoid circular imports
+    def get_customer(self):
+        
+        Customer = apps.get_model('customer', 'Customer')
+        return Customer.objects.get(id=self.cid)
+    
     class Meta:
         verbose_name = "Orders"
         verbose_name_plural = "Orders"
@@ -253,6 +266,9 @@ class ProductReview(models.Model):
 
 # popular product model
 # saves the most popular product category
+
+
+
 class PopularProduct(models.Model):
     popularity_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
     category = models.CharField(max_length=50)
@@ -303,3 +319,28 @@ class ProductTagMapping(models.Model):
 
         return self.pid, self.tag_id
 
+
+'wishlist'
+class Wishlist(models.Model):
+    wishlist_id = ShortUUIDField(unique=True, length =10,max_length= 15, alphabet = string.digits, prefix = "Wishlist-")
+    def get_customer(self):
+        
+        Customer = apps.get_model('customer', 'Customer')
+        return Customer.objects.get(id=self.cid)
+    
+    product_id = models.ForeignKey(Product, on_delete= models. SET_NULL , null=True)
+    user_id = models.ForeignKey("customer.Customer", on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class ProductFeature(models.Model):
+    feature_id = ShortUUIDField(unique=True, length = 10, max_length= 15, alphabet = string.digits, prefix = "feature -")
+    name = models. CharField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class ProductFeatureMappings(models.Model):
+    product_id = models.ForeignKey(Product, on_delete= models.SET_NULL, null = True, related_name= 'product_features')
+    feature_id = models.ForeignKey(ProductFeature, on_delete= models.SET_NULL, null = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
