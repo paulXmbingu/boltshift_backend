@@ -8,7 +8,7 @@ CATEGORY_CHOICES = {
     ('Luggage', 'Luggage'),
     ("Men's Fashion", "Men's Fashion"),
     ("Women's Fashion", "Women's Fashion"),
-    ('Pet Supplies', 'Pet Supplies')
+    ('Pet Supplies', 'Pet Supplipythones')
 }
 
 # category details
@@ -28,6 +28,6 @@ CATEGORY_DETAILS = {
 # given the category
 def return_category_details_tuple(category):
     g = ()
-    for i in CATEGORY_DETAILS.get(category):
-        g += ((i, i.lower()),)
+    for category in CATEGORY_DETAILS.get(category):
+        g += ((category, category.lower()),)
     return g

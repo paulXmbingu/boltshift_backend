@@ -214,7 +214,7 @@ class BrandView(APIView):
 #  categories
 
 class CategoryView(APIView):
-    def get(self, request, category_id=None):
+    def get(self, request, category_id):
         if category_id:
             # Get one category if category_id is provided
             category = get_object_or_404(Category,  category_id)
@@ -552,4 +552,6 @@ class ProductFeatureMappingView(APIView):
                  'error' :str(e)
              }, status= status.HTTP_400_BAD_REQUEST)
 
+class Feature(APIView):
+    pass
 
