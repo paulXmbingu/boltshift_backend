@@ -10,7 +10,7 @@ Welcome to the backend codebase of Boltshift Marketplace – built using Django.
 
 2. **Clone the repository:**
    ```
-   git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
+   git clone https://github.com/paulXmbingu/boltshift_backend
    ```
    
 3. **Install Django and app requirements:**
