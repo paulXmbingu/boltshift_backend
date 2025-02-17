@@ -6,7 +6,6 @@ Welcome to the backend codebase of Boltshift Marketplace – built using Django.
 ## Getting Started
 
 ### Setup
-1. **Install and update**: [Python](https://www.python.org/downloads/)
 
 2. **Clone the repository:**
    ```
@@ -24,17 +23,12 @@ Welcome to the backend codebase of Boltshift Marketplace – built using Django.
 ### Usage
 1. **Create and activate virtual environment:**
    ```
-   python3 -m venv venv
+   python -m venv venv
    ```
    ```
    source venv/bin/activate
    ```
 
-2. **Collecting all static files in one folder for easy rendering**
-   ```
-   python manage.py collectstatic
-   ```
-   
 3. **Create a superuser (for first timers):**
    ```
    python manage.py createsuperuser
