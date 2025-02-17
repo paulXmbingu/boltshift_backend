@@ -3,42 +3,44 @@
 # Boltshift Marketplace Backend
 Welcome to the backend codebase of Boltshift Marketplace – built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
 
-## Getting Started
+## Setup and Usage
 
-### Setup
-
-2. **Clone the repository:**
+1. **Clone the repository:**
    ```
    git clone https://github.com/paulXmbingu/boltshift_backend
    ```
+
+2. **Create a virtual environment:**
+   ```
+   python -m venv venv
+   ```
    
-3. **Install Django and app requirements:**
+3. **Activate the virtual environment:**
+   ```
+   source venv/bin/activate
+   ```
+   
+4. **Install Django:**
    ```
    pip install django
    ```
+   
+5. **Install app requirements:**
    ```
    pip install -r requirements.txt
    ```
    
-### Usage
-1. **Create and activate virtual environment:**
-   ```
-   python -m venv venv
-   ```
-   ```
-   source venv/bin/activate
-   ```
-
-3. **Create a superuser (for first timers):**
-   ```
-   python manage.py createsuperuser
-   ```
-   
-4. **Start the development server:**
+6. **Start the development server:**
    ```
    python manage.py runserver
    ```
 
+### Usage
+
+1. **Create a superuser (for first timers):**
+   ```
+   python manage.py createsuperuser
+   ```
 
 # Docker Setup
 ### Setup Application
