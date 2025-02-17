@@ -5,34 +5,32 @@ Built using Django, this is the server-side code powering the database-driven fe
 
 ## Setup and usage
 
-1. **Clone the repository:**
+**Clone the repository:**
    ```
    git clone https://github.com/paulXmbingu/boltshift_backend
    ```
 
-2. **Create and activate the virtual environment:**
+**Create and activate the virtual environment:**
    ```
    python -m venv venv && source venv/bin/activate
    ```
    
-3. **Install Django:**
+**Install Django:**
    ```
    pip install django
    ```
    
-4. **Install app requirements:**
+**Install app requirements:**
    ```
    pip install -r requirements.txt
    ```
    
-5. **Start the development server:**
+**Start the development server:**
    ```
    python manage.py runserver
    ```
 
-### Usage
-
-1. **Create a superuser (for first timers):**
+**Create a superuser (for first timers):**
    ```
    python manage.py createsuperuser
    ```
