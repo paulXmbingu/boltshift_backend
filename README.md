@@ -1,65 +1,41 @@
 ![Boltshift Marketplace Project Cover](https://res.cloudinary.com/excit3/image/upload/v1721684091/Boltshift%20Branding/Github_Front-end_Codebase_File_Cover_doqfbz.png)
 
-# Boltshift Marketplace Backend
-Welcome to the backend codebase of Boltshift Marketplace – built using Django. This repository contains the server-side code responsible for handling various aspects of the platform.
+## Introduction
+Built using Django, this is the server-side code powering the database-driven features of the Boltshift eCommerce.
 
-## Getting Started
+## Setup and usage
 
-### Setup
-1. **Install and update**: [Python](https://www.python.org/downloads/)
-
-2. **Clone the repository:**
+1. **Clone the repository:**
    ```
-   git clone https://github.com/Excite-Innovation-Company/Boltshift-Backend.git
+   git clone https://github.com/paulXmbingu/boltshift_backend
+   ```
+
+2. **Create and activate the virtual environment:**
+   ```
+   python -m venv venv && source venv/bin/activate
    ```
    
-3. **Install Django and app requirements:**
+3. **Install Django:**
    ```
    pip install django
    ```
+   
+4. **Install app requirements:**
    ```
    pip install -r requirements.txt
    ```
    
-### Usage
-1. **Create and activate virtual environment:**
-   ```
-   python3 -m venv venv
-   ```
-   ```
-   source venv/bin/activate
-   ```
-
-2. **Collecting all static files in one folder for easy rendering**
-   ```
-   python manage.py collectstatic
-   ```
-   
-3. **Create a superuser (for first timers):**
-   ```
-   python manage.py createsuperuser
-   ```
-   
-4. **Start the development server:**
+5. **Start the development server:**
    ```
    python manage.py runserver
    ```
 
+### Usage
 
-# Docker Setup
-### Setup Application
-1. Build and Run application
-```
-docker-compose up --build -d
-```
-
-### Restore Database
-1. To backup your database
-``` bash
-./db/backup.sh
-```
-Do note that after any database change you backup the database again
-
+1. **Create a superuser (for first timers):**
+   ```
+   python manage.py createsuperuser
+   ```
 
 ## Features
 - **User Authentication**: Secure user accounts and authentication to manage profiles and track order history.
