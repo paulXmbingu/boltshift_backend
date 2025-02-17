@@ -1,7 +1,7 @@
 ![Boltshift Marketplace Project Cover](https://res.cloudinary.com/excit3/image/upload/v1721684091/Boltshift%20Branding/Github_Front-end_Codebase_File_Cover_doqfbz.png)
 
 ## Introduction
-Built using Django, this is the server-side code responsible for powering the database-driven features of the Boltshift eCommerce.
+Built using Django, this is the server-side code powering the database-driven features of the Boltshift eCommerce.
 
 ## Setup and usage
 
