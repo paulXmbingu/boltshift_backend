@@ -43,10 +43,10 @@ INSTALLED_APPS = [
     'django_filters',
 
     # my apps
-    'customer',
-    'product',
-    'vendors',
-    'provision',
+    'apps/customer',
+    'apps/product',
+    'apps/vendors',
+    'apps/provision',
 
     # REST API handling
     'rest_framework',
