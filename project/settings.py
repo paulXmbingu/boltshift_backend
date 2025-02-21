@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     
     # Tracking suspicious logins
     'axes'
+
 ]
 
 
