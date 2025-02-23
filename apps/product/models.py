@@ -344,3 +344,4 @@ class ProductFeatureMappings(models.Model):
     feature_id = models.ForeignKey(ProductFeature, on_delete= models.SET_NULL, null = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
