@@ -5,10 +5,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [    
     path('admin/', admin.site.urls),
-    path('customer/', include('customer.urls')),
-    path('product/', include('product.urls')),
-    path('vendor/', include('vendors.urls')),
-    path('provision/', include('provision.urls')),
+    path('customer/', include('apps.customer.urls')),
+    path('product/', include('apps.product.urls')),
+    path('vendor/', include('apps.vendors.urls')),
+    path('provision/', include('apps.provision.urls')),
 
     # ckeditor default url image upload route
     path('ckeditor/', include('ckeditor_uploader.urls')),    
