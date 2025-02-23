@@ -3,7 +3,8 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = [    
+urlpatterns = [
+    path('', include('apps.customer.urls')),
     path('admin/', admin.site.urls),
     path('customer/', include('apps.customer.urls')),
     path('product/', include('apps.product.urls')),
@@ -13,4 +14,3 @@ urlpatterns = [
     # ckeditor default url image upload route
     path('ckeditor/', include('ckeditor_uploader.urls')),    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

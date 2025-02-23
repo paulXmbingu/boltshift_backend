@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from shortuuid.django_fields import ShortUUIDField
 from string import hexdigits
 
-from customer.models import Customer
+from apps.customer.models import Customer
 
 
 # Create your models here.

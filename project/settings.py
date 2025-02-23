@@ -174,7 +174,7 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-ROOT_URLCONF = 'boltshift.urls'
+ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
     {
@@ -194,7 +194,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'boltshift.wsgi.app'
+WSGI_APPLICATION = 'project.wsgi.app'
 
 
 # Database

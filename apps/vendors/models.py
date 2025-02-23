@@ -1,5 +1,5 @@
 from django.db import models
-from product.models import Product
+from apps.product.models import Product
 from string import hexdigits
 from shortuuid.django_fields import ShortUUIDField
 from django.contrib.auth.models import AbstractUser, Group, Permission
