@@ -148,7 +148,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # enabling axes plugin functionality
-AXES_ENABLED = True
+AXES_ENABLED = False
 
 # setting up number of allowed login attempts
 AXES_FAILURE_LIMIT = 3
