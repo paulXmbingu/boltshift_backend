@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.views import LoginView
 
 urlpatterns = [
-    path('', LoginView.as_view(template_name="admin/login.html"), name='admin_login'),
+    path('', LoginView.as_view(template_name="admin/login.html", redirect_authenticated_user=True, next_page='/admin/'), name='admin_login'),
     path('admin/', admin.site.urls),
     path('customer/', include('apps.customer.urls')),
     path('product/', include('apps.product.urls')),
