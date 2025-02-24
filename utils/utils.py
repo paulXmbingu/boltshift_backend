@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from product.models import Product, PopularProduct
+from apps.product.models import Product, PopularProduct
 from collections import Counter
 
 # finds and saves the top product categories

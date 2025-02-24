@@ -43,10 +43,10 @@ INSTALLED_APPS = [
     'django_filters',
 
     # my apps
-    'apps/customer',
-    'apps/product',
-    'apps/vendors',
-    'apps/provision',
+    'apps.customer',
+    'apps.product',
+    'apps.vendors',
+    'apps.provision',
 
     # REST API handling
     'rest_framework',
@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     
     # Tracking suspicious logins
     'axes'
+
 ]
 
 
@@ -147,7 +148,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # enabling axes plugin functionality
-AXES_ENABLED = True
+AXES_ENABLED = False
 
 # setting up number of allowed login attempts
 AXES_FAILURE_LIMIT = 3
@@ -173,7 +174,7 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-ROOT_URLCONF = 'boltshift.urls'
+ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
     {
@@ -193,7 +194,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'boltshift.wsgi.app'
+WSGI_APPLICATION = 'project.wsgi.app'
 
 
 # Database

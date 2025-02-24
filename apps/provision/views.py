@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from knox.auth import TokenAuthentication
 
-from provision.models import ShoppingSession, CartItem
+from apps.provision.models import ShoppingSession, CartItem
 from .serializer import ShoppingSessionSerializer, CartItemSerializer
 
 import json
