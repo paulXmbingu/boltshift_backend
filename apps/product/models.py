@@ -6,8 +6,6 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from .category_filter import CATEGORY_CHOICES
 from django.apps import apps
 
-
-
 def product_image_directory(instance, filename):
     return f"{instance.__class__.__name__}/{instance.img_id}/{filename}"
 
@@ -25,7 +23,6 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     category_choice = models.CharField(choices=CATEGORY_CHOICES, max_length=50, default='--select--')
 
-
     # sub_category_details = models.CharField(choices=return_category_details_tuple(category_choice), max_length=50)
     class Meta:
         verbose_name_plural = "Categories"
@@ -35,15 +32,12 @@ class Category(models.Model):
     
     def __str__(self):
         return "{}".format(self.category_choice)
-
     
     def __str__(self):
         return self.name
     
     def __repre__(self):
         return self.name
-
-    
 
 # Brands
 class Brand(models.Model):
@@ -87,7 +81,6 @@ class Product(models.Model):
     # images
     images = models.ForeignKey('ProductImages', on_delete=models.SET_NULL, null=True, related_name='products')
 
-
     def __repr__(self):
         return "{} {}".format(self.title, self.brand_name)
     
@@ -121,8 +114,7 @@ class ProductImages(models.Model):
 # Similarly one category for one product
 # class Category(models.Model):    
 #     category_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet=string.digits, prefix="CATEG-")
-    
-    
+       
 # product inventory/ product stock
 class Inventory(models.Model):
     inventory_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="INV-")
@@ -172,8 +164,6 @@ class ProductOrders(models.Model):
 
     }
 
-
-
     order_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="ORD-")
     item_number = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=50, choices=ORDER_STATUS, default="-------")
@@ -201,7 +191,6 @@ class ProductOrders(models.Model):
     def __str__(self):
         return "{} {}".format(self.status, self.ord_id)
     
-
 # handles orderd items
 class OrderedItems(models.Model):
     order_item_id = ShortUUIDField(unique= True, length =10, max_length=15, prefix = 'ORD_ITEM-',alphabet = string.digits)
@@ -224,8 +213,6 @@ class OrderedItems(models.Model):
     def __repr__(self):
 
         return self.order_item_id, self.product_id, self.price
-
-
     
 # user product review 
 # N/B: a review MUST be tied to the corresponding product, also the user
@@ -263,11 +250,8 @@ class ProductReview(models.Model):
     def __str__(self):
         return self.review_title
 
-
 # popular product model
 # saves the most popular product category
-
-
 
 class PopularProduct(models.Model):
     popularity_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix="POP-")
@@ -302,8 +286,6 @@ class ProductTag(models.Model):
     def __repr__(self):
 
         return self.pid, self.tag_id
-    
-
 
 class ProductTagMapping(models.Model):
     tag_id = models.ForeignKey(ProductTag, on_delete=models.SET_NULL, null = True, related_name="product_tag")
@@ -314,11 +296,9 @@ class ProductTagMapping(models.Model):
     def __str__(self):
         return self.pid, self.tag_id
     
-
     def __repr__(self):
 
         return self.pid, self.tag_id
-
 
 'wishlist'
 class Wishlist(models.Model):
@@ -344,4 +324,3 @@ class ProductFeatureMappings(models.Model):
     feature_id = models.ForeignKey(ProductFeature, on_delete= models.SET_NULL, null = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    

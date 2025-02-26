@@ -13,7 +13,6 @@ from django.utils.html import mark_safe
 def user_directory_path(instance, filename):
     return f"{instance.cid}/{filename}"
 
-
 # the sellers
 class Vendor(AbstractUser):
     vend_id = ShortUUIDField(unique=True, length=10, max_length=20, prefix="vend-", alphabet=hexdigits)

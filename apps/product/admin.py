@@ -1,13 +1,5 @@
 from django.contrib import admin
-from .models import(
-    Product,
-    Category,
-    ProductImages,
-    Inventory,
-    Discount,
-    ProductReview,
-    ProductOrders
-)
+from .models import(Product, Category, ProductImages, Inventory, Discount, ProductReview, ProductOrders)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

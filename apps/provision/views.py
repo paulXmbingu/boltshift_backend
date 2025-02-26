@@ -1,16 +1,12 @@
 from django.shortcuts import render
 from django.core.serializers import serialize
-
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
 from knox.auth import TokenAuthentication
-
 from apps.provision.models import ShoppingSession, CartItem
 from .serializer import ShoppingSessionSerializer, CartItemSerializer
-
 import json
 
 # Base Class for unified Responses and Custom Validation Messages

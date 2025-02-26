@@ -8,12 +8,10 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
-
 class VendorRegistration(viewsets.ModelViewSet):
     serializer_class = VendorRegistrationAPI
     queryset = Vendor.objects.all()
         
-
 class VendorLoginAPI(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     def post(self, request, format=None):
