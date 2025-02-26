@@ -3,11 +3,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
 from django.core.exceptions import ValidationError
-
 from .serializer import *
 from .models import *
 from knox.auth import TokenAuthentication
-
 from utils.utils import save_top_categories
 from django.shortcuts import get_object_or_404
 
@@ -145,7 +143,6 @@ class ProductCatalogue(RequestValidation):
             
         return self.build_response('Success', products_list, status.HTTP_200_OK)
     
-
 # Renders details of a specific product in the product overview page
 class GetProductDetail(RequestValidation):
     serializer_class = ProductSerializer
@@ -168,7 +165,6 @@ class GetProductDetail(RequestValidation):
         except Http404 as e:
             return self.build_response("Error", str(e), status.HTTP_404_NOT_FOUND)
         
-
 #brand views
 class BrandView(APIView):
     def get(self,request):
@@ -210,9 +206,7 @@ class BrandView(APIView):
 
         return Response('Added Brand', status=status.HTTP_201_CREATED)
 
-
 #  categories
-
 class CategoryView(APIView):
     def get(self, request, category_id):
         if category_id:
@@ -260,7 +254,6 @@ class CategoryView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class InventoryView(APIView):
 
     def get(self, request):
@@ -301,7 +294,6 @@ class InventoryView(APIView):
             }, status = status.HTTP_400_BAD_REQUEST)
         
         return Response ('added category', status=status.HTTP_201_CREATED)
-
 
 class ProductOrderView(APIView):
     def get(self, request):
@@ -517,7 +509,6 @@ class ProductFeatureView(APIView):
                  'error' : str(e)
              }, status=status.HTTP_400_BAD_REQUEST)
 
-
 class ProductFeatureMappingView(APIView):
     def get(self, request):
         queryset = ProductFeatureMappings.objects.all()
@@ -554,4 +545,3 @@ class ProductFeatureMappingView(APIView):
 
 class Feature(APIView):
     pass
-

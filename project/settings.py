@@ -26,42 +26,25 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    # admin page customizer
     'jazzmin',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # django rich text editor
     'ckeditor',
-    
-    # Django model bit filter
     'django_filters',
-
-    # my apps
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
+    'knox',
+    'axes',
     'apps.customer',
     'apps.product',
     'apps.vendors',
     'apps.provision',
-
-    # REST API handling
-    'rest_framework',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
-
-    # React API Data Handling
-    'corsheaders',
-
-    # knox Token Handler
-    'knox',
-    
-    # Tracking suspicious logins
-    'axes'
-
 ]
 
 
