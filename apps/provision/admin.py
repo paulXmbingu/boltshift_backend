@@ -1,8 +1,5 @@
 from django.contrib import admin
-from .models import (
-    CartItem,
-    ShoppingSession,
-)
+from .models import (CartItem, ShoppingSession,)
 
 @admin.register(CartItem)
 class CartAdmin(admin.ModelAdmin):

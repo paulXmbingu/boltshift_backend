@@ -6,7 +6,6 @@ class ShoppingSessionSerializer(serializers.ModelSerializer):
         model = ShoppingSession
         exclude = ('created_at', 'id')
 
-
 class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
