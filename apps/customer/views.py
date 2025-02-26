@@ -12,18 +12,14 @@ from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.contrib.auth.hashers import check_password
-
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
 from knox.models import AuthToken
 from knox.auth import TokenAuthentication
-
 from .serializer import RegistrationSerializer, LoginSerializer, UpdateUserAccountSerializer, UserAccountSerializer, UserAddressSerializer, UserPaymentSerializer, UserTypeSerializer
 from .models import Customer, UserAddress, UserCardInformation
-
 
 class CustomerTokenObtainView(TokenObtainSerializer):
     serializer_class = CustomerTokenObtainSerializer

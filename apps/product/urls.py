@@ -17,6 +17,4 @@ urlpatterns = [
     path('features/', views.ProductFeatureView.as_view(), name = 'product_features'),
     path('features_mappings/', views.ProductFeatureMappingView.as_view(), name = 'product_features_mappimgs'),
     path('wishlist/',views.Wishlistview.as_view(),name = 'wishlist')
-
 ]
-
