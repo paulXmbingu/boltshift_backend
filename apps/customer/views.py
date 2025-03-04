@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from .models import Customer, UserAddress, UserCardInformation
-from .serializer import (CustomerTokenObtainSerializer, LoginSerializer, RegistrationSerializer, UpdateUserAccountSerializer, UserAccountSerializer, UserAddressSerializer, UserPaymentSerializer, UserTypeSerializer,)
+from .serializer import CustomerTokenObtainSerializer, LoginSerializer, RegistrationSerializer, UpdateUserAccountSerializer, UserAccountSerializer, UserAddressSerializer, UserPaymentSerializer, UserTypeSerializer
 
 class CustomerTokenObtainView(TokenObtainSerializer):
     serializer_class = CustomerTokenObtainSerializer
