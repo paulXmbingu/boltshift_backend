@@ -1,25 +1,17 @@
-from django.http import HttpResponse
-from rest_framework import viewsets, status
-from .models import Customer
-from rest_framework.views import APIView
-from .serializer import RegistrationSerializer, LoginSerializer, CustomerTokenObtainSerializer
-from rest_framework_simplejwt.serializers import TokenObtainSerializer
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import logout
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from django.contrib.auth import logout
-from django.shortcuts import get_object_or_404
-from django.db import transaction
 from django.contrib.auth.hashers import check_password
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from knox.models import AuthToken
+from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from knox.auth import TokenAuthentication
-from .serializer import RegistrationSerializer, LoginSerializer, UpdateUserAccountSerializer, UserAccountSerializer, UserAddressSerializer, UserPaymentSerializer, UserTypeSerializer
+from knox.models import AuthToken
+from rest_framework import status, viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from .models import Customer, UserAddress, UserCardInformation
+from .serializer import CustomerTokenObtainSerializer, LoginSerializer, RegistrationSerializer, UpdateUserAccountSerializer, UserAccountSerializer, UserAddressSerializer, UserPaymentSerializer, UserTypeSerializer
 
 class CustomerTokenObtainView(TokenObtainSerializer):
     serializer_class = CustomerTokenObtainSerializer
@@ -104,7 +96,6 @@ class CustomerDeleteAccount(APIView):
         logout(request)
         return Response({"message": "Account Deleted Successfully"}, status=status.HTTP_204_NO_CONTENT)
     
-
 class CustomerAccountSettings(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -136,7 +127,6 @@ class CustomerAccountSettings(APIView):
         address_serializer.is_valid(raise_exception=True)
         address_serializer.save()
         return Response(address_serializer.data, status=status.HTTP_200_OK)
-
 
     def update_payment(self, request, *args, **kwargs):
         user = request.user
