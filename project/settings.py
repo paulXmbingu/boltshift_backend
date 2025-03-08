@@ -244,6 +244,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Registering the custom user
 AUTH_USER_MODEL = 'customer.Customer'
 
+SILENCED_SYSTEM_CHECKS = [
+    'ckeditor.W001',
+]
 
 # Customizing the admin panel
 JAZZMIN_SETTINGS = {
