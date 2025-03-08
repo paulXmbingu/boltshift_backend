@@ -3,6 +3,8 @@ from django.shortcuts import redirect
 from django.urls import path
 from . import views
 
+app_name = 'customer'
+
 def redirect_url(request):
     return redirect("/product/")
 
