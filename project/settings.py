@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'knox',
     'axes',
+    'django_extensions',
     'apps.customer',
     'apps.product',
     'apps.vendors',
