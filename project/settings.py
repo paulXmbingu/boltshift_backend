@@ -249,13 +249,13 @@ SILENCED_SYSTEM_CHECKS = [
 
 # Customizing the admin panel
 JAZZMIN_SETTINGS = {
-    "site_title": "Boltshift Admin",
-    "site_header": "Boltshift",
+    "site_title": "Boltshift Backend",
+    "site_header": "Boltshift Backend",
     "site_logo": "logo/neutral1.png",
-    'site_brand': 'Boltshift Admin | Dashboard',
-    "welcome_sign": "Welcome to Boltshift Admin Panel",
+    'site_brand': 'Boltshift Backend',
+    "welcome_sign": "Welcome to Boltshift Backend Dashboard",
     'copyright': 'Boltshift Marketplace',
-    "show_ui_builder": True,
+    "show_ui_builder": False,
     "custom_css": "css/admin.css",
 
     # user avatar/profile image
