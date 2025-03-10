@@ -34,7 +34,7 @@ class Customer(AbstractUser, UserAccountMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=20, unique=True)
     image = models.ImageField(upload_to=customer_image_upload_directory, null=True, blank=True, default=None)
-    gender = models.CharField(max_length=10, choices=GENDER, default='-------')
+    gender = models.CharField(max_length=10, choices=GENDER, default='Select Gender')
     phonenumber_primary = models.PositiveIntegerField(default=0)
     phonenumber_secondary = models.PositiveIntegerField(default=0, null=True)
     deleted = models.BooleanField(default=False)
@@ -118,7 +118,7 @@ class UserAddress(models.Model):
     county = models.TextField(max_length=100, default='None')
     city = models.CharField(max_length=50, default="None")
     country = models.CharField(max_length=50, default="None")
-    apartment_complex = models.CharField(max_length=500, default="----------")
+    apartment_complex = models.CharField(max_length=500, default="")
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
 
