@@ -1,0 +1,8 @@
+.login-logo picture img {
+    width: 10rem;
+    height: 10rem;
+}
+
+.elevation-3 {
+    box-shadow: none !important;
+}

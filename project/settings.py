@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'knox',
     'axes',
+    'django_extensions',
     'apps.customer',
     'apps.product',
     'apps.vendors',
@@ -225,11 +226,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "var/www/boltshift/static_files")
+STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
 
 # Media folder
 MEDIA_URL = "/media/"
@@ -244,16 +243,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Registering the custom user
 AUTH_USER_MODEL = 'customer.Customer'
 
+SILENCED_SYSTEM_CHECKS = [
+    'ckeditor.W001',
+]
 
 # Customizing the admin panel
 JAZZMIN_SETTINGS = {
-    "site_title": "Boltshift Admin",
-    "site_header": "Boltshift",
+    "site_title": "Boltshift Backend",
+    "site_header": "Boltshift Backend",
     "site_logo": "logo/neutral1.png",
-    'site_brand': 'Boltshift Admin | Dashboard',
-    "welcome_sign": "Welcome to Boltshift Admin Panel",
+    'site_brand': 'Boltshift Backend',
+    "welcome_sign": "Welcome to Boltshift Backend Dashboard",
     'copyright': 'Boltshift Marketplace',
-    "show_ui_builder": True,
+    "show_ui_builder": False,
     "custom_css": "css/admin.css",
 
     # user avatar/profile image
