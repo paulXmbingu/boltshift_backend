@@ -60,7 +60,7 @@ class Customer(AbstractUser, UserAccountMixin):
 
     groups = models.ManyToManyField(
         Group,
-        verbose_name=_('groups'),
+        verbose_name=_('Groups'),
         blank=True,
         related_name='buyer_set'
     )
@@ -79,22 +79,20 @@ class Customer(AbstractUser, UserAccountMixin):
 
 class UserCardInformation(models.Model):
     CARD_TYPE = {
-        ('Visa', 'visa'),
-        ('Mastercard', 'mastercard'),
+        ('Visa', 'Visa'),
+        ('Mastercard', 'Mastercard'),
         ('American Express', 'express'),
-        ('Discover', 'discover'),
-        ('UnionPay', 'unionpay')
+        ('Discover', 'Discover'),
+        ('UnionPay', 'Unionpay')
     }
     
-    pay_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix='PAY-')
+    pay_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix='PayID-')
     debit_credit_card_number = models.BigIntegerField(default=0)
     card_provider = models.CharField(max_length=50, default="Select your card type", choices=CARD_TYPE)
     card_expiry_date = models.DateField()
     card_security_code = models.IntegerField(default=0)
-    
     updated_at = timezone.now()
     created_at = models.DateTimeField(default=timezone.now)
-
     user_id = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     #card_billing_address = models.ForeignKey('UserAddress', on_delete=models.SET_NULL, null=True)
 
@@ -112,16 +110,16 @@ class UserCardInformation(models.Model):
     
 
 class UserAddress(models.Model):
-    addr_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix='ADDR-')
-    streetname = models.TextField(max_length=100, default='None')
-    county = models.TextField(max_length=100, default='None')
-    city = models.CharField(max_length=50, default="None")
-    country = models.CharField(max_length=50, default="None")
-    apartment_complex = models.CharField(max_length=500, default="")
-    updated_at = timezone.now()
-    created_at = models.DateTimeField(default=timezone.now)
-
     user_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    addr_id = ShortUUIDField(verbose_name='Address ID', unique=True, length=10, max_length=15, alphabet=string.digits, prefix='AddressID-')
+    streetname = models.CharField(verbose_name='Street Name', max_length=100)
+    county = models.CharField(verbose_name='County', max_length=100)
+    city = models.CharField(verbose_name='City', max_length=50)
+    country = models.CharField(verbose_name='Country', max_length=50)
+    apartment_complex = models.CharField(verbose_name='Apartment', max_length=500)
+    # updated_at = models.DateTimeField(default=timezone.now, verbose_name='Updated')
+    # created_at = models.DateTimeField(default=timezone.now, verbose_name='Created')
+    
 
     REQUIRED_FIELDS = ['streetname', 'county', 'city', 'country', 'phonenumber_primary']
 
