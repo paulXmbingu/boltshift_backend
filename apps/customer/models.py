@@ -34,8 +34,7 @@ class Customer(AbstractUser, UserAccountMixin):
     gender = models.CharField(max_length=10, choices=GENDER, default='Select Gender', verbose_name='Gender')
     username = models.CharField(max_length=20, unique=True, verbose_name='User Name')
     email = models.EmailField(unique=True, verbose_name='Email Address')
-    phonenumber_primary = models.CharField(verbose_name='Primary Phone Number', max_length=20)
-    phonenumber_secondary = models.CharField(verbose_name='Secondary Phone Number', max_length=20)
+    phonenumber_primary = models.CharField(verbose_name='Phone Number', max_length=20)
     image = models.ImageField(upload_to=customer_image_upload_directory, null=True, blank=True, default=None, verbose_name='Profile Photo')
     deleted = models.BooleanField(verbose_name='Soft Delete', default=False)
 
