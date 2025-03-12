@@ -21,28 +21,28 @@ def validate_expiry_date(value):
     # or use a specific format.
     pass
 
-# customing our user
+
 class Customer(AbstractUser, UserAccountMixin):
     GENDER = {
-        ('Male', 'm'),
-        ('Female', 'f')
+        ('Male', 'Male'),
+        ('Female', 'Female'),
     }
     
-    cid = ShortUUIDField(unique=True, length=10, max_length=15, prefix="USER-", alphabet=string.digits)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=20, unique=True)
-    image = models.ImageField(upload_to=customer_image_upload_directory, null=True, blank=True, default=None)
-    gender = models.CharField(max_length=10, choices=GENDER, default='Select Gender')
-    phonenumber_primary = models.PositiveIntegerField(default=0)
-    phonenumber_secondary = models.PositiveIntegerField(default=0, null=True)
-    deleted = models.BooleanField(default=False)
+    cid = ShortUUIDField(verbose_name='Customer ID', unique=True, length=10, max_length=15, prefix="Cust-", alphabet=string.digits)
+    first_name = models.CharField(max_length=50, verbose_name='First Name')
+    last_name = models.CharField(max_length=50, verbose_name='Last Name')
+    gender = models.CharField(max_length=10, choices=GENDER, default='Select Gender', verbose_name='Gender')
+    username = models.CharField(max_length=20, unique=True, verbose_name='User Name')
+    email = models.EmailField(unique=True, verbose_name='Email Address')
+    phonenumber_primary = models.CharField(verbose_name='Primary Phone Number', max_length=20)
+    phonenumber_secondary = models.CharField(verbose_name='Secondary Phone Number', max_length=20)
+    image = models.ImageField(upload_to=customer_image_upload_directory, null=True, blank=True, default=None, verbose_name='Profile Photo')
+    deleted = models.BooleanField(verbose_name='Soft Delete', default=False)
 
     def image_tag(self):
         return mark_safe('<img src="%s" width="100" height="100" />' % (self.image.url))
     
-    image_tag.short_description = "Image"
+    image_tag.short_description = "Current Profile Photo"
     
     
     USERNAME_FIELD = "email"
@@ -67,7 +67,7 @@ class Customer(AbstractUser, UserAccountMixin):
 
     user_permissions = models.ManyToManyField(
         Permission,
-        verbose_name=_('user permissions'),
+        verbose_name=_('User Permissions'),
         blank=True,
         related_name='buyer_set'
     )
@@ -76,8 +76,7 @@ class Customer(AbstractUser, UserAccountMixin):
         self.deleted = True
         self.save()
 
-# handles user payments
-# stores user card informations
+
 class UserCardInformation(models.Model):
     CARD_TYPE = {
         ('Visa', 'visa'),
@@ -111,7 +110,7 @@ class UserCardInformation(models.Model):
     def __str__(self):
         return "{} {} {}".format(self.card_provider, self.user_id, self.pay_id)
     
-# customer address
+
 class UserAddress(models.Model):
     addr_id = ShortUUIDField(unique=True, length=10, max_length=15, alphabet=string.digits, prefix='ADDR-')
     streetname = models.TextField(max_length=100, default='None')
