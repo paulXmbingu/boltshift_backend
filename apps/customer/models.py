@@ -9,16 +9,11 @@ from utils.utils import UserAccountMixin
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-# creates a folder for each admin/customer with the user.cid as the folder name
-# to hold each individual user uploaded file
 def customer_image_upload_directory(instance, filename):
     return f"{instance.__class__.__name__}/{instance.cid}/{filename}"
     
     
 def validate_expiry_date(value):
-    # Add custom validation logic for the expiry date
-    # For example, you might want to ensure it's in the future
-    # or use a specific format.
     pass
 
 
@@ -54,7 +49,6 @@ class Customer(AbstractUser, UserAccountMixin):
         return self.username
     
     class Meta:
-        # rename the class incase of multiple users
         verbose_name_plural = "Customers"
 
     groups = models.ManyToManyField(
@@ -129,7 +123,6 @@ class UserAddress(models.Model):
     def __repr__(self):
         return self.addr1
 
-# user type
 class UserType(models.Model):
     user_id = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     is_customer = models.BooleanField(default=False)
