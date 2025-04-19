@@ -27,11 +27,6 @@
    python manage.py runserver
    ```
 
-**Create a superuser (for first timers):**
-   ```
-   python manage.py createsuperuser
-   ```
-
 ## Features
 - **User Authentication**: Secure user accounts and authentication to manage profiles and track order history.
 - **Product Catalog**: A comprehensive listing of products, organized into categories for easy navigation.
