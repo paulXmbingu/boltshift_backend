@@ -21,11 +21,6 @@
    ```
    pip install -r requirements.txt
    ```
-   
-**Start the development server:**
-   ```
-   python manage.py runserver
-   ```
 
 ## Features
 - **User Authentication**: Secure user accounts and authentication to manage profiles and track order history.
